@@ -8,7 +8,7 @@ namespace EntityLayer.Concrete
 {
     public class Color
     {
-        public int ColorId { get; set; }
+        public int ColorID { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

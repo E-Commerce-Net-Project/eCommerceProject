@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete
 {
-  public class Contact
+    public class Contact
     {
-     
         public int ContactID { get; set; }
         public string Adress { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string OpeningHour { get; set; }
-        public string İframe{ get; set;}
+        public string İframe { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace EntityLayer.Concrete
 {
     public class BodySize
     {
-        public int BodySizeId { get; set; }
+        public int BodySizeID { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

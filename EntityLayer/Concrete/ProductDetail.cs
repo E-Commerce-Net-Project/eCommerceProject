@@ -8,7 +8,7 @@ namespace EntityLayer.Concrete
 {
     public class ProductDetail
     {
-        public int ProductDetailId { get; set; }
+        public int ProductDetailID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string SKU { get; set; }
@@ -18,8 +18,8 @@ namespace EntityLayer.Concrete
         public string Bottom { get; set; }
         public string Dupatta { get; set; }
         public bool IsDeleted { get; set; }
-        public int ProductId { get; set; }
+        public int ProductID { get; set; }
         public Product Product { get; set; }
-        
+
     }
 }

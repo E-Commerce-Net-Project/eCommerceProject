@@ -8,7 +8,7 @@ namespace EntityLayer.Concrete
 {
     public class Brand
     {
-        public int BrandId { get; set; }
+        public int BrandID { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

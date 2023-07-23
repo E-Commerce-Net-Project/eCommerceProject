@@ -8,7 +8,7 @@ namespace EntityLayer.Concrete
 {
     public class Tag
     {
-        public int TagId { get; set; }
+        public int TagID { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
