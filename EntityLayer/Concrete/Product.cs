@@ -12,10 +12,10 @@ namespace EntityLayer.Concrete
         public string Name { get; set; }
         public string Description { get; set; }
         public string Image1 { get; set; }
-        public string Image2 { get; set; }
-        public string Image3 { get; set; }
-        public string Image4 { get; set; }
-        public string Image5 { get; set; }
+        public string? Image2 { get; set; }
+        public string? Image3 { get; set; }
+        public string? Image4 { get; set; }
+        public string? Image5 { get; set; }
         public string CoverImage { get; set; }
         public decimal Price { get; set; }
         public string Section { get; set; }
@@ -32,5 +32,7 @@ namespace EntityLayer.Concrete
         public List<Color> Colors { get; } = new();
         public List<BodySize> BodySizes { get; } = new();
         public List<Tag> Tags { get; } = new();
+        public List<WishList> WishLists { get; } = new();
+        public List<Comment> Comments { get; } = new();
     }
 }

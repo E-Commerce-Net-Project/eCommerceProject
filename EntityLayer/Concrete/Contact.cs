@@ -14,6 +14,6 @@ namespace EntityLayer.Concrete
         public string Phone { get; set; }
         public string Email { get; set; }
         public string OpeningHour { get; set; }
-        public string İframe { get; set; }
+        public string Iframe { get; set; }
     }
 }

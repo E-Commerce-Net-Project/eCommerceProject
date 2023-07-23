@@ -9,6 +9,10 @@ namespace EntityLayer.Concrete
 {
     public class AppUser : IdentityUser<int>
     {
-        // User tablosuna eklenecek olan kolonları
+        public string Name { get; set; }
+        public string Surname { get; set; }
+
+        public List<WishList> WishLists { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

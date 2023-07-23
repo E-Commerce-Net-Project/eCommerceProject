@@ -10,8 +10,8 @@ namespace EntityLayer.Concrete
     {
         public int TagID { get; set; }
         public string Name { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsDeleted { get; set; }
         public List<Product> Products { get; } = new();
     }
 }
