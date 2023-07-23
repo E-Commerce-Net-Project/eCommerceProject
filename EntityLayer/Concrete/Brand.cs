@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete
 {
-    public class SubCategory
+    public class Brand
     {
-        public int SubCategoryID { get; set; }
+        public int BrandId { get; set; }
         public string Name { get; set; }
-        public int GenreCategoryID { get; set; }
-        public GenreCategory GenreCategory { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
         public ICollection<Product> Products { get; set; }
     }
 }
