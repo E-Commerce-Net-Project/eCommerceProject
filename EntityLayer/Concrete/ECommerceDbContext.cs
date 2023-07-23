@@ -20,6 +20,9 @@ namespace EntityLayer.Concrete
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Stock> Stocks { get; set; }
+        public DbSet<WishList> WishLists { get; set; }
+        public DbSet<SocialMedia> SocialMedias { get; set; }
+        public DbSet<Sponsor> Sponsors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
