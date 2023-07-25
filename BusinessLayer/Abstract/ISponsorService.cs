@@ -7,7 +7,7 @@ using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract
 {
-   public interface ISponsorService : IGenericService<Sponsor>
+    public interface ISponsorService : IGenericService<Sponsor>
     {
     }
 }

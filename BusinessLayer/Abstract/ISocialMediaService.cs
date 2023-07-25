@@ -7,7 +7,7 @@ using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract
 {
-   public interface ISocialMediaService : IGenericService<SocialMedia>
+    public interface ISocialMediaService : IGenericService<SocialMedia>
     {
     }
 }
