@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+
+@await Html.PartialAsync("/Areas/Admin/Views/Template/HeaderPartial.cshtml")
+
+<body class="theme-blue">
+
+    <!-- Page Loader -->
+    @await Html.PartialAsync("/Areas/Admin/Views/Template/LoaderPartial.cshtml")
+
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+
+    <div id="wrapper">
+
+        @await Html.PartialAsync("/Areas/Admin/Views/Template/NavbarPartial.cshtml")
+
+        @await Html.PartialAsync("/Areas/Admin/Views/Template/RightbarPartial.cshtml")
+
+        @await Html.PartialAsync("/Areas/Admin/Views/Template/SidebarPartial.cshtml")
+
+        <div id="main-content">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h1>Dashboard</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#"><i class="fa fa-cube"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-md-6 col-sm-12 text-right hidden-xs">
+                        <a href="javascript:void(0);" class="btn btn-sm btn-primary" title="">Create Campaign</a>
+                    </div>
+                </div>
+            </div>
+
+            @RenderBody()
+
+        </div>
+    </div>
+
+    @await Html.PartialAsync("/Areas/Admin/Views/Template/ScriptPartial.cshtml")
+
+</body>
+</html>
