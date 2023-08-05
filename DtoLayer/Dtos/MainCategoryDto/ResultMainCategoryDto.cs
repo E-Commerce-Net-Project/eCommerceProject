@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace DtoLayer.Dtos.MainCategoryDto
 {
-    public class CreateMainCategory
+    public class ResultMainCategoryDto
     {
+        public int MainCategoryID { get; set; }
         public string Name { get; set; }
     }
 }

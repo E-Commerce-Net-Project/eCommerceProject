@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DtoLayer.Dtos.MainCategoryDto
 {
-    public class ResultMainCategory
+    public class UpdateMainCategoryDto
     {
         public int MainCategoryID { get; set; }
         public string Name { get; set; }
