@@ -6,9 +6,14 @@ using DtoLayer.Dtos.BrandDto;
 using DtoLayer.Dtos.ColorDto;
 using DtoLayer.Dtos.CommentDto;
 using DtoLayer.Dtos.ContactDto;
+using DtoLayer.Dtos.ContactUsDto;
 using DtoLayer.Dtos.FeatureDto;
 using DtoLayer.Dtos.GenreCategoryDto;
 using DtoLayer.Dtos.MainCategoryDto;
+using DtoLayer.Dtos.StockDto;
+using DtoLayer.Dtos.SubCategoryDto;
+using DtoLayer.Dtos.TagDto;
+using DtoLayer.Dtos.WishListDto;
 using EntityLayer.Concrete;
 
 namespace eCommerceProject.Mapping
@@ -45,6 +50,10 @@ namespace eCommerceProject.Mapping
             CreateMap<Contact, CreateContactDto>().ReverseMap();
             CreateMap<Contact, UpdateContactDto>().ReverseMap();
 
+            CreateMap<ContactUs, ResultContactUsDto>().ReverseMap();
+            CreateMap<ContactUs, CreateContactUsDto>().ReverseMap();
+            CreateMap<ContactUs, UpdateContactUsDto>().ReverseMap();
+
             CreateMap<Feature, ResultFeatureDto>().ReverseMap();
             CreateMap<Feature, CreateFeatureDto>().ReverseMap();
             CreateMap<Feature, UpdateFeatureDto>().ReverseMap();
@@ -56,6 +65,22 @@ namespace eCommerceProject.Mapping
             CreateMap<MainCategory, ResultMainCategoryDto>().ReverseMap();
             CreateMap<MainCategory, CreateMainCategoryDto>().ReverseMap();
             CreateMap<MainCategory, UpdateMainCategoryDto>().ReverseMap();
+
+            CreateMap<Stock, ResultStockDto>().ReverseMap();
+            CreateMap<Stock, CreateStockDto>().ReverseMap();
+            CreateMap<Stock, UpdateStockDto>().ReverseMap();
+
+            CreateMap<SubCategory, ResultSubCategoryDto>().ReverseMap();
+            CreateMap<SubCategory, CreateSubCategoryDto>().ReverseMap();
+            CreateMap<SubCategory, UpdateSubCategoryDto>().ReverseMap();
+
+            CreateMap<Tag, ResultTagDto>().ReverseMap();
+            CreateMap<Tag, CreateTagDto>().ReverseMap();
+            CreateMap<Tag, UpdateTagDto>().ReverseMap();
+
+            CreateMap<WishList, ResultWishListDto>().ReverseMap();
+            CreateMap<WishList, CreateWishListDto>().ReverseMap();
+            CreateMap<WishList, UpdateWishListDto>().ReverseMap();
         }
     }
 }

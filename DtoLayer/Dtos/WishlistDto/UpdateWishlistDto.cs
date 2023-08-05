@@ -1,6 +1,6 @@
-﻿namespace DtoLayer.Dtos.WishlistDto
+﻿namespace DtoLayer.Dtos.WishListDto
 {
-    public class UpdateWishlistDto
+    public class UpdateWishListDto
     {
         public int WishListID { get; set; }
         public int ProductID { get; set; }
