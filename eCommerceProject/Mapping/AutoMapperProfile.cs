@@ -10,6 +10,11 @@ using DtoLayer.Dtos.ContactUsDtos;
 using DtoLayer.Dtos.FeatureDtos;
 using DtoLayer.Dtos.GenreCategoryDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
+using DtoLayer.Dtos.ProductDetailDtos;
+using DtoLayer.Dtos.ProductDtos;
+using DtoLayer.Dtos.ServiceDtos;
+using DtoLayer.Dtos.SocialMediaDtos;
+using DtoLayer.Dtos.SponsorDtos;
 using DtoLayer.Dtos.StockDtos;
 using DtoLayer.Dtos.SubCategoryDtos;
 using DtoLayer.Dtos.TagDtos;
@@ -65,6 +70,26 @@ namespace eCommerceProject.Mapping
             CreateMap<MainCategory, ResultMainCategoryDto>().ReverseMap();
             CreateMap<MainCategory, CreateMainCategoryDto>().ReverseMap();
             CreateMap<MainCategory, UpdateMainCategoryDto>().ReverseMap();
+
+            CreateMap<ProductDetail, ResultProductDetailDto>().ReverseMap();
+            CreateMap<ProductDetail, CreateProductDetailDto>().ReverseMap();
+            CreateMap<ProductDetail, UpdateProductDetailDto>().ReverseMap();
+
+            CreateMap<Product, ResultProductDto>().ReverseMap();
+            CreateMap<Product, CreateProductDto>().ReverseMap();
+            CreateMap<Product, UpdateProductDto>().ReverseMap();
+
+            CreateMap<Service, ResultServiceDto>().ReverseMap();
+            CreateMap<Service, CreateServiceDto>().ReverseMap();
+            CreateMap<Service, UpdateServiceDto>().ReverseMap();
+
+            CreateMap<SocialMedia, ResultSocialMediaDto>().ReverseMap();
+            CreateMap<SocialMedia, CreateSocialMediaDto>().ReverseMap();
+            CreateMap<SocialMedia, UpdateSocialMediaDto>().ReverseMap();
+
+            CreateMap<Sponsor, ResultSponsorDto>().ReverseMap();
+            CreateMap<Sponsor, CreateSponsorDto>().ReverseMap();
+            CreateMap<Sponsor, UpdateSponsorDto>().ReverseMap();
 
             CreateMap<Stock, ResultStockDto>().ReverseMap();
             CreateMap<Stock, CreateStockDto>().ReverseMap();
