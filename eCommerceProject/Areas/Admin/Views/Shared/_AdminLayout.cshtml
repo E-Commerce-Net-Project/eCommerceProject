@@ -27,16 +27,16 @@
             <div class="block-header">
                 <div class="row clearfix">
                     <div class="col-md-6 col-sm-12">
-                        <h1>Dashboard</h1>
+                        <h1>@ViewBag.Title1</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#"><i class="fa fa-cube"></i></a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="@ViewBag.Title2Url">@ViewBag.Title2</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title1</li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-md-6 col-sm-12 text-right hidden-xs">
-                        <a href="javascript:void(0);" class="btn btn-sm btn-primary" title="">Create Campaign</a>
+                        <a href="@ViewBag.ButtonUrl" class="btn btn-sm btn-primary" title="">@ViewBag.Button</a>
                     </div>
                 </div>
             </div>

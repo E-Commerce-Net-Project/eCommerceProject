@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,36 +9,36 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrete
 {
-    public class MainCategory : IMainCategoryService
+    public class MainCategoryManager : IMainCategoryService
     {
         IMainCategoryDal _mainCategoryDal;
 
-        public MainCategory(IMainCategoryDal mainCategoryDal)
+        public MainCategoryManager(IMainCategoryDal mainCategoryDal)
         {
             _mainCategoryDal = mainCategoryDal;
         }
 
-        public void TAdd(EntityLayer.Concrete.MainCategory t)
+        public void TAdd(MainCategory t)
         {
             _mainCategoryDal.Insert(t);
         }
 
-        public void TDelete(EntityLayer.Concrete.MainCategory t)
+        public void TDelete(MainCategory t)
         {
            _mainCategoryDal.Delete(t);
         }
 
-        public List<EntityLayer.Concrete.MainCategory> TGetList()
+        public List<MainCategory> TGetList()
         {
             return _mainCategoryDal.GetList();
         }
 
-        public EntityLayer.Concrete.MainCategory TGeyByID(int id)
+        public MainCategory TGeyByID(int id)
         {
             return _mainCategoryDal.GetByID(id);
         }
 
-        public void TUpdate(EntityLayer.Concrete.MainCategory t)
+        public void TUpdate(MainCategory t)
         {
             _mainCategoryDal.Update(t);
         }

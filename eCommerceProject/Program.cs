@@ -1,4 +1,11 @@
+using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
+using BusinessLayer.ValidationRules.MainCategory;
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using DataAccessLayer.EntityFramework;
+using DtoLayer.Dtos.MainCategoryDtos;
+using FluentValidation;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +17,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 
 // Buraya AddScoped'ler gelecek
+
+builder.Services.AddScoped<IMainCategoryDal, EfMainCategoryDal>();
+builder.Services.AddScoped<IMainCategoryService, MainCategoryManager>();
+builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
