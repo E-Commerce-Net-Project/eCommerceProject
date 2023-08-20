@@ -1,11 +1,18 @@
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.ValidationRules.AppRole;
+using BusinessLayer.ValidationRules.AppUser;
 using BusinessLayer.ValidationRules.MainCategory;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using DtoLayer.Dtos.AppRoleDtos;
+using DtoLayer.Dtos.AppUserDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
+using eCommerceProject.Models;
+using EntityLayer.Concrete;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +20,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<Context>()
+                .AddErrorDescriber<CustomIdentityValidator>()
+                .AddEntityFrameworkStores<Context>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 
@@ -22,6 +33,7 @@ builder.Services.AddScoped<IMainCategoryDal, EfMainCategoryDal>();
 builder.Services.AddScoped<IMainCategoryService, MainCategoryManager>();
 builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
+
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

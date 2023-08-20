@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DtoLayer.Dtos.AboutDtos;
+using DtoLayer.Dtos.AppRoleDtos;
 using DtoLayer.Dtos.AppUserDtos;
 using DtoLayer.Dtos.BodySizeDtos;
 using DtoLayer.Dtos.BrandDtos;
@@ -106,6 +107,11 @@ namespace eCommerceProject.Mapping
             CreateMap<WishList, ResultWishListDto>().ReverseMap();
             CreateMap<WishList, CreateWishListDto>().ReverseMap();
             CreateMap<WishList, UpdateWishListDto>().ReverseMap();
+
+            CreateMap<AppRole, ResultAppRoleDto>().ReverseMap();
+            CreateMap<AppRole, CreateAppRoleDto>().ReverseMap();
+            CreateMap<AppRole, UpdateAppRoleDto>().ReverseMap();
+            CreateMap<AppUser, ResultAppUserRoleDto>().ReverseMap();
         }
     }
 }
