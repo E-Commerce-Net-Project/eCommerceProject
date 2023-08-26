@@ -34,6 +34,9 @@ builder.Services.AddScoped<IMainCategoryService, MainCategoryManager>();
 builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
 
+builder.Services.AddScoped<IContactUsDal, EfContactUsDal>();
+builder.Services.AddScoped<IContactUsService, ContactUsManager>();
+
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
