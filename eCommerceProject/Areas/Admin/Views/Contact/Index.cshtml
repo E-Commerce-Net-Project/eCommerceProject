@@ -1,0 +1,68 @@
+﻿@using DtoLayer.Dtos.ContactDtos;
+@model UpdateContactDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-12 col-md-12">
+    <div class="card">
+        <div class="header">
+            <h2>İletişim Bilgileri</h2>
+        </div>
+        <div class="body">
+            <form method="post" class="forms-sample">
+                <input type="hidden" asp-for="ContactID" />
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Adres : </span>
+                    </div>
+                    <input type="text" asp-for="Adress" class="form-control" placeholder="Adres bilgilerini giriniz." aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Adress" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Telefon : </span>
+                    </div>
+                    <input type="text" asp-for="Phone" class="form-control" placeholder="Telefon bilgilerini giriniz." aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Mail : </span>
+                    </div>
+                    <input type="text" asp-for="Email" class="form-control" placeholder="Mail bilgilerinizi giriniz." aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Çalışma Saatleri : </span>
+                    </div>
+                    <input type="text" asp-for="OpeningHour" class="form-control" placeholder="Çalışam Saatleri bilfilerinizi giriniz." aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Harita url : </span>
+                    </div>
+                    <input type="text" asp-for="Iframe" class="form-control" placeholder="Harit url bilgilerinizi giriniz." aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Iframe" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary me-2 col-12">İletişim Bilgilerini Güncelle</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

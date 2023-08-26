@@ -2,12 +2,18 @@ using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules.AppRole;
 using BusinessLayer.ValidationRules.AppUser;
+using BusinessLayer.ValidationRules.Brand;
+using BusinessLayer.ValidationRules.Color;
+using BusinessLayer.ValidationRules.Contact;
 using BusinessLayer.ValidationRules.MainCategory;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using DtoLayer.Dtos.AppRoleDtos;
 using DtoLayer.Dtos.AppUserDtos;
+using DtoLayer.Dtos.BrandDtos;
+using DtoLayer.Dtos.ColorDtos;
+using DtoLayer.Dtos.ContactDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using eCommerceProject.Models;
 using EntityLayer.Concrete;
@@ -33,6 +39,23 @@ builder.Services.AddScoped<IMainCategoryDal, EfMainCategoryDal>();
 builder.Services.AddScoped<IMainCategoryService, MainCategoryManager>();
 builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
+
+builder.Services.AddScoped<IColorDal, EfColorDal>();
+builder.Services.AddScoped<IColorService, ColorManager>();
+builder.Services.AddScoped<IValidator<CreateColorDto>, CreateColorDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateColorDto>, UpdateColorDtoValidator>();
+
+builder.Services.AddScoped<IBrandDal, EfBrandDal>();
+builder.Services.AddScoped<IBrandService, BrandManager>();
+builder.Services.AddScoped<IValidator<CreateBrandDto>, CreateBrandDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateBrandDto>, UpdateBrandDtoValidator>();
+
+builder.Services.AddScoped<IContactDal, EfContactDal>();
+builder.Services.AddScoped<IContactService, ContactManager>();
+builder.Services.AddScoped<IValidator<UpdateContactDto>, UpdateContactDtoValidator>();
+
+
+
 
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
