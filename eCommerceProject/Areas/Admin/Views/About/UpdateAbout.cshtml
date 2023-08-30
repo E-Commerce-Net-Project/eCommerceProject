@@ -1,0 +1,30 @@
+﻿@using DtoLayer.Dtos.AboutDtos
+@model UpdateAboutDto
+
+@{
+    ViewData["Title"] = "UpdateAbout";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-12 col-md-12">
+    <div class="card">
+        <div class="header">
+            <h2>Hakkında Güncelleme Sayfası</h2>
+        </div>
+        <div class="body">
+            <form method="post" class="forms-sample">
+                <input type="hidden" asp-for="AboutID" />
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Hakkında Açıklaması : </span>
+                    </div>
+                    <input type="text" asp-for="Description" class="form-control" placeholder="Hakkında açıklama giriniz" aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary me-2 col-12">Güncel Hakkında Kısmı Ekle!</button>
+            </form>
+        </div>
+    </div>
+</div>

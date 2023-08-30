@@ -1,0 +1,45 @@
+﻿@using DtoLayer.Dtos.FeatureDtos;
+@model List<ResultFeatureDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-12">
+    <div class="table-responsive">
+        <table class="table table-hover table-custom spacing8">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Özellikler</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var feature in Model)
+                {
+                    <tr>
+                        <td class="w60">
+                            <img src="~/admin-template/assets/images/xs/arti.jpg" data-toggle="tooltip" data-placement="top" title="Name" alt="MainCategory" class="w35 rounded">
+                        </td>
+                        <td>
+                            <a href="javascript:void(0);" title=@feature.Title1></a>
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown">
+                                <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a class="dropdown-item" href="/Admin/Feature/UpdateFeature/@feature.FeatureID"><i class="fa fa-pencil mx-0"></i> Güncelle</a>
+                                    <a class="dropdown-item" href="/Admin/Feature/DeleteFeature/@feature.FeatureID"><i class="fa fa-trash mx-0"></i> Sil</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
