@@ -9,5 +9,6 @@ namespace BusinessLayer.Abstract
 {
     public interface IGenreCategoryService : IGenericService<GenreCategory>
     {
+        public List<GenreCategory> TGenreCategoriesListWithSubCategory();
     }
 }

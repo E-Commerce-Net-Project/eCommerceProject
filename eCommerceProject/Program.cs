@@ -1,7 +1,5 @@
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
-using BusinessLayer.ValidationRules.AppRole;
-using BusinessLayer.ValidationRules.AppUser;
 using BusinessLayer.ValidationRules.Brand;
 using BusinessLayer.ValidationRules.Color;
 using BusinessLayer.ValidationRules.Contact;
@@ -12,8 +10,6 @@ using BusinessLayer.ValidationRules.MainCategory;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
-using DtoLayer.Dtos.AppRoleDtos;
-using DtoLayer.Dtos.AppUserDtos;
 using DtoLayer.Dtos.BrandDtos;
 using DtoLayer.Dtos.ColorDtos;
 using DtoLayer.Dtos.ContactDtos;
@@ -25,6 +21,10 @@ using eCommerceProject.Models;
 using EntityLayer.Concrete;
 using FluentValidation;
 using System.Reflection;
+using DtoLayer.Dtos.GenreCategoryDtos;
+using BusinessLayer.ValidationRules.GenreCategory;
+using DtoLayer.Dtos.SubCategoryDtos;
+using BusinessLayer.ValidationRules.SubCategory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,14 +40,24 @@ builder.Services.AddControllersWithViews();
 
 // Buraya AddScoped'ler gelecek
 
-builder.Services.AddScoped<IAboutDal,EfAboutDal>();
-builder.Services.AddScoped<IAboutService,AboutManager>();
+builder.Services.AddScoped<IAboutDal, EfAboutDal>();
+builder.Services.AddScoped<IAboutService, AboutManager>();
 builder.Services.AddScoped<IValidator<UpdateAboutDto>, UpdateAboutDtoValidator>();
 
 builder.Services.AddScoped<IMainCategoryDal, EfMainCategoryDal>();
 builder.Services.AddScoped<IMainCategoryService, MainCategoryManager>();
 builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
+
+builder.Services.AddScoped<ISubCategoryDal, EfSubCategoryDal>();
+builder.Services.AddScoped<ISubCategoryService, SubCategoryManager>();
+builder.Services.AddScoped<IValidator<CreateSubCategoryDto>, CreateSubCategoryDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateSubCategoryDto>, UpdateSubCategoryDtoValidator>();
+
+builder.Services.AddScoped<IGenreCategoryDal, EfGenreCategoryDal>();
+builder.Services.AddScoped<IGenreCategoryService, GenreCategoryManager>();
+builder.Services.AddScoped<IValidator<CreateGenreCategoryDto>, CreateGenreCategoryDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateGenreCategoryDto>, UpdateGenreCategoryDtoValidator>();
 
 builder.Services.AddScoped<IContactUsDal, EfContactUsDal>();
 builder.Services.AddScoped<IContactUsService, ContactUsManager>();
@@ -69,15 +79,15 @@ builder.Services.AddScoped<IValidator<UpdateContactDto>, UpdateContactDtoValidat
 
 
 
-builder.Services.AddScoped<IBodySizeDal,EfBodySizeDal>();
-builder.Services.AddScoped<IBodySizeService,BodySizeManager>();
+builder.Services.AddScoped<IBodySizeDal, EfBodySizeDal>();
+builder.Services.AddScoped<IBodySizeService, BodySizeManager>();
 builder.Services.AddScoped<IValidator<CreateBodySizeDto>, CreateBodySizeDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateBodySizeDto>, UpdateBodySizeDtoValidator>();
 
-builder.Services.AddScoped<IFeatureDal,EfFeatureDal>();
-builder.Services.AddScoped<IFeatureService,FeatureManager>();
+builder.Services.AddScoped<IFeatureDal, EfFeatureDal>();
+builder.Services.AddScoped<IFeatureService, FeatureManager>();
 builder.Services.AddScoped<IValidator<CreateFeatureDto>, CreateFeatureDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateFeatureDto>,UpdateFeatureDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateFeatureDto>, UpdateFeatureDtoValidator>();
 
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

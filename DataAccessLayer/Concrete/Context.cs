@@ -13,11 +13,11 @@ namespace DataAccessLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("server=EFRUN\\SQLEXPRESS; initial catalog=ECommerceDB; integrated Security=true;Trust Server Certificate=true;");
+            optionsBuilder.UseSqlServer("server=EFRUN\\SQLEXPRESS; initial catalog=ECommerceDB; integrated Security=true;Trust Server Certificate=true;");
             //optionsBuilder.UseSqlServer("server=(localdb)\\MSSQLLocalDB; initial catalog=EcommerceDB; integrated Security=true;Trust Server Certificate=true;");
 
             //Ortak Database Server
-            optionsBuilder.UseSqlServer("Data Source=SQL8005.site4now.net;Initial Catalog=db_a9ca78_ecommerce2023;User Id=db_a9ca78_ecommerce2023_admin;Password=4LOsG.MwlVYfj0ST");
+            //optionsBuilder.UseSqlServer("Data Source=SQL8005.site4now.net;Initial Catalog=db_a9ca78_ecommerce2023;User Id=db_a9ca78_ecommerce2023_admin;Password=4LOsG.MwlVYfj0ST");
         }
 
         public DbSet<About> Abouts { get; set; }

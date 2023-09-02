@@ -10,8 +10,10 @@ namespace EntityLayer.Concrete
     {
         public int GenreCategoryID { get; set; }
         public string Name { get; set; }
-        public int MainCategoryID { get; set; }
-        public MainCategory MainCategory { get; set; }
-        public ICollection<SubCategory> SubCategories { get; set; }
+
+        public int SubCategoryID { get; set; }
+        public SubCategory SubCategory { get; set; }
+        public ICollection<Product> Products { get; set; }
+
     }
 }

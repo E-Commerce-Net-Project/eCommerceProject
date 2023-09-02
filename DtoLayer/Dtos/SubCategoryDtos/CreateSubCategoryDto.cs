@@ -9,6 +9,6 @@ namespace DtoLayer.Dtos.SubCategoryDtos
     public class CreateSubCategoryDto
     {
         public string Name { get; set; }
-        public int GenreCategoryID { get; set; }
+        public int MainCategoryID { get; set; }
     }
 }

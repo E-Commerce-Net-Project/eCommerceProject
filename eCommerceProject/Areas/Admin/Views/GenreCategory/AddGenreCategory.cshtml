@@ -1,0 +1,37 @@
+﻿@model CreateGenreCategoryDto
+
+@{
+    ViewData["Title"] = "AddGenreCategory";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-12 col-md-12">
+    <div class="card">
+        <div class="header">
+            <h2> Yeni Kategori Türü Ekleme Sayfası</h2>
+        </div>
+        <div class="body">
+            <form method="post" class="forms-sample">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Kategori Türü Adı : </span>
+                    </div>
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Kategori tür adını giriniz." aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Bağlı Olduğu Alt Kategori : </span>
+                    </div>
+                    @Html.DropDownListFor(x=>x.SubCategoryID,(List<SelectListItem>)ViewBag.subCategoryName,"Alt kategori seçiniz.",new {@class="form-control", required = "required" })
+                </div>
+
+                <button type="submit" class="btn btn-primary me-2 col-12">Kategori Türünü Ekle!</button>
+            </form>
+        </div>
+    </div>
+</div>
+

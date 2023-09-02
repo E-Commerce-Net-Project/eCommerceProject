@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DtoLayer.Dtos.MainCategoryDtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,6 @@ namespace DtoLayer.Dtos.SubCategoryDtos
     {
         public int SubCategoryID { get; set; }
         public string Name { get; set; }
-        public int GenreCategoryID { get; set; }
+        public ResultMainCategoryDto MainCategory { get; set; }
     }
 }

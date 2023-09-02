@@ -18,9 +18,14 @@ namespace BusinessLayer.Concrete
             _subCategoryDal = subCategoryDal;
         }
 
+        public List<SubCategory> TSubCategoriesListWithMainCategory()
+        {
+            return _subCategoryDal.SubCategoriesListWithMainCategory();
+        }
+
         public void TAdd(SubCategory t)
         {
-          _subCategoryDal.Insert(t);
+            _subCategoryDal.Insert(t);
         }
 
         public void TDelete(SubCategory t)
@@ -30,7 +35,7 @@ namespace BusinessLayer.Concrete
 
         public List<SubCategory> TGetList()
         {
-          return _subCategoryDal.GetList();
+            return _subCategoryDal.GetList();
         }
 
         public SubCategory TGeyByID(int id)

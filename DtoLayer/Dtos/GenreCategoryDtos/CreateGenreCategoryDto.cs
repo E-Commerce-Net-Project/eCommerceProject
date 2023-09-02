@@ -9,5 +9,7 @@ namespace DtoLayer.Dtos.GenreCategoryDtos
     public class CreateGenreCategoryDto
     {
         public string Name { get; set; }
+        public int SubCategoryID { get; set; }
+
     }
 }

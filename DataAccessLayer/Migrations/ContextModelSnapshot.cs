@@ -374,16 +374,16 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreCategoryID"), 1L, 1);
 
-                    b.Property<int>("MainCategoryID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SubCategoryID")
+                        .HasColumnType("int");
+
                     b.HasKey("GenreCategoryID");
 
-                    b.HasIndex("MainCategoryID");
+                    b.HasIndex("SubCategoryID");
 
                     b.ToTable("GenreCategories");
                 });
@@ -424,6 +424,9 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GenreCategoryID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -463,6 +466,8 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("ProductID");
 
                     b.HasIndex("BrandID");
+
+                    b.HasIndex("GenreCategoryID");
 
                     b.HasIndex("SubCategoryID");
 
@@ -624,7 +629,7 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubCategoryID"), 1L, 1);
 
-                    b.Property<int>("GenreCategoryID")
+                    b.Property<int>("MainCategoryID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -633,7 +638,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("SubCategoryID");
 
-                    b.HasIndex("GenreCategoryID");
+                    b.HasIndex("MainCategoryID");
 
                     b.ToTable("SubCategories");
                 });
@@ -853,13 +858,13 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.GenreCategory", b =>
                 {
-                    b.HasOne("EntityLayer.Concrete.MainCategory", "MainCategory")
+                    b.HasOne("EntityLayer.Concrete.SubCategory", "SubCategory")
                         .WithMany("GenreCategories")
-                        .HasForeignKey("MainCategoryID")
+                        .HasForeignKey("SubCategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MainCategory");
+                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Product", b =>
@@ -870,8 +875,12 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EntityLayer.Concrete.SubCategory", "SubCategory")
+                    b.HasOne("EntityLayer.Concrete.GenreCategory", null)
                         .WithMany("Products")
+                        .HasForeignKey("GenreCategoryID");
+
+                    b.HasOne("EntityLayer.Concrete.SubCategory", "SubCategory")
+                        .WithMany()
                         .HasForeignKey("SubCategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -921,13 +930,13 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.SubCategory", b =>
                 {
-                    b.HasOne("EntityLayer.Concrete.GenreCategory", "GenreCategory")
+                    b.HasOne("EntityLayer.Concrete.MainCategory", "MainCategory")
                         .WithMany("SubCategories")
-                        .HasForeignKey("GenreCategoryID")
+                        .HasForeignKey("MainCategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("GenreCategory");
+                    b.Navigation("MainCategory");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.WishList", b =>
@@ -1039,12 +1048,12 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.GenreCategory", b =>
                 {
-                    b.Navigation("SubCategories");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.MainCategory", b =>
                 {
-                    b.Navigation("GenreCategories");
+                    b.Navigation("SubCategories");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Product", b =>
@@ -1060,7 +1069,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.SubCategory", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("GenreCategories");
                 });
 #pragma warning restore 612, 618
         }
