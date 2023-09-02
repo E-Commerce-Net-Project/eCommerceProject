@@ -30,7 +30,12 @@
 
 	<ItemGroup>
 	  <Folder Include="Areas\Admin\Data\" />
+	  <Folder Include="wwwroot\Resources\CSS\" />
 	  <Folder Include="Areas\Admin\Views\Shared\Components\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\Resources\JS\SupportRequest.js" />
 	</ItemGroup>
 
 </Project>
