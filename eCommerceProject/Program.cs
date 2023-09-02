@@ -1,8 +1,6 @@
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules.About;
-using BusinessLayer.ValidationRules.AppRole;
-using BusinessLayer.ValidationRules.AppUser;
 using BusinessLayer.ValidationRules.BodySize;
 using BusinessLayer.ValidationRules.Feature;
 using BusinessLayer.ValidationRules.MainCategory;
@@ -10,15 +8,12 @@ using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using DtoLayer.Dtos.AboutDtos;
-using DtoLayer.Dtos.AppRoleDtos;
-using DtoLayer.Dtos.AppUserDtos;
 using DtoLayer.Dtos.BodySizeDtos;
 using DtoLayer.Dtos.FeatureDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using eCommerceProject.Models;
 using EntityLayer.Concrete;
 using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
