@@ -24,7 +24,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.Title1 = "Destek Talepleri";
             ViewBag.Title2 = "Mesajlar";
             //ViewBag.Title2Url = "/Admin/AdminRole/Index";
-            ViewBag.Button = "Yeni Destek Talebi";
+            ViewBag.Button = "Yeni Talep Cevapla";
 			//ViewBag.ButtonUrl = "/Admin/AdminRole/AddRole";
 			#endregion
 			var messages = _mapper.Map<List<ResultContactUsDto>>(_contactUsService.TGetList());

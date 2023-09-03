@@ -1,0 +1,10 @@
+﻿.list-group {
+    max-height: 400px;
+    width: 250px;
+    overflow-y: scroll;
+}
+.chat-subject {
+    border-top: 1px solid #ced4da;
+    padding: 15px 20px;
+    height: max-content;
+}
