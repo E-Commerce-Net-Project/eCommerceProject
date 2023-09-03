@@ -9,6 +9,10 @@ using BusinessLayer.ValidationRules.About;
 using BusinessLayer.ValidationRules.BodySize;
 using BusinessLayer.ValidationRules.Feature;
 using BusinessLayer.ValidationRules.MainCategory;
+using BusinessLayer.ValidationRules.Service;
+using BusinessLayer.ValidationRules.SocialMedia;
+using BusinessLayer.ValidationRules.Sponsor;
+using BusinessLayer.ValidationRules.Tag;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
@@ -21,6 +25,10 @@ using DtoLayer.Dtos.AboutDtos;
 using DtoLayer.Dtos.BodySizeDtos;
 using DtoLayer.Dtos.FeatureDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
+using DtoLayer.Dtos.ServiceDtos;
+using DtoLayer.Dtos.SocialMediaDtos;
+using DtoLayer.Dtos.SponsorDtos;
+using DtoLayer.Dtos.TagDtos;
 using eCommerceProject.Models;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -66,9 +74,6 @@ builder.Services.AddScoped<IContactDal, EfContactDal>();
 builder.Services.AddScoped<IContactService, ContactManager>();
 builder.Services.AddScoped<IValidator<UpdateContactDto>, UpdateContactDtoValidator>();
 
-
-
-
 builder.Services.AddScoped<IBodySizeDal,EfBodySizeDal>();
 builder.Services.AddScoped<IBodySizeService,BodySizeManager>();
 builder.Services.AddScoped<IValidator<CreateBodySizeDto>, CreateBodySizeDtoValidator>();
@@ -78,6 +83,26 @@ builder.Services.AddScoped<IFeatureDal,EfFeatureDal>();
 builder.Services.AddScoped<IFeatureService,FeatureManager>();
 builder.Services.AddScoped<IValidator<CreateFeatureDto>, CreateFeatureDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateFeatureDto>,UpdateFeatureDtoValidator>();
+
+builder.Services.AddScoped<IServiceDal, EfServiceDal>();
+builder.Services.AddScoped<IServiceService, ServiceManager>();
+builder.Services.AddScoped<IValidator<CreateServiceDto>, CreateServiceDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateServiceDto>, UpdateServiceDtoValidator>();
+
+builder.Services.AddScoped<ISocialMediaDal, EfSocialMediaDal>();
+builder.Services.AddScoped<ISocialMediaService, SocialMediaManager>();
+builder.Services.AddScoped<IValidator<CreateSocialMediaDto>, CreateSocialMediaDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateSocialMediaDto>, UpdateSocialMediaDtoValidator>();
+
+builder.Services.AddScoped<ISponsorDal, EfSponsorDal>();
+builder.Services.AddScoped<ISponsorService, SponsorManager>();
+builder.Services.AddScoped<IValidator<CreateSponsorDto>, CreateSponsorDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateSponsorDto>, UpdateSponsorDtoValidator>();
+
+builder.Services.AddScoped<ITagDal, EfTagDal>();
+builder.Services.AddScoped<ITagService, TagManager>();
+builder.Services.AddScoped<IValidator<CreateTagDto>, CreateTagDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateTagDto>, UpdateTagDtoValidator>();
 
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

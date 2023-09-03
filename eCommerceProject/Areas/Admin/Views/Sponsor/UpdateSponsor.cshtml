@@ -1,0 +1,31 @@
+﻿@model UpdateSponsorDto
+
+@{
+    ViewData["Title"] = "UpdateSponsor";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-12 col-md-12">
+    <div class="card">
+        <div class="header">
+            <h2> Sponsor Güncelleme Sayfası</h2>
+        </div>
+        <div class="body">
+            <form method="post" class="forms-sample">
+                <input type="hidden" asp-for="SponsorID" />
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Sponsor Görsel : </span>
+                    </div>
+                    <input type="text" asp-for="Image" class="form-control" placeholder="Sponsor görseli giriniz." aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary me-2 col-12">Sponsor Güncelle!</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
