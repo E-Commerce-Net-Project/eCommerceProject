@@ -1,6 +1,6 @@
-﻿using DataAccessLayer.Abstract;
+﻿using Core.DataAccessLayer.EntityFramework;
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.Repository;
 using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;

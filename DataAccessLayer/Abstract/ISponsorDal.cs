@@ -1,4 +1,5 @@
-﻿using EntityLayer.Concrete;
+﻿using Core.DataAccessLayer.Abstract;
+using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-   public interface ISponsorDal:IGenericDal<Sponsor>
+    public interface ISponsorDal : IGenericDal<Sponsor>
     {
     }
 }

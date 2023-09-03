@@ -15,9 +15,9 @@ namespace DataAccessLayer.Concrete
         {
             //optionsBuilder.UseSqlServer("server=EFRUN\\SQLEXPRESS; initial catalog=ECommerceDB; integrated Security=true;Trust Server Certificate=true;");
             //optionsBuilder.UseSqlServer("server=(localdb)\\MSSQLLocalDB; initial catalog=EcommerceDB; integrated Security=true;Trust Server Certificate=true;");
-
+            optionsBuilder.UseSqlServer("Data Source=SQL8005.site4now.net;Initial Catalog=db_a9ca78_ecommerce2023;User Id=ecommerce;Password=ecommerce");
             //Ortak Database Server
-            
+
         }
 
         public DbSet<About> Abouts { get; set; }

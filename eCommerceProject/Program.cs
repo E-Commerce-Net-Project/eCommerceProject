@@ -28,7 +28,6 @@ using DtoLayer.Dtos.TagDtos;
 using eCommerceProject.Models;
 using EntityLayer.Concrete;
 using FluentValidation;
-using System.Reflection;
 using DtoLayer.Dtos.GenreCategoryDtos;
 using BusinessLayer.ValidationRules.GenreCategory;
 using DtoLayer.Dtos.SubCategoryDtos;
@@ -82,15 +81,11 @@ builder.Services.AddScoped<IValidator<UpdateBrandDto>, UpdateBrandDtoValidator>(
 
 builder.Services.AddScoped<IContactDal, EfContactDal>();
 builder.Services.AddScoped<IContactService, ContactManager>();
+builder.Services.AddScoped<IValidator<CreateContactDto>, CreateContactDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateContactDto>, UpdateContactDtoValidator>();
-
-
-
 
 builder.Services.AddScoped<IBodySizeDal, EfBodySizeDal>();
 builder.Services.AddScoped<IBodySizeService, BodySizeManager>();
-builder.Services.AddScoped<IBodySizeDal,EfBodySizeDal>();
-builder.Services.AddScoped<IBodySizeService,BodySizeManager>();
 builder.Services.AddScoped<IValidator<CreateBodySizeDto>, CreateBodySizeDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateBodySizeDto>, UpdateBodySizeDtoValidator>();
 
@@ -118,9 +113,6 @@ builder.Services.AddScoped<ITagDal, EfTagDal>();
 builder.Services.AddScoped<ITagService, TagManager>();
 builder.Services.AddScoped<IValidator<CreateTagDto>, CreateTagDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateTagDto>, UpdateTagDtoValidator>();
-
-
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
