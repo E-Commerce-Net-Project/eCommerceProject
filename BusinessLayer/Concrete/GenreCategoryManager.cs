@@ -18,6 +18,11 @@ namespace BusinessLayer.Concrete
             _genreCategoryDal = genreCategoryDal;
         }
 
+        public List<GenreCategory> TGenreCategoriesListWithSubCategory()
+        {
+            return _genreCategoryDal.GenreCategoriesListWithSubCategory();
+        }
+
         public void TAdd(GenreCategory t)
         {
             _genreCategoryDal.Insert(t);
@@ -25,12 +30,12 @@ namespace BusinessLayer.Concrete
 
         public void TDelete(GenreCategory t)
         {
-           _genreCategoryDal.Delete(t);
+            _genreCategoryDal.Delete(t);
         }
 
         public List<GenreCategory> TGetList()
         {
-         return _genreCategoryDal.GetList();
+            return _genreCategoryDal.GetList();
         }
 
         public GenreCategory TGeyByID(int id)

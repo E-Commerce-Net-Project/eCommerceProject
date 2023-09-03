@@ -13,5 +13,6 @@ namespace DtoLayer.Dtos.ContactUsDtos
         public string Email { get; set; }
         public string Subject { get; set; }
         public string Message { get; set; }
-    }
+		public DateTime MessageSentTime { get; set; }
+	}
 }

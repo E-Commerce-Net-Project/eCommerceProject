@@ -5,19 +5,10 @@
 	ViewData["Title"] = "Index";
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+<link href="~/resources/css/supportrequest.css" rel="stylesheet" />
 
 <!doctype html>
-<html lang="en">
-<head>
-	<style>
-		.list-group {
-			max-height: 400px;
-			width: 250px;
-			overflow-y: scroll;
-		}
-	</style>
-</head>
-
+<html lang="tr">
 <body class="theme-blue">
 	<div class="col-lg-12">
 		<div class="card" style="min-height: 500px;">
@@ -58,15 +49,27 @@
 							</div>
 						</div>
 					</div>
-					<div class="chat-history" style="min-height: 400px;">
-						<ul class="message_data">
-							<li class="right clearfix">
-								<div class="message">
-									<p id="messageContent"></p>
+					<div class="chat-subject">
+						<div class="row clearfix">
+							<div class="col-lg-12">
+								<div class="chat-about">
+									<h6 id="chatsubject" class="m-b-0"></h6>
 								</div>
-								<span class="data_time">Talebi oluşturduğu tarih</span>
-							</li>
-						</ul>
+							</div>
+						</div>
+					</div>
+					<div class="chat-history" style="min-height: 400px;">
+						@*<ul class="message_data">
+						<li class="left clearfix">*@
+						<div class="message">
+							<p id="messageContent"></p>
+						</div>
+						<div>
+							<span id="message-date" class="data_time"></span>
+						</div>
+
+						@*	</li>
+						</ul>*@
 					</div>
 					@*<div class="chat-message clearfix">
 					<div class="input-group mb-0">
@@ -87,6 +90,5 @@
 </html>
 
 <script src="~/resources/js/supportrequest.js"></script>
-
 
 

@@ -9,5 +9,6 @@ namespace BusinessLayer.Abstract
 {
     public interface ISubCategoryService : IGenericService<SubCategory>
     {
+        public List<SubCategory> TSubCategoriesListWithMainCategory();
     }
 }

@@ -10,5 +10,6 @@ namespace DtoLayer.Dtos.GenreCategoryDtos
     {
         public int GenreCategoryID { get; set; }
         public string Name { get; set; }
+        public int SubCategoryID { get; set; }
     }
 }

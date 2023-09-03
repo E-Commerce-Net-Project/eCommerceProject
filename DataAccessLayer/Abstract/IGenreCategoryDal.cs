@@ -9,5 +9,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface IGenreCategoryDal : IGenericDal<GenreCategory>
     {
+        List<GenreCategory> GenreCategoriesListWithSubCategory();
     }
 }

@@ -41,7 +41,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
         public IActionResult AddMainCategory()
         {
             #region Navbar Yönlendirme
-            ViewBag.Title1 = "Ana Kategoriler Ekleme Sayfası";
+            ViewBag.Title1 = "Ana Kategori Ekleme Sayfası";
             ViewBag.Title2 = "Ana Kategoriler";
             ViewBag.Title2Url = "/Admin/MainCategory/Index";
             ViewBag.Button = "Ana Kategorilere Dön";
@@ -55,7 +55,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
         public IActionResult AddMainCategory(CreateMainCategoryDto createMainCategoryDto)
         {
             #region Navbar Yönlendirme
-            ViewBag.Title1 = "Ana Kategoriler Ekleme Sayfası";
+            ViewBag.Title1 = "Ana Kategori Ekleme Sayfası";
             ViewBag.Title2 = "Ana Kategoriler";
             ViewBag.Title2Url = "/Admin/MainCategory/Index";
             ViewBag.Button = "Ana Kategorilere Dön";
