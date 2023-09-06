@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EntityLayer.Common;
 
 namespace EntityLayer.Concrete
 {
-    public class SubCategory
+    public class SubCategory : BaseEntity
     {
-        public int SubCategoryID { get; set; }
         public string Name { get; set; }
 
         public int MainCategoryID { get; set; }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EntityLayer.Common;
 
 namespace EntityLayer.Concrete
 {
-    public class ProductDetail
+    public class ProductDetail : BaseEntity
     {
-        public int ProductDetailID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string SKU { get; set; }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EntityLayer.Common;
 
 namespace EntityLayer.Concrete
 {
-    public class Color
+    public class Color : BaseEntity
     {
-        public int ColorID { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

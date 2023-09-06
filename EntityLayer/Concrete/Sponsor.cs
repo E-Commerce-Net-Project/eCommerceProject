@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EntityLayer.Common;
 
 namespace EntityLayer.Concrete
 {
-    public class Sponsor
+    public class Sponsor : BaseEntity
     {
-        public int SponsorID { get; set; }
         public string Image { get; set; }
     }
 }

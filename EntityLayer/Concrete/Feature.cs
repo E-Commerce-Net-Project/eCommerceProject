@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EntityLayer.Common;
 
 namespace EntityLayer.Concrete
 {
-    public class Feature
+    public class Feature : BaseEntity
     {
-        public int FeatureID { get; set; }
         public string Title1 { get; set; }
         public string Title2 { get; set; }
         public string ImageURl { get; set; }
