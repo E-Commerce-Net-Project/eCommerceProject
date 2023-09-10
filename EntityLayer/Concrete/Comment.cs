@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EntityLayer.Common;
+using Core.Entities.Abstract;
 
 namespace EntityLayer.Concrete
 {
-    public class Comment :BaseEntity
+    public class Comment : BaseEntity
     {
         public string CommentText { get; set; }
         public string StarCount { get; set; }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer.Common
+namespace Core.Entities.Abstract
 {
 	public class BaseEntity
 	{
-        public int ID { get; set; }
-    }
+		public int ID { get; set; }
+	}
 }

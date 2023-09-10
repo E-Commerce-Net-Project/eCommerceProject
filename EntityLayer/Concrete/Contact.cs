@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EntityLayer.Common;
+using Core.Entities.Abstract;
 
 namespace EntityLayer.Concrete
 {
