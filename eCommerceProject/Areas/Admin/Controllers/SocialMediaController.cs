@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.ServiceDtos;
 using DtoLayer.Dtos.SocialMediaDtos;
 using EntityLayer.Concrete;
@@ -11,17 +12,18 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class SocialMediaController : Controller
     {
-        private readonly ISocialMediaService _socialMediaService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateSocialMediaDto> _createValidator;
         private IValidator<UpdateSocialMediaDto> _updateValidator;
 
-        public SocialMediaController(ISocialMediaService socialMediaService, IMapper mapper, IValidator<CreateSocialMediaDto> createValidator, IValidator<UpdateSocialMediaDto> updateValidator)
+        public SocialMediaController(IMapper mapper, IValidator<CreateSocialMediaDto> createValidator, IValidator<UpdateSocialMediaDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _socialMediaService = socialMediaService;
+
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -34,7 +36,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/SocialMedia/AddSocialMedia";
             #endregion
 
-            var socialMediaValues = _mapper.Map<List<ResultSocialMediaDto>>(_socialMediaService.TGetList());
+            var socialMediaValues = _mapper.Map<List<ResultSocialMediaDto>>(_unitOfWork.SocialMediaDal.GetList());
             return View(socialMediaValues);
         }
 
@@ -68,7 +70,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var socialMediaValue = _mapper.Map<CreateSocialMediaDto, SocialMedia>(createSocialMediaDto);
-                _socialMediaService.TAdd(socialMediaValue);
+                _unitOfWork.SocialMediaDal.Insert(socialMediaValue);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/SocialMedia/Index");
             }
@@ -86,8 +89,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteSocialMedia(int id)
         {
-            var socialMediaID = _socialMediaService.TGeyByID(id);
-            _socialMediaService.TDelete(socialMediaID);
+            var socialMediaID = _unitOfWork.SocialMediaDal.GetByID(id);
+            _unitOfWork.SocialMediaDal.Delete(socialMediaID);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/SocialMedia/Index");
         }
 
@@ -102,7 +106,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/SocialMedia/Index";
             #endregion
 
-            var socialMediaValue = _mapper.Map<UpdateSocialMediaDto>(_socialMediaService.TGeyByID(id));
+            var socialMediaValue = _mapper.Map<UpdateSocialMediaDto>(_unitOfWork.SocialMediaDal.GetByID(id));
             return View(socialMediaValue);
         }
 
@@ -122,8 +126,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newSocialMediaValue = _mapper.Map<UpdateSocialMediaDto, SocialMedia>(updateSocialMediaDto);
-                _socialMediaService.TUpdate(newSocialMediaValue);
-
+                _unitOfWork.SocialMediaDal.Update(newSocialMediaValue);
+                _unitOfWork.Commit();
                 return LocalRedirect("/Admin/SocialMedia/Index");
             }
 

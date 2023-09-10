@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.GenreCategoryDtos
 {
     public class UpdateGenreCategoryDto
     {
-        public int GenreCategoryID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public int SubCategoryID { get; set; }
     }

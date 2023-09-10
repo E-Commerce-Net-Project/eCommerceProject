@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.AboutDtos
 {
     public class UpdateAboutDto
     {
-        public int AboutID { get; set; }
+        public int ID { get; set; }
         public string Description { get; set; }
     }
 }

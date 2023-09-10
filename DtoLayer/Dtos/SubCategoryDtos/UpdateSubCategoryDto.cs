@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.SubCategoryDtos
 {
     public class UpdateSubCategoryDto
     {
-        public int SubCategoryID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public int MainCategoryID { get; set; }
     }

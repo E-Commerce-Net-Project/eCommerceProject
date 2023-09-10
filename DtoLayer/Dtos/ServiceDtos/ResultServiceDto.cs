@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.ServiceDtos
 {
     public class ResultServiceDto
     {
-        public int ServiceID { get; set; }
+        public int ID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
     }

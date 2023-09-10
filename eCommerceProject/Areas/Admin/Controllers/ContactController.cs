@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
-
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.ContactDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -11,15 +11,15 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class ContactController : Controller
     {
-        private readonly IContactService _contactService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<UpdateContactDto> _updateValidator;
 
-        public ContactController(IContactService contactService, IMapper mapper, IValidator<UpdateContactDto> updateValidator)
+        public ContactController(IMapper mapper, IValidator<UpdateContactDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _contactService = contactService;
             _mapper = mapper;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -33,7 +33,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/Contact/Index";
             #endregion
 
-            var values = _mapper.Map<UpdateContactDto>(_contactService.TGeyByID(id=1));
+            var values = _mapper.Map<UpdateContactDto>(_unitOfWork.ContactDal.GetByID(id=1));
 
             return View(values);
         }
@@ -53,6 +53,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var values = _mapper.Map<UpdateContactDto, Contact>(updateContactDto);
+                _unitOfWork.ContactDal.Update(values);
+                _unitOfWork.Commit();
                 return LocalRedirect("/Admin/Contact/Index");
             }
             else

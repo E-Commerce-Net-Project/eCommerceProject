@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.SponsorDtos;
 using DtoLayer.Dtos.TagDtos;
 using EntityLayer.Concrete;
@@ -11,17 +12,18 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class TagController : Controller
     {
-        private readonly ITagService _tagService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateTagDto> _createValidator;
         private IValidator<UpdateTagDto> _updateValidator;
 
-        public TagController(ITagService tagService, IMapper mapper, IValidator<CreateTagDto> createValidator, IValidator<UpdateTagDto> updateValidator)
+        public TagController(IMapper mapper, IValidator<CreateTagDto> createValidator, IValidator<UpdateTagDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _tagService = tagService;
+
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -34,7 +36,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/Tag/AddTag";
             #endregion
 
-            var tagValues = _mapper.Map<List<ResultTagDto>>(_tagService.TGetList());
+            var tagValues = _mapper.Map<List<ResultTagDto>>(_unitOfWork.TagDal.GetList());
             return View(tagValues);
         }
 
@@ -68,7 +70,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var tagValue = _mapper.Map<CreateTagDto, Tag>(createTagDto);
-                _tagService.TAdd(tagValue);
+                _unitOfWork.TagDal.Insert(tagValue);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/Tag/Index");
             }
@@ -86,8 +89,10 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteTag(int id)
         {
-            var tagID = _tagService.TGeyByID(id);
-            _tagService.TDelete(tagID);
+            var tagID = _unitOfWork.TagDal.GetByID(id);
+            _unitOfWork.TagDal.Delete(tagID);
+            _unitOfWork.Commit();
+
             return LocalRedirect("/Admin/Tag/Index");
         }
 
@@ -102,7 +107,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/Tag/Index";
             #endregion
 
-            var tagValue = _mapper.Map<UpdateTagDto>(_tagService.TGeyByID(id));
+            var tagValue = _mapper.Map<UpdateTagDto>(_unitOfWork.TagDal.GetByID(id));
             return View(tagValue);
         }
 
@@ -122,7 +127,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newTagValue = _mapper.Map<UpdateTagDto, Tag>(updateTagDto);
-                _tagService.TUpdate(newTagValue);
+                _unitOfWork.TagDal.Update(newTagValue);
+                _unitOfWork.Commit();
+
 
                 return LocalRedirect("/Admin/Tag/Index");
             }

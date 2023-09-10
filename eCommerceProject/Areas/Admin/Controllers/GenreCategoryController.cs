@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.GenreCategoryDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -12,19 +13,17 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class GenreCategoryController : Controller
     {
-        private readonly ISubCategoryService _subCategoryService;
-        private readonly IGenreCategoryService _genreCategoryService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateGenreCategoryDto> _createValidator;
         private IValidator<UpdateGenreCategoryDto> _updateValidator;
 
-        public GenreCategoryController(IGenreCategoryService genreCategoryService, IMapper mapper, IValidator<CreateGenreCategoryDto> createValidator, IValidator<UpdateGenreCategoryDto> updateValidator, ISubCategoryService subCategoryService)
+        public GenreCategoryController(IMapper mapper, IValidator<CreateGenreCategoryDto> createValidator, IValidator<UpdateGenreCategoryDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _subCategoryService = subCategoryService;
-            _genreCategoryService = genreCategoryService;
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
@@ -36,7 +35,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/GenreCategory/AddGenreCategory";
             #endregion
 
-            var genreCategoryValues = _mapper.Map<List<ResultGenreCategoryDto>>(_genreCategoryService.TGenreCategoriesListWithSubCategory());
+            var genreCategoryValues = _mapper.Map<List<ResultGenreCategoryDto>>(_unitOfWork.GenreCategoryDal.GenreCategoriesListWithSubCategory());
             return View(genreCategoryValues);
         }
 
@@ -51,11 +50,11 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/GenreCategory/Index";
             #endregion
 
-            List<SelectListItem> SubCategoryName = (from x in _subCategoryService.TGetList()
+            List<SelectListItem> SubCategoryName = (from x in _unitOfWork.SubCategoryDal.GetList()
                                                     select new SelectListItem
                                                     {
                                                         Text = x.Name,
-                                                        Value = x.SubCategoryID.ToString()
+                                                        Value = x.ID.ToString()
                                                     }).ToList();
             ViewBag.subCategoryName = SubCategoryName;
 
@@ -77,16 +76,17 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
             if (validator.IsValid)
             {
-                List<SelectListItem> SubCategoryName = (from x in _subCategoryService.TGetList()
+                List<SelectListItem> SubCategoryName = (from x in _unitOfWork.SubCategoryDal.GetList()
                                                         select new SelectListItem
                                                         {
                                                             Text = x.Name,
-                                                            Value = x.SubCategoryID.ToString()
+                                                            Value = x.ID.ToString()
                                                         }).ToList();
                 ViewBag.subCategoryName = SubCategoryName;
 
                 var genreCategoryValue = _mapper.Map<CreateGenreCategoryDto, GenreCategory>(createGenreCategoryDto);
-                _genreCategoryService.TAdd(genreCategoryValue);
+                _unitOfWork.GenreCategoryDal.Insert(genreCategoryValue);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/GenreCategory/Index");
             }
@@ -104,8 +104,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteGenreCategory(int id)
         {
-            var categoryID = _genreCategoryService.TGeyByID(id);
-            _genreCategoryService.TDelete(categoryID);
+            var categoryID = _unitOfWork.GenreCategoryDal.GetByID(id);
+            _unitOfWork.GenreCategoryDal.Delete(categoryID);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/GenreCategory/Index");
         }
 
@@ -120,15 +121,15 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/GenreCategory/Index";
             #endregion
 
-            List<SelectListItem> SubCategoryName = (from x in _subCategoryService.TGetList()
+            List<SelectListItem> SubCategoryName = (from x in _unitOfWork.SubCategoryDal.GetList()
                                                     select new SelectListItem
                                                     {
                                                         Text = x.Name,
-                                                        Value = x.SubCategoryID.ToString()
+                                                        Value = x.ID.ToString()
                                                     }).ToList();
             ViewBag.subCategoryName = SubCategoryName;
 
-            var genreCategoryValue = _mapper.Map<UpdateGenreCategoryDto>(_genreCategoryService.TGeyByID(id));
+            var genreCategoryValue = _mapper.Map<UpdateGenreCategoryDto>(_unitOfWork.GenreCategoryDal.GetByID(id));
             return View(genreCategoryValue);
         }
 
@@ -148,18 +149,19 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newGenreCategoryValue = _mapper.Map<UpdateGenreCategoryDto, GenreCategory>(updateGenreCategoryDto);
-                _genreCategoryService.TUpdate(newGenreCategoryValue);
+                _unitOfWork.GenreCategoryDal.Update(newGenreCategoryValue);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/GenreCategory/Index");
             }
 
             else
             {
-                List<SelectListItem> SubCategoryName = (from x in _subCategoryService.TGetList()
+                List<SelectListItem> SubCategoryName = (from x in _unitOfWork.SubCategoryDal.GetList()
                                                         select new SelectListItem
                                                         {
                                                             Text = x.Name,
-                                                            Value = x.SubCategoryID.ToString()
+                                                            Value = x.ID.ToString()
                                                         }).ToList();
                 ViewBag.subCategoryName = SubCategoryName;
 

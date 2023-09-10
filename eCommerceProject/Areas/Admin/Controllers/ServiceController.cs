@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.ServiceDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -10,17 +11,17 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class ServiceController : Controller
     {
-        private readonly IServiceService _serviceService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateServiceDto> _createValidator;
         private IValidator<UpdateServiceDto> _updateValidator;
 
-        public ServiceController(IServiceService serviceService, IMapper mapper, IValidator<CreateServiceDto> createValidator, IValidator<UpdateServiceDto> updateValidator)
+        public ServiceController(IMapper mapper, IValidator<CreateServiceDto> createValidator, IValidator<UpdateServiceDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _serviceService = serviceService;
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -33,7 +34,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/Service/AddService";
             #endregion
 
-            var serviceValues = _mapper.Map<List<ResultServiceDto>>(_serviceService.TGetList());
+            var serviceValues = _mapper.Map<List<ResultServiceDto>>(_unitOfWork.ServiceDal.GetList());
             return View(serviceValues);
         }
 
@@ -67,7 +68,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var serviceValue = _mapper.Map<CreateServiceDto, Service>(createServiceDto);
-                _serviceService.TAdd(serviceValue);
+                _unitOfWork.ServiceDal.Insert(serviceValue);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/Service/Index");
             }
@@ -85,8 +87,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteService(int id)
         {
-            var serviceID = _serviceService.TGeyByID(id);
-            _serviceService.TDelete(serviceID);
+            var serviceID = _unitOfWork.ServiceDal.GetByID(id);
+            _unitOfWork.ServiceDal.Delete(serviceID);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/Service/Index");
         }
 
@@ -101,7 +104,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/Service/Index";
             #endregion
 
-            var serviceValue = _mapper.Map<UpdateServiceDto>(_serviceService.TGeyByID(id));
+            var serviceValue = _mapper.Map<UpdateServiceDto>(_unitOfWork.ServiceDal.GetByID(id));
             return View(serviceValue);
         }
 
@@ -121,7 +124,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newServiceValue = _mapper.Map<UpdateServiceDto, Service>(updateServiceDto);
-                _serviceService.TUpdate(newServiceValue);
+                _unitOfWork.ServiceDal.Update(newServiceValue);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/Service/Index");
             }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.ContactUsDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,16 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class SupportRequestController : Controller
     {
-		private readonly IContactUsService _contactUsService;
-		private readonly IMapper _mapper;
-		public SupportRequestController(IContactUsService contactUsService, IMapper mapper)
-		{
-			_contactUsService = contactUsService;
-			_mapper = mapper;
-		}
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public SupportRequestController(IMapper mapper, IUnitOfWork unitOfWork)
+        {
 
-		public IActionResult Index()
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
+        }
+
+        public IActionResult Index()
         {
             #region Navbar Yönlendirme
             ViewBag.Title1 = "Destek Talepleri";
@@ -27,14 +29,14 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.Button = "Yeni Talep Cevapla";
 			//ViewBag.ButtonUrl = "/Admin/AdminRole/AddRole";
 			#endregion
-			var messages = _mapper.Map<List<ResultContactUsDto>>(_contactUsService.TGetList());
+			var messages = _mapper.Map<List<ResultContactUsDto>>(_unitOfWork.ContactUsDal.GetList());
 			return View(messages);
         }
 
 		[HttpGet]
 		public IActionResult GetMessagesForCustomer(int customerId)
 		{
-			var customer = _mapper.Map<ResultContactUsDto>(_contactUsService.TGeyByID(customerId));
+			var customer = _mapper.Map<ResultContactUsDto>(_unitOfWork.ContactUsDal.GetByID(customerId));
 			return Json(customer);
 		}
 

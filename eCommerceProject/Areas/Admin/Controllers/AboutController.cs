@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.AboutDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using EntityLayer.Concrete;
@@ -10,18 +11,28 @@ namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AboutController : Controller
-    { 
-        private readonly IAboutService _aboutService;
+    {
+        //private readonly IAboutService _aboutService;
+        //private readonly IMapper _mapper;
+        //private IValidator<UpdateAboutDto> _updateValidator;
+
+        //public AboutController (IAboutService aboutService, IMapper mapper, IValidator<UpdateAboutDto> updateValidator)
+        //{
+        //    _aboutService = aboutService;
+        //    _mapper = mapper;
+        //    _updateValidator = updateValidator;
+        //}
+        private readonly IUnitOfWork _unitOfWork;
+     
         private readonly IMapper _mapper;
         private IValidator<UpdateAboutDto> _updateValidator;
 
-        public AboutController (IAboutService aboutService, IMapper mapper, IValidator<UpdateAboutDto> updateValidator)
+        public AboutController(IMapper mapper, IValidator<UpdateAboutDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _aboutService = aboutService;
             _mapper = mapper;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
-
         [HttpGet]
         public IActionResult UpdateAbout(int id) 
         {
@@ -33,12 +44,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/About/Index";
             #endregion
 
-            var aboutValue= _mapper.Map<UpdateAboutDto>(_aboutService.TGeyByID(id));
+            var aboutValue= _mapper.Map<UpdateAboutDto>(_unitOfWork.AboutDal.GetByID(1));
             return View(aboutValue);
         }
 
         [HttpPost]
-        public IActionResult UpdateAboutCategory(UpdateAboutDto updateAboutDto) 
+        public IActionResult UpdateAbout(UpdateAboutDto updateAboutDto) 
         {
             #region Navbar Yönlendirmesi
             ViewBag.Title1 = "Hakkında Güncelleme Sayfası";
@@ -52,8 +63,10 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newAboutValue = _mapper.Map<UpdateAboutDto, About>(updateAboutDto);
-                _aboutService.TUpdate(newAboutValue);
-                return LocalRedirect("/Admin/About/Index");
+                //_aboutService.TUpdate(newAboutValue);
+                _unitOfWork.AboutDal.Update(newAboutValue);
+                _unitOfWork.Commit();
+                return View();
             }
             else
             {

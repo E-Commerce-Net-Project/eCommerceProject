@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.SubCategoryDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -11,19 +12,18 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class SubCategoryController : Controller
     {
-        private readonly IMainCategoryService _mainCategoryService;
-        private readonly ISubCategoryService _subCategoryService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateSubCategoryDto> _createValidator;
         private IValidator<UpdateSubCategoryDto> _updateValidator;
 
-        public SubCategoryController(ISubCategoryService subCategoryService, IMapper mapper, IValidator<CreateSubCategoryDto> createValidator, IValidator<UpdateSubCategoryDto> updateValidator, IMainCategoryService mainCategoryService)
+        public SubCategoryController(IMapper mapper, IValidator<CreateSubCategoryDto> createValidator, IValidator<UpdateSubCategoryDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _mainCategoryService = mainCategoryService;
-            _subCategoryService = subCategoryService;
+
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
@@ -35,7 +35,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/SubCategory/AddSubCategory";
             #endregion
 
-            var subCategoryValues = _mapper.Map<List<ResultSubCategoryDto>>(_subCategoryService.TSubCategoriesListWithMainCategory());
+            var subCategoryValues = _mapper.Map<List<ResultSubCategoryDto>>(_unitOfWork.SubCategoryDal.SubCategoriesListWithMainCategory());
             return View(subCategoryValues);
         }
 
@@ -50,11 +50,11 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/SubCategory/Index";
             #endregion
 
-            List<SelectListItem> MainCategoryName = (from x in _mainCategoryService.TGetList()
+            List<SelectListItem> MainCategoryName = (from x in _unitOfWork.MainCategoryDal.GetList()
                                                      select new SelectListItem
                                                      {
                                                          Text = x.Name,
-                                                         Value = x.MainCategoryID.ToString()
+                                                         Value = x.ID.ToString()
                                                      }).ToList();
             ViewBag.mainCategoryName = MainCategoryName;
 
@@ -76,16 +76,17 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
             if (validator.IsValid)
             {
-                List<SelectListItem> MainCategoryName = (from x in _mainCategoryService.TGetList()
+                List<SelectListItem> MainCategoryName = (from x in _unitOfWork.MainCategoryDal.GetList()
                                                          select new SelectListItem
                                                          {
                                                              Text = x.Name,
-                                                             Value = x.MainCategoryID.ToString()
+                                                             Value = x.ID.ToString()
                                                          }).ToList();
                 ViewBag.mainCategoryName = MainCategoryName;
 
                 var subCategoryValue = _mapper.Map<CreateSubCategoryDto, SubCategory>(createSubCategoryDto);
-                _subCategoryService.TAdd(subCategoryValue);
+                _unitOfWork.SubCategoryDal.Insert(subCategoryValue);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/SubCategory/Index");
             }
@@ -103,8 +104,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteSubCategory(int id)
         {
-            var categoryID = _subCategoryService.TGeyByID(id);
-            _subCategoryService.TDelete(categoryID);
+            var categoryID = _unitOfWork.SubCategoryDal.GetByID(id);
+            _unitOfWork.SubCategoryDal.Delete(categoryID);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/SubCategory/Index");
         }
 
@@ -119,15 +121,15 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/SubCategory/Index";
             #endregion
 
-            List<SelectListItem> MainCategoryName = (from x in _mainCategoryService.TGetList()
+            List<SelectListItem> MainCategoryName = (from x in _unitOfWork.MainCategoryDal.GetList()
                                                      select new SelectListItem
                                                      {
                                                          Text = x.Name,
-                                                         Value = x.MainCategoryID.ToString()
+                                                         Value = x.ID.ToString()
                                                      }).ToList();
             ViewBag.mainCategoryName = MainCategoryName;
 
-            var subCategoryValue = _mapper.Map<UpdateSubCategoryDto>(_subCategoryService.TGeyByID(id));
+            var subCategoryValue = _mapper.Map<UpdateSubCategoryDto>(_unitOfWork.SubCategoryDal.GetByID(id));
             return View(subCategoryValue);
         }
 
@@ -147,18 +149,19 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newSubCategoryValue = _mapper.Map<UpdateSubCategoryDto, SubCategory>(updateSubCategoryDto);
-                _subCategoryService.TUpdate(newSubCategoryValue);
+                _unitOfWork.SubCategoryDal.Update(newSubCategoryValue);
+                _unitOfWork.Commit();   
 
                 return LocalRedirect("/Admin/SubCategory/Index");
             }
 
             else
             {
-                List<SelectListItem> MainCategoryName = (from x in _mainCategoryService.TGetList()
+                List<SelectListItem> MainCategoryName = (from x in _unitOfWork.MainCategoryDal.GetList()
                                                          select new SelectListItem
                                                          {
                                                              Text = x.Name,
-                                                             Value = x.MainCategoryID.ToString()
+                                                             Value = x.ID.ToString()
                                                          }).ToList();
                 ViewBag.mainCategoryName = MainCategoryName;
 

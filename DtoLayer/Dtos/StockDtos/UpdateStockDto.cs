@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.StockDtos
 {
     public class UpdateStockDto
     {
-        public int StockID { get; set; }
+        public int ID { get; set; }
         public int ProductID { get; set; }
         public int ColorID { get; set; }
         public int BodySizeID { get; set; }

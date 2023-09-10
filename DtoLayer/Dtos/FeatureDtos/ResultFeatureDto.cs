@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.FeatureDtos
 {
     public class ResultFeatureDto
     {
-        public int FeatureID { get; set; }
+        public int ID { get; set; }
         public string Title1 { get; set; }
         public string Title2 { get; set; }
         public string ImageURl { get; set; }

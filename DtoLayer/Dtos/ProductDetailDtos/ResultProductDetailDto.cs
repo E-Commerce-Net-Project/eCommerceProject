@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.ProductDetailDtos
 {
     public class ResultProductDetailDto
     {
-        public int ProductDetailID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string SKU { get; set; }

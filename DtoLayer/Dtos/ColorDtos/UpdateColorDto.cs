@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.ColorDtos
 {
     public class UpdateColorDto
     {
-        public int ColorID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
     }
 }

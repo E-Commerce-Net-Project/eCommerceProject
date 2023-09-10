@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.MainCategoryDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -10,17 +11,18 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class MainCategoryController : Controller
     {
-        private readonly IMainCategoryService _mainCategoryService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateMainCategoryDto> _createValidator;
         private IValidator<UpdateMainCategoryDto> _updateValidator;
 
-        public MainCategoryController(IMainCategoryService mainCategoryService, IMapper mapper, IValidator<CreateMainCategoryDto> createValidator, IValidator<UpdateMainCategoryDto> updateValidator)
+        public MainCategoryController(IMapper mapper, IValidator<CreateMainCategoryDto> createValidator, IValidator<UpdateMainCategoryDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _mainCategoryService = mainCategoryService;
+
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -33,7 +35,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/MainCategory/AddMainCategory";
             #endregion
 
-            var mainCategoryValues = _mapper.Map<List<ResultMainCategoryDto>>(_mainCategoryService.TGetList());
+            var mainCategoryValues = _mapper.Map<List<ResultMainCategoryDto>>(_unitOfWork.MainCategoryDal.GetList());
             return View(mainCategoryValues);
         }
 
@@ -67,7 +69,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var mainCategoryValue = _mapper.Map<CreateMainCategoryDto, MainCategory>(createMainCategoryDto);
-                _mainCategoryService.TAdd(mainCategoryValue);
+                _unitOfWork.MainCategoryDal.Insert(mainCategoryValue);
 
                 return LocalRedirect("/Admin/MainCategory/Index");
             }
@@ -85,8 +87,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteMainCategory(int id)
         {
-            var categoryID = _mainCategoryService.TGeyByID(id);
-            _mainCategoryService.TDelete(categoryID);
+            var categoryID = _unitOfWork.MainCategoryDal.GetByID(id);
+            _unitOfWork.MainCategoryDal.Delete(categoryID);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/MainCategory/Index");
         }
 
@@ -101,7 +104,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/MainCategory/Index";
             #endregion
 
-            var mainCategoryValue = _mapper.Map<UpdateMainCategoryDto>(_mainCategoryService.TGeyByID(id));
+            var mainCategoryValue = _mapper.Map<UpdateMainCategoryDto>(_unitOfWork.MainCategoryDal.GetByID(id));
             return View(mainCategoryValue);
         }
 
@@ -121,7 +124,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newMainCategoryValue = _mapper.Map<UpdateMainCategoryDto, MainCategory>(updateMainCategoryDto);
-                _mainCategoryService.TUpdate(newMainCategoryValue);
+                _unitOfWork.MainCategoryDal.Update(newMainCategoryValue);
+                _unitOfWork.Commit();   
 
                 return LocalRedirect("/Admin/MainCategory/Index");
             }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.BrandDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -10,20 +11,20 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class BrandController : Controller
     {
-      private readonly  IBrandService _brandService;
+        private readonly  IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateBrandDto> _createValidator;
         private IValidator<UpdateBrandDto> _updateValidator;
 
-        public BrandController(IBrandService brandService, IMapper mapper, IValidator<CreateBrandDto> createValidator, IValidator<UpdateBrandDto> updateValidator)
+        public BrandController(IMapper mapper, IValidator<CreateBrandDto> createValidator, IValidator<UpdateBrandDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _brandService = brandService;
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
-      
+
         public IActionResult Index()
         {
             #region Navbar Yönlendirme
@@ -34,7 +35,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/Brand/AddBrand";
 
             #endregion
-            var values = _mapper.Map < List<ResultBrandDto>>(_brandService.TGetList());
+            var values = _mapper.Map < List<ResultBrandDto>>(_unitOfWork.BrandDal.GetList());
             return View(values);
         }
 
@@ -68,7 +69,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid) 
             {
                 var value = _mapper.Map<CreateBrandDto, Brand>(createBrandDto);
-                _brandService.TAdd(value);
+                _unitOfWork.BrandDal.Insert(value);
+                _unitOfWork.Commit();
                 return LocalRedirect("/Admin/Brand/Index");
 
             }
@@ -87,8 +89,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteBrand(int id) 
         {
-            var values = _brandService.TGeyByID(id);
-            _brandService.TDelete(values);
+            var values = _unitOfWork.BrandDal.GetByID(id);
+            _unitOfWork.BrandDal.Delete(values);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/Brand/Index");
 
         }
@@ -104,7 +107,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/Brand/Index";
             #endregion
 
-            var values = _mapper.Map<UpdateBrandDto>(_brandService.TGeyByID(id));
+            var values = _mapper.Map<UpdateBrandDto>(_unitOfWork.BrandDal.GetByID(id));
             return View(values);
         }
         public IActionResult UpdateBrand(UpdateBrandDto updateBrandDto)
@@ -120,7 +123,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid) 
             {
                 var values = _mapper.Map<UpdateBrandDto,Brand>(updateBrandDto);
-                _brandService.TUpdate(values);
+                _unitOfWork.BrandDal.Update(values);
+                _unitOfWork.Commit();
                 return LocalRedirect("/Admin/Brand/Index");
             }
             else

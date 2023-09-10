@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.FeatureDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using EntityLayer.Concrete;
@@ -12,17 +13,18 @@ namespace eCommerceProject.Areas.Admin.Controllers
     public class FeatureController : Controller
     {
 
-        private readonly IFeatureService _featureService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateFeatureDto> _createValidator;
         private readonly IValidator<UpdateFeatureDto> _updateValidator;
 
-        public FeatureController(IFeatureService featureService, IMapper mapper, IValidator<CreateFeatureDto> createValidator, IValidator<UpdateFeatureDto> updateValidator)
+        public FeatureController(IMapper mapper, IValidator<CreateFeatureDto> createValidator, IValidator<UpdateFeatureDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _featureService = featureService;
+
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -34,7 +36,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.Button = "Yeni Özellik Ekle";
             ViewBag.ButtonUrl = "/Admin/Feature/AddFeature";
             #endregion
-            var featureValues = _mapper.Map<List<ResultFeatureDto>>(_featureService.TGetList());
+            var featureValues = _mapper.Map<List<ResultFeatureDto>>(_unitOfWork.FeatureDal.GetList());
             return View(featureValues);
         }
 
@@ -66,7 +68,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var featureValue = _mapper.Map<CreateFeatureDto, Feature>(createFeatureDto);
-                _featureService.TAdd(featureValue);
+                _unitOfWork.FeatureDal.Insert(featureValue);
+                _unitOfWork.Commit();
                 return LocalRedirect("/Admin/Feature/Index");
             }
             else
@@ -81,8 +84,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteFeature(int id)
         {
-            var featureID = _featureService.TGeyByID(id);
-            _featureService.TDelete(featureID);
+            var featureID = _unitOfWork.FeatureDal.GetByID(id);
+            _unitOfWork.FeatureDal.Delete(featureID);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/Feature/Index");
         }
 
@@ -96,7 +100,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.Button = "Özellik Listesine Dön";
             ViewBag.ButtonUrl = "/Admin/Feature/Index";
             #endregion
-            var featureValue = _mapper.Map<UpdateFeatureDto>(_featureService.TGeyByID(id));
+            var featureValue = _mapper.Map<UpdateFeatureDto>(_unitOfWork.FeatureDal.GetByID(id));
             return View(featureValue);
         }
         [HttpPost]
@@ -114,7 +118,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var newFeatureValue = _mapper.Map<UpdateFeatureDto, Feature>(updateFeatureDto);
-                _featureService.TUpdate(newFeatureValue);
+                _unitOfWork.FeatureDal.Update(newFeatureValue);
+                _unitOfWork.Commit();
                 return LocalRedirect("/Admin/Feature/Index");
             }
             else 

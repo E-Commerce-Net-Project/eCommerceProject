@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.ColorDtos
 {
     public class ResultColorDto
     {
-        public int ColorID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
     }
 }

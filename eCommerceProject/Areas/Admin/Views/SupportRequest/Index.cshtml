@@ -25,7 +25,7 @@
 							@foreach (var message in Model)
 							{
 								<li>
-									<a href="javascript:void(0);" onclick="GetMessagesForCustomer(@message.ContactUsID);">
+									<a href="javascript:void(0);" onclick="GetMessagesForCustomer(@message.ID);">
 										<div class="media">
 											<div class="avtar-pic w35 lbg-@("red")"><span>@message.FullName[0]</span></div>
 											<div class="media-body">

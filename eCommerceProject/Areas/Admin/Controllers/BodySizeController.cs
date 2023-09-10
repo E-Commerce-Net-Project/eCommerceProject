@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.BodySizeDtos;
 using DtoLayer.Dtos.BrandDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
@@ -13,20 +14,20 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class BodySizeController: Controller
 	{
-		private readonly IBodySizeService _bodySizeService;
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 		private IValidator<CreateBodySizeDto> _createValidator;
 		private IValidator<UpdateBodySizeDto> _updateValidator;
 
-		public BodySizeController (IBodySizeService bodySizeService, IMapper mapper , IValidator<CreateBodySizeDto> createValidator , IValidator<UpdateBodySizeDto> updateValidator)
-		{
-			_bodySizeService = bodySizeService;
-			_mapper = mapper;
-			_createValidator = createValidator;
-			_updateValidator = updateValidator;
-		}
+        public BodySizeController(IMapper mapper, IValidator<CreateBodySizeDto> createValidator, IValidator<UpdateBodySizeDto> updateValidator, IUnitOfWork unitOfWork)
+        {
+            _mapper = mapper;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
+        }
 
-		public IActionResult Index()
+        public IActionResult Index()
 		{
             #region Navbar Yönlendirme
             ViewBag.Title1 = "Beden listesi";
@@ -36,7 +37,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 			ViewBag.ButtonUrl = "/Admin/BodySize/AddBodySize";
             #endregion
 
-            var bodySizeValues = _mapper.Map<List<ResultBodySizeDto>>(_bodySizeService.TGetList());
+            var bodySizeValues = _mapper.Map<List<ResultBodySizeDto>>(_unitOfWork.BodySizeDal.GetList());
 			return View(bodySizeValues);
 		}
 
@@ -70,8 +71,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 			if (validator.IsValid)
 			{
 				var bodySizeValue = _mapper.Map<CreateBodySizeDto, BodySize>(createBodySizeDto);
-				_bodySizeService.TAdd(bodySizeValue);
-				return LocalRedirect("/ Admin / BodySize / Index");
+				_unitOfWork.BodySizeDal.Insert(bodySizeValue);
+				_unitOfWork.Commit();	
+				return LocalRedirect("/Admin/BodySize/Index");
 
 			}
 			else
@@ -88,8 +90,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
 		public IActionResult DeleteBodySize(int id)
 		{
-			var bodySizeID= _bodySizeService.TGeyByID(id);
-			_bodySizeService.TDelete(bodySizeID);
+			var bodySizeID= _unitOfWork.BodySizeDal.GetByID(id);
+			_unitOfWork.BodySizeDal.Delete(bodySizeID);
 			return LocalRedirect("/Admin/BodySize/Index");
 		}
 
@@ -104,7 +106,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.ButtonUrl = "/Admin/BodySize/Index";
             #endregion
 
-            var bodySizeValue =_mapper.Map<UpdateBodySizeDto>(_bodySizeService.TGeyByID(id));
+            var bodySizeValue =_mapper.Map<UpdateBodySizeDto>(_unitOfWork.BodySizeDal.GetByID(id));
 			return View(bodySizeValue);
 		}
 
@@ -124,7 +126,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
 			if (validator.IsValid)
 			{
 				var newBodySizeValue=_mapper.Map<UpdateBodySizeDto, BodySize>(updateBodySizeDto);
-				_bodySizeService.TUpdate(newBodySizeValue);
+				_unitOfWork.BodySizeDal.Update(newBodySizeValue);
+				_unitOfWork.Commit();
 				return LocalRedirect("/Admin/BodySize/Index");
 			}
 			else

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using DataAccessLayer.UoW;
 using DtoLayer.Dtos.ColorDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using EntityLayer.Concrete;
@@ -11,17 +12,18 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class ColorController : Controller
     {
-        private readonly IColorService _colorService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateColorDto> _createValidator;
         private IValidator<UpdateColorDto> _updateValidator;
 
-        public ColorController(IColorService colorService, IMapper mapper, IValidator<CreateColorDto> createValidator, IValidator<UpdateColorDto> updateValidator)
+        public ColorController(IMapper mapper, IValidator<CreateColorDto> createValidator, IValidator<UpdateColorDto> updateValidator, IUnitOfWork unitOfWork)
         {
-            _colorService = colorService;
+
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -33,7 +35,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.Button = "Yeni Renk Ekle";
             ViewBag.ButtonUrl = "/Admin/Color/AddColor";
             #endregion
-            var values = _mapper.Map<List<ResultColorDto>>(_colorService.TGetList());
+            var values = _mapper.Map<List<ResultColorDto>>(_unitOfWork.ColorDal.GetList());
            return View(values);
         }
         [HttpGet]
@@ -65,7 +67,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var value = _mapper.Map<CreateColorDto, Color>(createColorDto);
-                _colorService.TAdd(value);
+                _unitOfWork.ColorDal.Insert(value);
+                _unitOfWork.Commit();
                 return LocalRedirect("/Admin/Color/Index");
             }
             else
@@ -81,8 +84,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteColor(int id)
         {
-            var values = _colorService.TGeyByID(id);
-            _colorService.TDelete(values);
+            var values = _unitOfWork.ColorDal.GetByID(id);
+            _unitOfWork.ColorDal.Delete(values);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/Color/Index");
         }
 
@@ -96,7 +100,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             ViewBag.Button = "Renk Listesine Dön";
             ViewBag.ButtonUrl = "/Admin/Color/Index";
             #endregion
-            var values = _mapper.Map<UpdateColorDto>(_colorService.TGeyByID(id));
+            var values = _mapper.Map<UpdateColorDto>(_unitOfWork.ColorDal.GetByID(id));
             
             return View(values);
         }
@@ -116,7 +120,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             if (validator.IsValid)
             {
                 var values = _mapper.Map<UpdateColorDto,Color>(updateColorDto);
-                _colorService.TUpdate(values);
+                _unitOfWork.ColorDal.Update(values);
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/Color/Index");
             }

@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.CommentDtos
 {
     public class UpdateCommentDto
     {
-        public int CommentID { get; set; }
+        public int ID { get; set; }
         public string CommentText { get; set; }
         public string StarCount { get; set; }
     }

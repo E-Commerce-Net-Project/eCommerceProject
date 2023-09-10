@@ -8,7 +8,7 @@ namespace DtoLayer.Dtos.SponsorDtos
 {
     public class ResultSponsorDto
     {
-        public int SponsorID { get; set; }
+        public int ID { get; set; }
         public string Image { get; set; }
     }
 }

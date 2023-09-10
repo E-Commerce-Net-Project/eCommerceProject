@@ -9,7 +9,7 @@ namespace DtoLayer.Dtos.SubCategoryDtos
 {
     public class ResultSubCategoryDto
     {
-        public int SubCategoryID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public ResultMainCategoryDto MainCategory { get; set; }
     }
