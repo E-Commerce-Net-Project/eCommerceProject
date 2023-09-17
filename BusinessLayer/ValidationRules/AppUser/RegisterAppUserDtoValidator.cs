@@ -12,15 +12,12 @@ namespace BusinessLayer.ValidationRules.AppUser
     {
         public RegisterAppUserDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Ad alanı boş geçilemez.");
-            RuleFor(x => x.Surname).NotEmpty().WithMessage("Soyad alanı boş geçilemez.");
-            RuleFor(x => x.Email).NotEmpty().WithMessage("E-mail alanı boş geçilemez.");
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("Kullanıcı adı alanı boş geçilemez.");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Şifre alanı boş geçilemez.");
-            RuleFor(x => x.ConfirmPassword).NotEmpty().WithMessage("Şifre tekrar alanı boş geçilemez.");
-            RuleFor(x => x.UserName).MinimumLength(3).WithMessage("Kullanıcı adı en az 3 karakter olmalıdır.");
-            RuleFor(x => x.UserName).MaximumLength(20).WithMessage("Kullanıcı adı en fazla 20 karakter olmalıdır.");
-            RuleFor(x => x.Password).Equal(y => y.ConfirmPassword).WithMessage("Şifreler birbiriyle uyuşmuyor.");
+            RuleFor(x => x.Name).NotEmpty().WithName("Ad").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.Surname).NotEmpty().WithName("Soyad").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.Email).NotEmpty().WithName("E-mail").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.UserName).NotEmpty().WithName("Kullanıcı adı").WithMessage(ValidationMessages.NotEmpty).MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage).MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
+            RuleFor(x => x.Password).NotEmpty().WithName("Şifre").WithMessage(ValidationMessages.Equal);
+            RuleFor(x => x.ConfirmPassword).NotEmpty().WithName("Şifre Tekrar").WithMessage(ValidationMessages.Equal);
         }
         
     }

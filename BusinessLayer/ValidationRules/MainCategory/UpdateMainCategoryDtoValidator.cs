@@ -1,4 +1,5 @@
-﻿using DtoLayer.Dtos.MainCategoryDtos;
+﻿using BusinessLayer.ValidationRules;
+using DtoLayer.Dtos.MainCategoryDtos;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BusinessLayer.ValidationRules.MainCategory
     {
         public UpdateMainCategoryDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Ana kategori isim alanı boş bırakılmamalıdır.").MinimumLength(5).WithMessage("Ana kategori ismi en az 5 karakter olmalıdır.").MaximumLength(50).WithMessage("Ana kategori ismi en fazla 50 karakter olmalıdır.");
+            RuleFor(x => x.Name).NotEmpty().WithName("Ana kategori isim").WithMessage(ValidationMessages.NotEmpty).MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage).MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
         }
     }
 }

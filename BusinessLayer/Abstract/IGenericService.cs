@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Utilities.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,10 @@ namespace BusinessLayer.Abstract
 {
     public interface IGenericService<T>
     {
-        void TAdd(T t);
-        void TDelete(T t);
-        void TUpdate(T t);
-        List<T> TGetList();
-        T TGeyByID(int id);
+        IResult TAdd(T t);
+        IResult TDelete(T t);
+        IResult TUpdate(T t);
+        IDataResult<List<T>> TGetList();
+        IDataResult<T> TGeyByID(int id);
     }
 }

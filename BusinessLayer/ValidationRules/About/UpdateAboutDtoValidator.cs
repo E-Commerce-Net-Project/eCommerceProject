@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DtoLayer.Dtos.AboutDtos;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BusinessLayer.ValidationRules.About
 {
@@ -12,7 +13,9 @@ namespace BusinessLayer.ValidationRules.About
     {
         public UpdateAboutDtoValidator()
         {
-            RuleFor(x => x.Description).NotEmpty().WithMessage("Açıklama alanı boş geçilemez.");
+            RuleFor(x => x.Description).NotEmpty().WithName("Açıklama").WithMessage(ValidationMessages.NotEmpty)
+                .MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage)
+                .MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
         }
 
     }

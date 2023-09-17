@@ -13,9 +13,9 @@ namespace BusinessLayer.ValidationRules.SocialMedia
     {
         public CreateSocialMediaDtoValidator()
         {
-            RuleFor(x => x.Icon).NotEmpty().WithMessage("Icon alanı boş geçilemez.");
-            RuleFor(x => x.Name).NotEmpty().WithMessage("İsim alanı boş geçilemez.");
-            RuleFor(x => x.Url).NotEmpty().WithMessage("Url alanı boş geçilemez.");
+            RuleFor(x => x.Icon).NotEmpty().WithName("Icon").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.Name).NotEmpty().WithName("İsim").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.Url).NotEmpty().WithName("Url").WithMessage(ValidationMessages.NotEmpty);
         }
     }
 }

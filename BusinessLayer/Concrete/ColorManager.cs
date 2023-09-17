@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _colorDal = colorDal;
         }
 
-        public void TAdd(Color t)
+        public IResult TAdd(Color t)
         {
             _colorDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Color t)
+        public IResult TDelete(Color t)
         {
             _colorDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Color> TGetList()
+        public IDataResult<List<Color>> TGetList()
         {
-           return _colorDal.GetList();
+            return new SuccessDataResult<List<Color>>(_colorDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public Color TGeyByID(int id)
+        public IDataResult<Color> TGeyByID(int id)
         {
-            return _colorDal.GetByID(id);
+            return new SuccessDataResult<Color>(_colorDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(Color t)
+        public IResult TUpdate(Color t)
         {
-           _colorDal.Update(t); 
+            _colorDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

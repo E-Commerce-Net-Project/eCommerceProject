@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -12,34 +15,37 @@ namespace BusinessLayer.Concrete
     public class ContactUsManager : IContactUsService
     {
         IContactUsDal _contactUsDal;
-    public ContactUsManager(IContactUsDal contactUsDal)
+        public ContactUsManager(IContactUsDal contactUsDal)
         {
             _contactUsDal = contactUsDal;
         }
 
-        public void TAdd(ContactUs t)
+        public IResult TAdd(ContactUs t)
         {
             _contactUsDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(ContactUs t)
+        public IResult TDelete(ContactUs t)
         {
-           _contactUsDal.Delete(t);
+            _contactUsDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<ContactUs> TGetList()
+        public IDataResult<List<ContactUs>> TGetList()
         {
-          return _contactUsDal.GetList();
+            return new SuccessDataResult<List<ContactUs>>(_contactUsDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public ContactUs TGeyByID(int id)
+        public IDataResult<ContactUs> TGeyByID(int id)
         {
-         return  _contactUsDal.GetByID(id);
+            return new SuccessDataResult<ContactUs>(_contactUsDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(ContactUs t)
+        public IResult TUpdate(ContactUs t)
         {
             _contactUsDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

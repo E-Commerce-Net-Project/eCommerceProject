@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using EntityLayer.Concrete;
 using System;
@@ -18,29 +20,32 @@ namespace BusinessLayer.Concrete
             _aboutDal = aboutDal;
         }
 
-        public void TAdd(About t)
+        public IResult TAdd(About t)
         {
             _aboutDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(About t)
+        public IResult TDelete(About t)
         {
             _aboutDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<About> TGetList()
+        public IDataResult<List<About>> TGetList()
         {
-          return _aboutDal.GetList();
+          return new SuccessDataResult<List<About>>(_aboutDal.GetList(),ResultMessages.SuccesMessage);
         }
 
-        public About TGeyByID(int id)
+        public IDataResult<About> TGeyByID(int id)
         {
-          return _aboutDal.GetByID(id);
+            return new SuccessDataResult<About>(_aboutDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(About t)
+        public IResult TUpdate(About t)
         {
             _aboutDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
 
         }
     }

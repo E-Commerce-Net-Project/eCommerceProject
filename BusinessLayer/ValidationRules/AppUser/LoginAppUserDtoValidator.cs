@@ -12,8 +12,8 @@ namespace BusinessLayer.ValidationRules.AppUser
     {
         public LoginAppUserDtoValidator()
         {
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("Kullanıcı adı alanı boş geçilemez.");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Şifre alanı boş geçilemez.");
+            RuleFor(x => x.UserName).NotEmpty().WithName("Kullanıcı adı").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.Password).NotEmpty().WithName("Şifre").WithMessage(ValidationMessages.NotEmpty);
         }
     }
 }

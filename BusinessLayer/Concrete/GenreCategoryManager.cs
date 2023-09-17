@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,34 +21,37 @@ namespace BusinessLayer.Concrete
             _genreCategoryDal = genreCategoryDal;
         }
 
-        public List<GenreCategory> TGenreCategoriesListWithSubCategory()
+        public IDataResult<List<GenreCategory>> TGenreCategoriesListWithSubCategory()
         {
-            return _genreCategoryDal.GenreCategoriesListWithSubCategory();
+            return new SuccessDataResult<List<GenreCategory>>(_genreCategoryDal.GenreCategoriesListWithSubCategory(), ResultMessages.SuccesMessage); 
         }
 
-        public void TAdd(GenreCategory t)
+        public IResult TAdd(GenreCategory t)
         {
             _genreCategoryDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(GenreCategory t)
+        public IResult TDelete(GenreCategory t)
         {
             _genreCategoryDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<GenreCategory> TGetList()
+        public IDataResult<List<GenreCategory>> TGetList()
         {
-            return _genreCategoryDal.GetList();
+            return new SuccessDataResult<List<GenreCategory>>(_genreCategoryDal.GetList(), ResultMessages.SuccesMessage); 
         }
 
-        public GenreCategory TGeyByID(int id)
+        public IDataResult<GenreCategory> TGeyByID(int id)
         {
-            return _genreCategoryDal.GetByID(id);
+            return new SuccessDataResult<GenreCategory>(_genreCategoryDal.GetByID(id), ResultMessages.SuccesMessage); 
         }
 
-        public void TUpdate(GenreCategory t)
+        public IResult TUpdate(GenreCategory t)
         {
             _genreCategoryDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

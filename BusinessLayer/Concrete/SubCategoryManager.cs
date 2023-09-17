@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,34 +21,37 @@ namespace BusinessLayer.Concrete
             _subCategoryDal = subCategoryDal;
         }
 
-        public List<SubCategory> TSubCategoriesListWithMainCategory()
+        public IDataResult<List<SubCategory>> TSubCategoriesListWithMainCategory()
         {
-            return _subCategoryDal.SubCategoriesListWithMainCategory();
+            return new SuccessDataResult<List<SubCategory>>(_subCategoryDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public void TAdd(SubCategory t)
+        public IResult TAdd(SubCategory t)
         {
             _subCategoryDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(SubCategory t)
+        public IResult TDelete(SubCategory t)
         {
             _subCategoryDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<SubCategory> TGetList()
+        public IDataResult<List<SubCategory>> TGetList()
         {
-            return _subCategoryDal.GetList();
+            return new SuccessDataResult<List<SubCategory>>(_subCategoryDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public SubCategory TGeyByID(int id)
+        public IDataResult<SubCategory> TGeyByID(int id)
         {
-            return _subCategoryDal.GetByID(id);
+            return new SuccessDataResult<SubCategory>(_subCategoryDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(SubCategory t)
+        public IResult TUpdate(SubCategory t)
         {
             _subCategoryDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

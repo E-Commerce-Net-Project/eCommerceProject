@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _contactDal = contactDal;
         }
 
-        public void TAdd(Contact t)
+        public IResult TAdd(Contact t)
         {
-           _contactDal.Insert(t);
+            _contactDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Contact t)
+        public IResult TDelete(Contact t)
         {
-          _contactDal.Delete(t);
+            _contactDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Contact> TGetList()
+        public IDataResult<List<Contact>> TGetList()
         {
-          return _contactDal.GetList();
+            return new SuccessDataResult<List<Contact>>(_contactDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public Contact TGeyByID(int id)
+        public IDataResult<Contact> TGeyByID(int id)
         {
-            return _contactDal.GetByID(id);
+            return new SuccessDataResult<Contact>(_contactDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(Contact t)
+        public IResult TUpdate(Contact t)
         {
             _contactDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

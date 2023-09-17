@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _stockDal = stockDal;
         }
 
-        public void TAdd(Stock t)
+        public IResult TAdd(Stock t)
         {
             _stockDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Stock t)
+        public IResult TDelete(Stock t)
         {
             _stockDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Stock> TGetList()
+        public IDataResult<List<Stock>> TGetList()
         {
-         return  _stockDal.GetList();
+            return new SuccessDataResult<List<Stock>>(_stockDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public Stock TGeyByID(int id)
+        public IDataResult<Stock> TGeyByID(int id)
         {
-         return  _stockDal.GetByID(id);
+            return new SuccessDataResult<Stock>(_stockDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(Stock t)
+        public IResult TUpdate(Stock t)
         {
             _stockDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

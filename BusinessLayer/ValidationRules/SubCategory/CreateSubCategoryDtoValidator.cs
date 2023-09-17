@@ -12,7 +12,7 @@ namespace BusinessLayer.ValidationRules.SubCategory
     {
         public CreateSubCategoryDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Alt kategori isim alanı boş bırakılmamalıdır.").MinimumLength(5).WithMessage("Alt kategori ismi en az 5 karakter olmalıdır.").MaximumLength(50).WithMessage("Alt kategori ismi en fazla 50 karakter olmalıdır.");
+            RuleFor(x => x.Name).NotEmpty().WithName("Alt kategori isim").WithMessage(ValidationMessages.NotEmpty).MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage).MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
         }
     }
 }

@@ -33,6 +33,8 @@ using BusinessLayer.ValidationRules.GenreCategory;
 using DtoLayer.Dtos.SubCategoryDtos;
 using BusinessLayer.ValidationRules.SubCategory;
 using DataAccessLayer.UoW;
+using BusinessLayer.ValidationRules;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
 

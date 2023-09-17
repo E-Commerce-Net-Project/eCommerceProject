@@ -13,7 +13,7 @@ namespace BusinessLayer.ValidationRules.Sponsor
     {
         public UpdateSponsorDtoValidator()
         {
-            RuleFor(x => x.Image).NotEmpty().WithMessage("Resim alanı boş geçilemez.");
+            RuleFor(x => x.Image).NotEmpty().WithName("Resim").WithMessage(ValidationMessages.NotEmpty);
         }
     }
 }

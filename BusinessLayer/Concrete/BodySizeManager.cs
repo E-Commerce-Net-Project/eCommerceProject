@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using EntityLayer.Concrete;
 using System;
@@ -18,29 +20,32 @@ namespace BusinessLayer.Concrete
             _bodySizeDal = bodySizeDal;
         }
 
-        void IGenericService<BodySize>.TAdd(BodySize t)
+        public IResult TAdd(BodySize t)
         {
             _bodySizeDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        void IGenericService<BodySize>.TDelete(BodySize t)
+        public IResult TDelete(BodySize t)
         {
-          _bodySizeDal.Delete(t);
+            _bodySizeDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        List<BodySize> IGenericService<BodySize>.TGetList()
+        public IDataResult<List<BodySize>> TGetList()
         {
-          return _bodySizeDal.GetList();
+            return new SuccessDataResult<List<BodySize>>(_bodySizeDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        BodySize IGenericService<BodySize>.TGeyByID(int id)
+        public IDataResult<BodySize> TGeyByID(int id)
         {
-          return  _bodySizeDal.GetByID(id);
+            return new SuccessDataResult<BodySize>(_bodySizeDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        void IGenericService<BodySize>.TUpdate(BodySize t)
+        public IResult TUpdate(BodySize t)
         {
-           _bodySizeDal.Update(t);
+            _bodySizeDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

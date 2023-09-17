@@ -12,7 +12,7 @@ namespace BusinessLayer.ValidationRules.BodySize
     {
         public UpdateBodySizeDtoValidator() 
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Beden Bilgisi boş bırakılmamalıdır.");
+            RuleFor(x => x.Name).NotEmpty().WithName("Beden bilgisi").WithMessage(ValidationMessages.NotEmpty);
         }
     }
 }

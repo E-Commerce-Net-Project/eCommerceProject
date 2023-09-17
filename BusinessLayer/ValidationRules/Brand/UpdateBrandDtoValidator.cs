@@ -12,7 +12,7 @@ namespace BusinessLayer.ValidationRules.Brand
     {
         public UpdateBrandDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Marka isim alanı boş geçilemez.").MinimumLength(2).WithMessage("Lütfen en az iki karakter girişi yapınız.").MaximumLength(50).WithMessage("Lütfen en fazla 50 karakter girişi yapınız");
+            RuleFor(x => x.Name).NotEmpty().WithName("Marka isim").WithMessage(ValidationMessages.NotEmpty).MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage).MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
         }
     }
 }

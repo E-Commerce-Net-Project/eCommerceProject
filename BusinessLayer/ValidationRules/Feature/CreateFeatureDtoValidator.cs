@@ -12,7 +12,7 @@ namespace BusinessLayer.ValidationRules.Feature
     {
         public CreateFeatureDtoValidator() 
         {
-            RuleFor(x => x.Title1).NotEmpty().WithMessage("Özellik bilgisi boş bırakılmamalıdır.");
+            RuleFor(x => x.Title1).NotEmpty().WithName("Özellik bilgisi").WithMessage(ValidationMessages.NotEmpty);
         }
     }
 }

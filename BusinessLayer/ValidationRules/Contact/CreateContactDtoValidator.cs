@@ -10,5 +10,13 @@ namespace BusinessLayer.ValidationRules.Contact
 {
     public class CreateContactDtoValidator : AbstractValidator<CreateContactDto>
     {
+        public CreateContactDtoValidator()
+        {
+            RuleFor(x => x.Adress).NotEmpty().WithName("Adres").WithMessage(ValidationMessages.NotEmpty).MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage).MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
+            RuleFor(x => x.Phone).NotEmpty().WithName("Telefon").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.Email).NotEmpty().WithName("Mail").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.OpeningHour).NotEmpty().WithName("Çalışma saatleri").WithMessage(ValidationMessages.NotEmpty);
+            RuleFor(x => x.Iframe).NotEmpty().WithName("Harita url").WithMessage(ValidationMessages.NotEmpty);
+        }
     }
 }
