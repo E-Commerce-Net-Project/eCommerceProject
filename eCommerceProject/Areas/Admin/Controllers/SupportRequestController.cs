@@ -13,16 +13,19 @@ namespace eCommerceProject.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public SupportRequestController(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IContactUsService _contactUsService;
+        public SupportRequestController(IMapper mapper, IUnitOfWork unitOfWork, IContactUsService contactUsService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _contactUsService = contactUsService;
         }
 
         public IActionResult Index()
         {
-            var messages = _mapper.Map<List<ResultContactUsDto>>(_unitOfWork.ContactUsDal.GetList());
-            return View(messages);
+            //var messages = _mapper.Map<List<ResultContactUsDto>>(_unitOfWork.ContactUsDal.GetList());
+            var result = _contactUsService.TGetList();
+            return View(result.Data);
         }
 
         [HttpGet]

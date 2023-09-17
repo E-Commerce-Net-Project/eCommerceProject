@@ -53,6 +53,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IValidator<UpdateAboutDto>, UpdateAboutDtoValidator>();
+builder.Services.AddScoped<IContactUsService, ContactUsManager>();
+builder.Services.AddScoped<IContactUsDal, EfContactUsDal>();
 
 builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();

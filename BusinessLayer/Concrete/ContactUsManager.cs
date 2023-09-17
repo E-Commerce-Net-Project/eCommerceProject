@@ -1,51 +1,62 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
-using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+
+using DtoLayer.Dtos.ContactUsDtos;
 using EntityLayer.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrete
 {
     public class ContactUsManager : IContactUsService
     {
-        IContactUsDal _contactUsDal;
-        public ContactUsManager(IContactUsDal contactUsDal)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public ContactUsManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _contactUsDal = contactUsDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(ContactUs t)
+        public IResult TAdd(CreateContactUsDto t)
         {
-            _contactUsDal.Insert(t);
+            var value = _mapper.Map<CreateContactUsDto, ContactUs>(t);
+            _unitOfWork.ContactUsDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(ContactUs t)
+        public IResult TDelete(int id)
         {
-            _contactUsDal.Delete(t);
+            var values = _unitOfWork.ContactUsDal.GetByID(id);
+            _unitOfWork.ContactUsDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<ContactUs>> TGetList()
+        public IDataResult<List<ResultContactUsDto>> TGetList()
         {
-            return new SuccessDataResult<List<ContactUs>>(_contactUsDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultContactUsDto>>(_unitOfWork.ContactUsDal.GetList());
+            return new SuccessDataResult<List<ResultContactUsDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ContactUs> TGeyByID(int id)
+        public IDataResult<ResultContactUsDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<ContactUs>(_contactUsDal.GetByID(id), ResultMessages.SuccesMessage);
+            var values = _mapper.Map<ResultContactUsDto>(_unitOfWork.ContactUsDal.GetByID(id));
+            return new SuccessDataResult<ResultContactUsDto>(values,ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(ContactUs t)
+        public IResult TUpdate(UpdateContactUsDto t)
         {
-            _contactUsDal.Update(t);
+            var values = _mapper.Map<UpdateContactUsDto>(_unitOfWork.ContactUsDal.GetByID(t.ID));
+            var _contact = _mapper.Map<UpdateContactUsDto, ContactUs>(values);
+            _unitOfWork.ContactUsDal.Update(_contact);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
+
     }
 }
