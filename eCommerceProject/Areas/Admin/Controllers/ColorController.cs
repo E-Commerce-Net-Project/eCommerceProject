@@ -19,7 +19,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public ColorController(IMapper mapper, IValidator<CreateColorDto> createValidator, IValidator<UpdateColorDto> updateValidator, IUnitOfWork unitOfWork)
         {
-
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;

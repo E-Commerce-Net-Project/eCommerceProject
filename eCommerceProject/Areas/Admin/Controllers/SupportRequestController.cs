@@ -31,6 +31,5 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var customer = _mapper.Map<ResultContactUsDto>(_unitOfWork.ContactUsDal.GetByID(customerId));
             return Json(customer);
         }
-
     }
 }

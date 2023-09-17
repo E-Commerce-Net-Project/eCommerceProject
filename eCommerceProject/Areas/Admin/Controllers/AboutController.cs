@@ -12,18 +12,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class AboutController : Controller
     {
-        //private readonly IAboutService _aboutService;
-        //private readonly IMapper _mapper;
-        //private IValidator<UpdateAboutDto> _updateValidator;
-
-        //public AboutController (IAboutService aboutService, IMapper mapper, IValidator<UpdateAboutDto> updateValidator)
-        //{
-        //    _aboutService = aboutService;
-        //    _mapper = mapper;
-        //    _updateValidator = updateValidator;
-        //}
         private readonly IUnitOfWork _unitOfWork;
-
         private readonly IMapper _mapper;
         private IValidator<UpdateAboutDto> _updateValidator;
 
