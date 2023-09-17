@@ -12,7 +12,7 @@ namespace BusinessLayer.ValidationRules.GenreCategory
     {
         public CreateGenreCategoryDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Kategori türü isim alanı boş bırakılmamalıdır.").MinimumLength(5).WithMessage("Kategori türü ismi en az 5 karakter olmalıdır.").MaximumLength(50).WithMessage("Kategori türü ismi en fazla 50 karakter olmalıdır.");
+            RuleFor(x => x.Name).NotEmpty().WithName("Kategori türü isim").WithMessage(ValidationMessages.NotEmpty).MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage).MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace BusinessLayer.ValidationRules.Tag
     {
         public UpdateTagDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("İsim alanı boş geçilemez.");
+            RuleFor(x => x.Name).NotEmpty().WithName("İsim").WithMessage(ValidationMessages.NotEmpty);
         }
     }
 }

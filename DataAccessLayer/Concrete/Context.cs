@@ -13,7 +13,7 @@ namespace DataAccessLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=SQL8005.site4now.net;Initial Catalog=db_a9ca78_ecommerce2023; User Id=db_a9ca78_ecommerce2023_admin; Password=ecommerce");
+            optionsBuilder.UseSqlServer("Data Source=SQL8005.site4now.net;Initial Catalog=db_a9ca78_ecommerce2023; User Id=db_a9ca78_ecommerce2023_admin; Password=4LOsG.MwlVYfj0ST");
             //Ortak Database Server
 
         }

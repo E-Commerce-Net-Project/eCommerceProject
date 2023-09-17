@@ -12,8 +12,8 @@ namespace BusinessLayer.ValidationRules.AppRole
     {
         public UpdateAppRoleDtoValidator()
         {
-            RuleFor(x => x.ID).NotEmpty().WithMessage("Rol ID alanı boş bırakılmamalıdır.");
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Rol Adı alanı boş bırakılmamalıdır.").MinimumLength(5).WithMessage("Rol adı en az 5 karakter olmalıdır.").MaximumLength(50).WithMessage("Rol adı en fazla 50 karakter olmalıdır.");
+            RuleFor(x => x.ID).NotEmpty().WithName("Rol ID");
+            RuleFor(x => x.Name).NotEmpty().WithName("Rol adı").WithMessage(ValidationMessages.NotEmpty).MinimumLength(ValidationMessages.MinimumLength).WithMessage(ValidationMessages.MinimumLengthMessage).MaximumLength(ValidationMessages.MaximumLength).WithMessage(ValidationMessages.MaximumLengthMessage);
         }
     }
 }

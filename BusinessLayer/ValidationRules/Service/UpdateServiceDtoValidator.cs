@@ -13,8 +13,8 @@ namespace BusinessLayer.ValidationRules.Service
     {
         public UpdateServiceDtoValidator()
         {
-            RuleFor(x => x.Title).NotEmpty().WithMessage("Başlık alanı boş geçilemez.");
-            RuleFor(x => x.Description).NotEmpty().WithMessage("Açıklama alanı boş geçilemez.");
+            RuleFor(x => x.Title).NotEmpty().WithName("Başlık");
+            RuleFor(x => x.Description).NotEmpty().WithName("Açıklama");
         }
     }
 }
