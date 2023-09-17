@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _commentDal = commentDal;
         }
 
-        public void TAdd(Comment t)
+        public IResult TAdd(Comment t)
         {
             _commentDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Comment t)
+        public IResult TDelete(Comment t)
         {
             _commentDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Comment> TGetList()
+        public IDataResult<List<Comment>> TGetList()
         {
-            return _commentDal.GetList();
+            return new SuccessDataResult<List<Comment>>(_commentDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public Comment TGeyByID(int id)
+        public IDataResult<Comment> TGeyByID(int id)
         {
-            return _commentDal.GetByID(id);
+            return new SuccessDataResult<Comment>(_commentDal.GetByID(id), ResultMessages.SuccesMessage); 
         }
 
-        public void TUpdate(Comment t)
+        public IResult TUpdate(Comment t)
         {
             _commentDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

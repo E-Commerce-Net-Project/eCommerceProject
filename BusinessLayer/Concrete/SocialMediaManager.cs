@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _socialMediaDal = socialMediaDal;
         }
 
-        public void TAdd(SocialMedia t)
+        public IResult TAdd(SocialMedia t)
         {
             _socialMediaDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(SocialMedia t)
+        public IResult TDelete(SocialMedia t)
         {
             _socialMediaDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<SocialMedia> TGetList()
+        public IDataResult<List<SocialMedia>> TGetList()
         {
-           return _socialMediaDal.GetList();
+            return new SuccessDataResult<List<SocialMedia>>(_socialMediaDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public SocialMedia TGeyByID(int id)
+        public IDataResult<SocialMedia> TGeyByID(int id)
         {
-            return _socialMediaDal.GetByID(id);
+            return new SuccessDataResult<SocialMedia>(_socialMediaDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(SocialMedia t)
+        public IResult TUpdate(SocialMedia t)
         {
             _socialMediaDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

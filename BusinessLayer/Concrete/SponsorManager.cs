@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _sponsorDal = sponsorDal;
         }
 
-        public void TAdd(Sponsor t)
+        public IResult TAdd(Sponsor t)
         {
-           _sponsorDal.Insert(t);
+            _sponsorDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Sponsor t)
+        public IResult TDelete(Sponsor t)
         {
             _sponsorDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Sponsor> TGetList()
+        public IDataResult<List<Sponsor>> TGetList()
         {
-            return _sponsorDal.GetList();
+            return new SuccessDataResult<List<Sponsor>>(_sponsorDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public Sponsor TGeyByID(int id)
+        public IDataResult<Sponsor> TGeyByID(int id)
         {
-            return _sponsorDal.GetByID(id);
+            return new SuccessDataResult<Sponsor>(_sponsorDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(Sponsor t)
+        public IResult TUpdate(Sponsor t)
         {
-           _sponsorDal.Update(t);
+            _sponsorDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

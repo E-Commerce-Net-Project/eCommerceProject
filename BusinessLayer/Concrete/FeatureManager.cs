@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _featureDal = featureDal;
         }
 
-        public void TAdd(Feature t)
+        public IResult TAdd(Feature t)
         {
             _featureDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Feature t)
+        public IResult TDelete(Feature t)
         {
             _featureDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Feature> TGetList()
+        public IDataResult<List<Feature>> TGetList()
         {
-            return _featureDal.GetList();
+            return new SuccessDataResult<List<Feature>>(_featureDal.GetList(), ResultMessages.SuccesMessage); 
         }
 
-        public Feature TGeyByID(int id)
+        public IDataResult<Feature> TGeyByID(int id)
         {
-           return _featureDal.GetByID(id);
+            return new SuccessDataResult<Feature>(_featureDal.GetByID(id), ResultMessages.SuccesMessage); 
         }
 
-        public void TUpdate(Feature t)
+        public IResult TUpdate(Feature t)
         {
             _featureDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

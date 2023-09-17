@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,31 @@ namespace BusinessLayer.Concrete
             _productDal = productDal;
         }
 
-        public void TAdd(Product t)
+        public IResult TAdd(Product t)
         {
-           _productDal.Insert(t);
+            _productDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Product t)
+        public IResult TDelete(Product t)
         {
             _productDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Product> TGetList()
+        public IDataResult<List<Product>> TGetList()
         {
-           return _productDal.GetList();
+            return new SuccessDataResult<List<Product>>(_productDal.GetList(), ResultMessages.SuccesMessage);
         }
-
-        public Product TGeyByID(int id)
+        public IDataResult<Product> TGeyByID(int id)
         {
-          return _productDal.GetByID(id);
+            return new SuccessDataResult<Product>(_productDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(Product t)
+        public IResult TUpdate(Product t)
         {
             _productDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }

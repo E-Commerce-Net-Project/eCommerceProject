@@ -1,5 +1,8 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Costants;
+using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,32 @@ namespace BusinessLayer.Concrete
             _tagDal = tagDal;
         }
 
-        public void TAdd(Tag t)
+        public IResult TAdd(Tag t)
         {
             _tagDal.Insert(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public void TDelete(Tag t)
+        public IResult TDelete(Tag t)
         {
             _tagDal.Delete(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public List<Tag> TGetList()
+        public IDataResult<List<Tag>> TGetList()
         {
-           return _tagDal.GetList();
+            return new SuccessDataResult<List<Tag>>(_tagDal.GetList(), ResultMessages.SuccesMessage);
         }
 
-        public Tag TGeyByID(int id)
+        public IDataResult<Tag> TGeyByID(int id)
         {
-            return _tagDal.GetByID(id);
+            return new SuccessDataResult<Tag>(_tagDal.GetByID(id), ResultMessages.SuccesMessage);
         }
 
-        public void TUpdate(Tag t)
+        public IResult TUpdate(Tag t)
         {
             _tagDal.Update(t);
+            return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
 }
