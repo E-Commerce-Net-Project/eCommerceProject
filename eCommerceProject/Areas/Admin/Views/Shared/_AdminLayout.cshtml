@@ -1,6 +1,15 @@
 ﻿@{
     Layout = null;
+
+    var navbarInfo = new NavbarInfo
+            {
+                ControllerName = ViewContext.RouteData?.Values?["controller"]?.ToString(),
+                ActionName = ViewContext.RouteData?.Values?["action"]?.ToString()
+            };
+
+    var result = NavbarHelper.NavbarController(navbarInfo);
 }
+
 
 <!doctype html>
 <html lang="en">
@@ -27,16 +36,16 @@
             <div class="block-header">
                 <div class="row clearfix">
                     <div class="col-md-6 col-sm-12">
-                        <h1>@ViewBag.Title1</h1>
+                        <h1>@navbarInfo.MainTitle</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@ViewBag.Title2Url">@ViewBag.Title2</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title1</li>
+                                <li class="breadcrumb-item"><a href="@navbarInfo.SubTitleUrl">@navbarInfo.SubTitle</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@navbarInfo.MainTitle</li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-md-6 col-sm-12 text-right hidden-xs">
-                        <a href="@ViewBag.ButtonUrl" class="btn btn-sm btn-primary" title="">@ViewBag.Button</a>
+                        <a href="@navbarInfo.ButtonUrl" class="btn btn-sm btn-primary" title="">@navbarInfo.ButtonName</a>
                     </div>
                 </div>
             </div>

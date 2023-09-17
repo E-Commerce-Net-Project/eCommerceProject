@@ -19,7 +19,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public SubCategoryController(IMapper mapper, IValidator<CreateSubCategoryDto> createValidator, IValidator<UpdateSubCategoryDto> updateValidator, IUnitOfWork unitOfWork)
         {
-
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
@@ -27,14 +26,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Alt Kategoriler";
-            ViewBag.Title2 = "Alt Kategoriler";
-            ViewBag.Title2Url = "/Admin/SubCategory/Index";
-            ViewBag.Button = "Yeni Alt Kategori Ekle";
-            ViewBag.ButtonUrl = "/Admin/SubCategory/AddSubCategory";
-            #endregion
-
             var subCategoryValues = _mapper.Map<List<ResultSubCategoryDto>>(_unitOfWork.SubCategoryDal.SubCategoriesListWithMainCategory());
             return View(subCategoryValues);
         }
@@ -42,14 +33,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddSubCategory()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Alt Kategori Ekleme Sayfası";
-            ViewBag.Title2 = "Alt Kategoriler";
-            ViewBag.Title2Url = "/Admin/SubCategory/Index";
-            ViewBag.Button = "Alt Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/SubCategory/Index";
-            #endregion
-
             List<SelectListItem> MainCategoryName = (from x in _unitOfWork.MainCategoryDal.GetList()
                                                      select new SelectListItem
                                                      {
@@ -64,14 +47,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddSubCategory(CreateSubCategoryDto createSubCategoryDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Alt Kategori Ekleme Sayfası";
-            ViewBag.Title2 = "Alt Kategoriler";
-            ViewBag.Title2Url = "/Admin/SubCategory/Index";
-            ViewBag.Button = "Alt Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/SubCategory/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createSubCategoryDto);
 
             if (validator.IsValid)
@@ -113,14 +88,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateSubCategory(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Alt Kategori Güncelleme Sayfası";
-            ViewBag.Title2 = "Alt Kategoriler";
-            ViewBag.Title2Url = "/Admin/SubCategory/Index";
-            ViewBag.Button = "Alt Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/SubCategory/Index";
-            #endregion
-
             List<SelectListItem> MainCategoryName = (from x in _unitOfWork.MainCategoryDal.GetList()
                                                      select new SelectListItem
                                                      {
@@ -136,21 +103,13 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpdateSubCategory(UpdateSubCategoryDto updateSubCategoryDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Alt Kategori Güncelleme Sayfası";
-            ViewBag.Title2 = "Alt Kategoriler";
-            ViewBag.Title2Url = "/Admin/SubCategory/Index";
-            ViewBag.Button = "Alt Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/SubCategory/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateSubCategoryDto);
 
             if (validator.IsValid)
             {
                 var newSubCategoryValue = _mapper.Map<UpdateSubCategoryDto, SubCategory>(updateSubCategoryDto);
                 _unitOfWork.SubCategoryDal.Update(newSubCategoryValue);
-                _unitOfWork.Commit();   
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/SubCategory/Index");
             }

@@ -18,7 +18,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public MainCategoryController(IMapper mapper, IValidator<CreateMainCategoryDto> createValidator, IValidator<UpdateMainCategoryDto> updateValidator, IUnitOfWork unitOfWork)
         {
-
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
@@ -27,14 +26,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Ana Kategoriler";
-            ViewBag.Title2 = "Ana Kategoriler";
-            ViewBag.Title2Url = "/Admin/MainCategory/Index";
-            ViewBag.Button = "Yeni Ana Kategori Ekle";
-            ViewBag.ButtonUrl = "/Admin/MainCategory/AddMainCategory";
-            #endregion
-
             var mainCategoryValues = _mapper.Map<List<ResultMainCategoryDto>>(_unitOfWork.MainCategoryDal.GetList());
             return View(mainCategoryValues);
         }
@@ -42,28 +33,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddMainCategory()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Ana Kategori Ekleme Sayfası";
-            ViewBag.Title2 = "Ana Kategoriler";
-            ViewBag.Title2Url = "/Admin/MainCategory/Index";
-            ViewBag.Button = "Ana Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/MainCategory/Index";
-            #endregion
-
             return View();
         }
 
         [HttpPost]
         public IActionResult AddMainCategory(CreateMainCategoryDto createMainCategoryDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Ana Kategori Ekleme Sayfası";
-            ViewBag.Title2 = "Ana Kategoriler";
-            ViewBag.Title2Url = "/Admin/MainCategory/Index";
-            ViewBag.Button = "Ana Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/MainCategory/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createMainCategoryDto);
 
             if (validator.IsValid)
@@ -96,14 +71,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateMainCategory(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Ana Kategori Güncelleme Sayfası";
-            ViewBag.Title2 = "Ana Kategoriler";
-            ViewBag.Title2Url = "/Admin/MainCategory/Index";
-            ViewBag.Button = "Ana Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/MainCategory/Index";
-            #endregion
-
             var mainCategoryValue = _mapper.Map<UpdateMainCategoryDto>(_unitOfWork.MainCategoryDal.GetByID(id));
             return View(mainCategoryValue);
         }
@@ -111,21 +78,13 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpdateMainCategory(UpdateMainCategoryDto updateMainCategoryDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Ana Kategori Güncelleme Sayfası";
-            ViewBag.Title2 = "Ana Kategoriler";
-            ViewBag.Title2Url = "/Admin/MainCategory/Index";
-            ViewBag.Button = "Ana Kategorilere Dön";
-            ViewBag.ButtonUrl = "/Admin/MainCategory/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateMainCategoryDto);
 
             if (validator.IsValid)
             {
                 var newMainCategoryValue = _mapper.Map<UpdateMainCategoryDto, MainCategory>(updateMainCategoryDto);
                 _unitOfWork.MainCategoryDal.Update(newMainCategoryValue);
-                _unitOfWork.Commit();   
+                _unitOfWork.Commit();
 
                 return LocalRedirect("/Admin/MainCategory/Index");
             }

@@ -26,14 +26,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Hizmetler";
-            ViewBag.Title2 = "Hizmetler";
-            ViewBag.Title2Url = "/Admin/Service/Index";
-            ViewBag.Button = "Yeni Hizmet Ekle";
-            ViewBag.ButtonUrl = "/Admin/Service/AddService";
-            #endregion
-
             var serviceValues = _mapper.Map<List<ResultServiceDto>>(_unitOfWork.ServiceDal.GetList());
             return View(serviceValues);
         }
@@ -41,28 +33,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddService()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Hizmet Ekleme Sayfası";
-            ViewBag.Title2 = "Hizmetler";
-            ViewBag.Title2Url = "/Admin/Service/Index";
-            ViewBag.Button = "Hizmetlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Service/Index";
-            #endregion
-
             return View();
         }
 
         [HttpPost]
         public IActionResult AddService(CreateServiceDto createServiceDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Hizmet Ekleme Sayfası";
-            ViewBag.Title2 = "Hizmetler";
-            ViewBag.Title2Url = "/Admin/Service/Index";
-            ViewBag.Button = "Hizmetlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Service/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createServiceDto);
 
             if (validator.IsValid)
@@ -96,14 +72,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateService(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Hizmet Güncelleme Sayfası";
-            ViewBag.Title2 = "Hizmetler";
-            ViewBag.Title2Url = "/Admin/Service/Index";
-            ViewBag.Button = "Hizmetlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Service/Index";
-            #endregion
-
             var serviceValue = _mapper.Map<UpdateServiceDto>(_unitOfWork.ServiceDal.GetByID(id));
             return View(serviceValue);
         }
@@ -111,14 +79,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpdateService(UpdateServiceDto updateServiceDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Hizmet Güncelleme Sayfası";
-            ViewBag.Title2 = "Hizmetler";
-            ViewBag.Title2Url = "/Admin/Service/Index";
-            ViewBag.Button = "Hizmetlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Service/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateServiceDto);
 
             if (validator.IsValid)

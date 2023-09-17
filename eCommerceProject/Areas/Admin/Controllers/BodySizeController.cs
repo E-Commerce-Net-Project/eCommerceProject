@@ -29,14 +29,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
 		{
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Beden listesi";
-			ViewBag.Title2 = "Beden listesi";
-			ViewBag.Title2Url = "/Admin/BodySize/Index";
-			ViewBag.Button = "Yeni Beden Bilgisi Ekle";
-			ViewBag.ButtonUrl = "/Admin/BodySize/AddBodySize";
-            #endregion
-
             var bodySizeValues = _mapper.Map<List<ResultBodySizeDto>>(_unitOfWork.BodySizeDal.GetList());
 			return View(bodySizeValues);
 		}
@@ -44,14 +36,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 		[HttpGet]
 		public IActionResult AddBodySize()
 		{
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Yeni Beden Ekleme Sayfası";
-            ViewBag.Title2 = "Beden listesi";
-            ViewBag.Title2Url = "/Admin/BodySize/Index";
-            ViewBag.Button = "Beden Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/BodySize/Index";
-            #endregion
-
             return View();
 		}
 
@@ -59,14 +43,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
 		public IActionResult AddBodySize(CreateBodySizeDto createBodySizeDto)
 		{
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Yeni Beden Ekleme Sayfası";
-            ViewBag.Title2 = "Beden listesi";
-            ViewBag.Title2Url = "/Admin/BodySize/Index";
-            ViewBag.Button = "Beden Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/BodySize/Index";
-            #endregion
-
             var validator =_createValidator.Validate(createBodySizeDto);
 			if (validator.IsValid)
 			{
@@ -98,14 +74,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 		[HttpGet]
 		public IActionResult UpdateBodySize(int id)
 		{
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Beden Bigisi Güncelleme Sayfası";
-            ViewBag.Title2 = "Beden listesi";
-            ViewBag.Title2Url = "/Admin/BodySize/Index";
-            ViewBag.Button = "Beden Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/BodySize/Index";
-            #endregion
-
             var bodySizeValue =_mapper.Map<UpdateBodySizeDto>(_unitOfWork.BodySizeDal.GetByID(id));
 			return View(bodySizeValue);
 		}
@@ -114,14 +82,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 		
 		public IActionResult UpdateBodySize(UpdateBodySizeDto updateBodySizeDto)
 		{
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Beden Bigisi Güncelleme Sayfası";
-            ViewBag.Title2 = "Beden listesi";
-            ViewBag.Title2Url = "/Admin/BodySize/Index";
-            ViewBag.Button = "Beden Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/BodySize/Index";
-            #endregion
-
             var validator =_updateValidator.Validate(updateBodySizeDto);
 			if (validator.IsValid)
 			{

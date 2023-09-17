@@ -20,20 +20,16 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
-                            @item.ID
-                        </td>
-                        <td>
-                           @item.Name
-                        </td>
+                        <td>@item.ID</td>
+                        <td>@item.Name</td>
                         <td class="text-right">
                             <div class="dropdown">
                                 <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-ellipsis-v"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                    <a class="dropdown-item" href="/Admin/AdminRole/UpdateRole/@item.ID"><i class="fa fa-pencil mx-0"></i> Güncelle</a>
-                                    <a class="dropdown-item" href="/Admin/AdminRole/DeleteRole/@item.ID"><i class="fa fa-trash mx-0"></i> Sil</a>
+                                    <a class="dropdown-item" href="/Admin/Role/UpdateRole/@item.ID"><i class="fa fa-pencil mx-0"></i> Güncelle</a>
+                                    <a class="dropdown-item" href="/Admin/Role/DeleteRole/@item.ID"><i class="fa fa-trash mx-0"></i> Sil</a>
                                 </div>
                             </div>
                         </td>
@@ -41,6 +37,6 @@
                 }
             </tbody>
         </table>
-        <a href="/Admin/AdminRole/UserRoleList" class="btn btn-outline-info">Kullanıcı Rol Listesi</a>
+        <a href="/Admin/AdminRole/UserRoleList" class="btn btn-primary me-2 col-12">Kullanıcı Rol Listesi</a>
     </div>
 </div>

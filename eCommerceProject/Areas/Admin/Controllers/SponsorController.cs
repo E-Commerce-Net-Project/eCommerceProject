@@ -19,7 +19,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public SponsorController(IMapper mapper, IValidator<CreateSponsorDto> createValidator, IValidator<UpdateSponsorDto> updateValidator, IUnitOfWork unitOfWork)
         {
-
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
@@ -28,14 +27,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sponsor";
-            ViewBag.Title2 = "Sponsorlar";
-            ViewBag.Title2Url = "/Admin/Sponsor/Index";
-            ViewBag.Button = "Sponsor Ekle";
-            ViewBag.ButtonUrl = "/Admin/Sponsor/AddSponsor";
-            #endregion
-
             var sponsorValues = _mapper.Map<List<ResultSponsorDto>>(_unitOfWork.SponsorDal.GetList());
             return View(sponsorValues);
         }
@@ -43,28 +34,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddSponsor()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sponsor Ekleme Sayfası";
-            ViewBag.Title2 = "Sponsorlar";
-            ViewBag.Title2Url = "/Admin/Sponsor/Index";
-            ViewBag.Button = "Sponsorlara Dön";
-            ViewBag.ButtonUrl = "/Admin/Sponsor/Index";
-            #endregion
-
             return View();
         }
 
         [HttpPost]
         public IActionResult AddSponsor(CreateSponsorDto createSponsorDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sponsor Ekleme Sayfası";
-            ViewBag.Title2 = "Sponsorlar";
-            ViewBag.Title2Url = "/Admin/Sponsor/Index";
-            ViewBag.Button = "Sponsorlara Dön";
-            ViewBag.ButtonUrl = "/Admin/Sponsor/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createSponsorDto);
 
             if (validator.IsValid)
@@ -99,14 +74,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateSponsor(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sponsor Güncelleme Sayfası";
-            ViewBag.Title2 = "Sponsorlar";
-            ViewBag.Title2Url = "/Admin/Sponsor/Index";
-            ViewBag.Button = "Sponsorlara Dön";
-            ViewBag.ButtonUrl = "/Admin/Sponsor/Index";
-            #endregion
-
             var sponsorValue = _mapper.Map<UpdateSponsorDto>(_unitOfWork.SponsorDal.GetByID(id));
             return View(sponsorValue);
         }
@@ -114,14 +81,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpdateSponsor(UpdateSponsorDto updateSponsorDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sponsor Güncelleme Sayfası";
-            ViewBag.Title2 = "Sponsorlar";
-            ViewBag.Title2Url = "/Admin/Sponsor/Index";
-            ViewBag.Button = "Sponsorlara Dön";
-            ViewBag.ButtonUrl = "/Admin/Sponsor/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateSponsorDto);
 
             if (validator.IsValid)

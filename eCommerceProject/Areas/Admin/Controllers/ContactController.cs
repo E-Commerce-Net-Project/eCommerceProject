@@ -23,39 +23,22 @@ namespace eCommerceProject.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int id)
+        public IActionResult UpdateContact(int Id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "İletşim Bilgileri";
-            ViewBag.Title2 = "İletişim Bilgileri";
-            ViewBag.Title2Url = "/Admin/Contact/Index";
-            ViewBag.Button = "Güncelle";
-            ViewBag.ButtonUrl = "/Admin/Contact/Index";
-            #endregion
-
-            var values = _mapper.Map<UpdateContactDto>(_unitOfWork.ContactDal.GetByID(id=1));
-
+            var values = _mapper.Map<UpdateContactDto>(_unitOfWork.ContactDal.GetByID(1));
             return View(values);
         }
 
         [HttpPost]
-        public IActionResult Index( UpdateContactDto updateContactDto)
+        public IActionResult UpdateContact(UpdateContactDto updateContactDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "İletşim Bilgileri";
-            ViewBag.Title2 = "İletişim Bilgileri";
-            ViewBag.Title2Url = "/Admin/Contact/Index";
-            ViewBag.Button = "Güncelle";
-            ViewBag.ButtonUrl = "/Admin/Contact/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateContactDto);
             if (validator.IsValid)
             {
                 var values = _mapper.Map<UpdateContactDto, Contact>(updateContactDto);
                 _unitOfWork.ContactDal.Update(values);
                 _unitOfWork.Commit();
-                return LocalRedirect("/Admin/Contact/Index");
+                return View();
             }
             else
             {

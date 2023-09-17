@@ -11,12 +11,7 @@
         </div>
         <div class="body">
             <form method="post" class="forms-sample">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Rol ID : </span>
-                    </div>
-                    <input type="text" asp-for="ID" class="form-control" placeholder="Rol ID giriniz." disabled  aria-describedby="basic-addon1">
-                </div>
+                <input type="hidden" asp-for="ID">
                 <div class="mb-3">
                     <span asp-validation-for="ID" class="text-danger"></span>
                 </div>
@@ -29,7 +24,7 @@
                 <div class="mb-3">
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-success me-2 col-12">Rolü Güncelle!</button>
+                <button type="submit" class="btn btn-primary me-2 col-12">Rolü Güncelle!</button>
             </form>
         </div>
     </div>

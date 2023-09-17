@@ -19,7 +19,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public TagController(IMapper mapper, IValidator<CreateTagDto> createValidator, IValidator<UpdateTagDto> updateValidator, IUnitOfWork unitOfWork)
         {
-
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
@@ -28,14 +27,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Etiket";
-            ViewBag.Title2 = "Etiketler";
-            ViewBag.Title2Url = "/Admin/Tag/Index";
-            ViewBag.Button = "Yeni Etiket Ekle";
-            ViewBag.ButtonUrl = "/Admin/Tag/AddTag";
-            #endregion
-
             var tagValues = _mapper.Map<List<ResultTagDto>>(_unitOfWork.TagDal.GetList());
             return View(tagValues);
         }
@@ -43,28 +34,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddTag()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Etiket Ekleme Sayfası";
-            ViewBag.Title2 = "Etiketler";
-            ViewBag.Title2Url = "/Admin/Tag/Index";
-            ViewBag.Button = "Etiketlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Tag/Index";
-            #endregion
-
             return View();
         }
 
         [HttpPost]
         public IActionResult AddTag(CreateTagDto createTagDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Etiket Ekleme Sayfası";
-            ViewBag.Title2 = "Etiketler";
-            ViewBag.Title2Url = "/Admin/Tag/Index";
-            ViewBag.Button = "Etiketlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Tag/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createTagDto);
 
             if (validator.IsValid)
@@ -99,14 +74,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateTag(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Etiket Güncelleme Sayfası";
-            ViewBag.Title2 = "Etiketler";
-            ViewBag.Title2Url = "/Admin/Tag/Index";
-            ViewBag.Button = "Etiketlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Tag/Index";
-            #endregion
-
             var tagValue = _mapper.Map<UpdateTagDto>(_unitOfWork.TagDal.GetByID(id));
             return View(tagValue);
         }
@@ -114,14 +81,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpdateTag(UpdateTagDto updateTagDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Etiket Güncelleme Sayfası";
-            ViewBag.Title2 = "Etiketler";
-            ViewBag.Title2Url = "/Admin/Tag/Index";
-            ViewBag.Button = "Etiketlere Dön";
-            ViewBag.ButtonUrl = "/Admin/Tag/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateTagDto);
 
             if (validator.IsValid)

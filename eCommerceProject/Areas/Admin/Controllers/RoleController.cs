@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminRoleController : Controller
+    public class RoleController : Controller
     {
         private readonly RoleManager<AppRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public AdminRoleController(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager, IMapper mapper)
+        public RoleController(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager, IMapper mapper)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -25,30 +25,16 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Roller";
-            ViewBag.Title2 = "Roller";
-            ViewBag.Title2Url = "/Admin/AdminRole/Index";
-            ViewBag.Button = "Yeni Rol Ekle";
-            ViewBag.ButtonUrl = "/Admin/AdminRole/AddRole";
-            #endregion
             var appRoleList = _mapper.Map<List<ResultAppRoleDto>>(_roleManager.Roles.ToList());
-
-            
             return View(appRoleList);
         }
+
         [HttpGet]
         public IActionResult AddRole()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Rol Ekle";
-            ViewBag.Title2 = "Roller";
-            ViewBag.Title2Url = "/Admin/AdminRole/Index";
-            ViewBag.Button = "Yeni Rol Ekle";
-            ViewBag.ButtonUrl = "/Admin/AdminRole/AddRole";
-            #endregion
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> AddRole(CreateAppRoleDto createAppRoleDto)
         {
@@ -61,7 +47,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                 var result = await _roleManager.CreateAsync(appRole);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect("/Admin/AdminRole/Index");
+                    return LocalRedirect("/Admin/Role/Index");
 
                 }
                 else
@@ -78,14 +64,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateRole(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Rol Güncelle";
-            ViewBag.Title2 = "Roller";
-            ViewBag.Title2Url = "/Admin/AdminRole/Index";
-            ViewBag.Button = "Yeni Rol Ekle";
-            ViewBag.ButtonUrl = "/Admin/AdminRole/AddRole";
-            #endregion
             var values = _roleManager.Roles.FirstOrDefault(x => x.Id == id);
+
             if (ModelState.IsValid)
             {
                 UpdateAppRoleDto updateAppRoleDto = new UpdateAppRoleDto
@@ -99,6 +79,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
             return View(values);
         }
+
         [HttpPost]
         public async Task<IActionResult> UpdateRole(UpdateAppRoleDto updateAppRoleDto)
         {
@@ -110,7 +91,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                 var result = await _roleManager.UpdateAsync(values);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect("/Admin/AdminRole/Index");
+                    return LocalRedirect("/Admin/Role/Index");
                 }
                 else
                 {
@@ -131,35 +112,20 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var result = await _roleManager.DeleteAsync(values);
             if (result.Succeeded)
             {
-                return LocalRedirect("/Admin/AdminRole/Index");
+                return LocalRedirect("/Admin/Role/Index");
             }
             return View();
         }
 
-        [HttpGet]
         public IActionResult UserRoleList()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Kullanıcı Rol Listesi";
-            ViewBag.Title2 = "Roller";
-            ViewBag.Title2Url = "/Admin/AdminRole/Index";
-            ViewBag.Button = "Yeni Rol Ekle";
-            ViewBag.ButtonUrl = "/Admin/AdminRole/AddRole";
-            #endregion
-
             var appUserRoleList = _mapper.Map<List<ResultAppUserRoleDto>>(_userManager.Users.ToList());
             return View(appUserRoleList);
         }
+
         [HttpGet]
         public async Task<IActionResult> AssignRole(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Kullanıcı Rol Listesi";
-            ViewBag.Title2 = "Roller";
-            ViewBag.Title2Url = "/Admin/AdminRole/Index";
-            ViewBag.Button = "Kullanıcı Rol Listesi";
-            ViewBag.ButtonUrl = "/Admin/AdminRole/UserRoleList";
-            #endregion
             var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
             var roles = _roleManager.Roles.ToList();
 
@@ -177,14 +143,15 @@ namespace eCommerceProject.Areas.Admin.Controllers
             }
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> AssignRole(List<RoleAssignViewModel> model)
         {
             var userid = (int)TempData["UserId"];
             var user = _userManager.Users.FirstOrDefault(x => x.Id == userid);
-            foreach(var item in model) 
-            { 
-                if(item.Exists) 
+            foreach (var item in model)
+            {
+                if (item.Exists)
                 {
                     await _userManager.AddToRoleAsync(user, item.Name);
                 }
@@ -193,7 +160,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                     await _userManager.RemoveFromRoleAsync(user, item.Name);
                 }
             }
-            return LocalRedirect("/Admin/AdminRole/UserRoleList");
+            return LocalRedirect("/Admin/Role/UserRoleList");
         }
     }
 }

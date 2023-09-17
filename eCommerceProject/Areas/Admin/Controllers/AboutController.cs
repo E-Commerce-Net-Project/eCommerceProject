@@ -23,7 +23,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
         //    _updateValidator = updateValidator;
         //}
         private readonly IUnitOfWork _unitOfWork;
-     
+
         private readonly IMapper _mapper;
         private IValidator<UpdateAboutDto> _updateValidator;
 
@@ -33,33 +33,18 @@ namespace eCommerceProject.Areas.Admin.Controllers
             _updateValidator = updateValidator;
             _unitOfWork = unitOfWork;
         }
-        [HttpGet]
-        public IActionResult UpdateAbout(int id) 
-        {
-            #region Navbar Yönlendirmesi
-            ViewBag.Title1 = "Hakkında Güncelleme Sayfası";
-            ViewBag.Title2 = "Hakkında Sayfası";
-            ViewBag.Title2Url = "/Admin/About/Index";
-            ViewBag.Button = "Hakkında Sayfasına Dön";
-            ViewBag.ButtonUrl = "/Admin/About/Index";
-            #endregion
 
-            var aboutValue= _mapper.Map<UpdateAboutDto>(_unitOfWork.AboutDal.GetByID(1));
+        [HttpGet]
+        public IActionResult UpdateAbout(int id)
+        {
+            var aboutValue = _mapper.Map<UpdateAboutDto>(_unitOfWork.AboutDal.GetByID(1));
             return View(aboutValue);
         }
 
         [HttpPost]
-        public IActionResult UpdateAbout(UpdateAboutDto updateAboutDto) 
+        public IActionResult UpdateAbout(UpdateAboutDto updateAboutDto)
         {
-            #region Navbar Yönlendirmesi
-            ViewBag.Title1 = "Hakkında Güncelleme Sayfası";
-            ViewBag.Title2 = "Hakkında Sayfası";
-            ViewBag.Title2Url = "/Admin/About/Index";
-            ViewBag.Button = "Hakkında Sayfasına Dön";
-            ViewBag.ButtonUrl = "/Admin/About/Index";
-            #endregion
-
-            var validator=_updateValidator.Validate(updateAboutDto);
+            var validator = _updateValidator.Validate(updateAboutDto);
             if (validator.IsValid)
             {
                 var newAboutValue = _mapper.Map<UpdateAboutDto, About>(updateAboutDto);
@@ -70,9 +55,9 @@ namespace eCommerceProject.Areas.Admin.Controllers
             }
             else
             {
-                foreach(var item in validator.Errors)
+                foreach (var item in validator.Errors)
                 {
-                    ModelState.AddModelError(item.PropertyName , item.ErrorMessage);
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
 
                 return View(updateAboutDto);

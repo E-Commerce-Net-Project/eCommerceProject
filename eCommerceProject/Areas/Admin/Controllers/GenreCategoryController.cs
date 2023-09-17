@@ -27,14 +27,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Kategori Türleri";
-            ViewBag.Title2 = "Kategori Türleri";
-            ViewBag.Title2Url = "/Admin/GenreCategory/Index";
-            ViewBag.Button = "Yeni Kategori Türü Ekle";
-            ViewBag.ButtonUrl = "/Admin/GenreCategory/AddGenreCategory";
-            #endregion
-
             var genreCategoryValues = _mapper.Map<List<ResultGenreCategoryDto>>(_unitOfWork.GenreCategoryDal.GenreCategoriesListWithSubCategory());
             return View(genreCategoryValues);
         }
@@ -42,14 +34,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddGenreCategory()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Kategori Türü Ekleme Sayfası";
-            ViewBag.Title2 = "Kategori Türleri";
-            ViewBag.Title2Url = "/Admin/GenreCategory/Index";
-            ViewBag.Button = "Kategori Türlerine Dön";
-            ViewBag.ButtonUrl = "/Admin/GenreCategory/Index";
-            #endregion
-
             List<SelectListItem> SubCategoryName = (from x in _unitOfWork.SubCategoryDal.GetList()
                                                     select new SelectListItem
                                                     {
@@ -64,14 +48,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddGenreCategory(CreateGenreCategoryDto createGenreCategoryDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Kategori Türü Ekleme Sayfası";
-            ViewBag.Title2 = "Kategori Türleri";
-            ViewBag.Title2Url = "/Admin/GenreCategory/Index";
-            ViewBag.Button = "Kategori Türlerine Dön";
-            ViewBag.ButtonUrl = "/Admin/GenreCategory/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createGenreCategoryDto);
 
             if (validator.IsValid)
@@ -113,14 +89,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateGenreCategory(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Kategori Türü Güncelleme Sayfası";
-            ViewBag.Title2 = "Kategori Türleri";
-            ViewBag.Title2Url = "/Admin/GenreCategory/Index";
-            ViewBag.Button = "Kategori Türlerine Dön";
-            ViewBag.ButtonUrl = "/Admin/GenreCategory/Index";
-            #endregion
-
             List<SelectListItem> SubCategoryName = (from x in _unitOfWork.SubCategoryDal.GetList()
                                                     select new SelectListItem
                                                     {
@@ -136,14 +104,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpdateGenreCategory(UpdateGenreCategoryDto updateGenreCategoryDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Kategori Türü Güncelleme Sayfası";
-            ViewBag.Title2 = "Kategori Türleri";
-            ViewBag.Title2Url = "/Admin/GenreCategory/Index";
-            ViewBag.Button = "Kategori Türlerine Dön";
-            ViewBag.ButtonUrl = "/Admin/GenreCategory/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateGenreCategoryDto);
 
             if (validator.IsValid)

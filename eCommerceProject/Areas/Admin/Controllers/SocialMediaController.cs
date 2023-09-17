@@ -19,7 +19,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public SocialMediaController(IMapper mapper, IValidator<CreateSocialMediaDto> createValidator, IValidator<UpdateSocialMediaDto> updateValidator, IUnitOfWork unitOfWork)
         {
-
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
@@ -28,14 +27,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sosyal Medya";
-            ViewBag.Title2 = "Sosyal Medyalar";
-            ViewBag.Title2Url = "/Admin/SocialMedia/Index";
-            ViewBag.Button = "Sosyal Medya Ekle";
-            ViewBag.ButtonUrl = "/Admin/SocialMedia/AddSocialMedia";
-            #endregion
-
             var socialMediaValues = _mapper.Map<List<ResultSocialMediaDto>>(_unitOfWork.SocialMediaDal.GetList());
             return View(socialMediaValues);
         }
@@ -43,28 +34,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddSocialMedia()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sosyal Medya Ekleme Sayfası";
-            ViewBag.Title2 = "Sosyal Medyalar";
-            ViewBag.Title2Url = "/Admin/SocialMedia/Index";
-            ViewBag.Button = "Sosyal Medyaya Dön";
-            ViewBag.ButtonUrl = "/Admin/SocialMedia/Index";
-            #endregion
-
             return View();
         }
 
         [HttpPost]
         public IActionResult AddSocialMedia(CreateSocialMediaDto createSocialMediaDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sosyal Medya Ekleme Sayfası";
-            ViewBag.Title2 = "Sosyal Medyalar";
-            ViewBag.Title2Url = "/Admin/SocialMedia/Index";
-            ViewBag.Button = "Sosyal Medyaya Dön";
-            ViewBag.ButtonUrl = "/Admin/SocialMedia/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createSocialMediaDto);
 
             if (validator.IsValid)
@@ -98,14 +73,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateSocialMedia(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sosyal Medya Güncelleme Sayfası";
-            ViewBag.Title2 = "Sosyal Medyalar";
-            ViewBag.Title2Url = "/Admin/SocialMedia/Index";
-            ViewBag.Button = "Sosyal Medyaya Dön";
-            ViewBag.ButtonUrl = "/Admin/SocialMedia/Index";
-            #endregion
-
             var socialMediaValue = _mapper.Map<UpdateSocialMediaDto>(_unitOfWork.SocialMediaDal.GetByID(id));
             return View(socialMediaValue);
         }
@@ -113,14 +80,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpdateSocialMedia(UpdateSocialMediaDto updateSocialMediaDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Sosyal Medya Güncelleme Sayfası";
-            ViewBag.Title2 = "Sosyal Medyalar";
-            ViewBag.Title2Url = "/Admin/SocialMedia/Index";
-            ViewBag.Button = "Sosyal Medyaya Dön";
-            ViewBag.ButtonUrl = "/Admin/SocialMedia/Index";
-            #endregion
-
             var validator = _updateValidator.Validate(updateSocialMediaDto);
 
             if (validator.IsValid)

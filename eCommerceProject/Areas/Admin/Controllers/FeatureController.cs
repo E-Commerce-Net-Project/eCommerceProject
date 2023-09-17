@@ -20,7 +20,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public FeatureController(IMapper mapper, IValidator<CreateFeatureDto> createValidator, IValidator<UpdateFeatureDto> updateValidator, IUnitOfWork unitOfWork)
         {
-
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
@@ -29,13 +28,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Özellikler Listesi";
-            ViewBag.Title2 = "Özellikler Listesi";
-            ViewBag.Title2Url = "/Admin/Feature/Index";
-            ViewBag.Button = "Yeni Özellik Ekle";
-            ViewBag.ButtonUrl = "/Admin/Feature/AddFeature";
-            #endregion
             var featureValues = _mapper.Map<List<ResultFeatureDto>>(_unitOfWork.FeatureDal.GetList());
             return View(featureValues);
         }
@@ -43,27 +35,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddFeature()
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Özellik Ekleme Sayfası";
-            ViewBag.Title2 = "Özellikler Listesi";
-            ViewBag.Title2Url = "/Admin/Feature/Index";
-            ViewBag.Button = "Özellik Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/Feature/Index";
-            #endregion
             return View();
         }
 
         [HttpPost]
         public IActionResult AddFeature(CreateFeatureDto createFeatureDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Özellik Ekleme Sayfası";
-            ViewBag.Title2 = "Özellikler Listesi";
-            ViewBag.Title2Url = "/Admin/Feature/Index";
-            ViewBag.Button = "Özellik Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/Feature/Index";
-            #endregion
-
             var validator = _createValidator.Validate(createFeatureDto);
             if (validator.IsValid)
             {
@@ -93,27 +70,13 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult UpdateFeature(int id)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Özellik Güncelleme Sayfası";
-            ViewBag.Title2 = "Özellikler Listesi";
-            ViewBag.Title2Url = "/Admin/Feature/Index";
-            ViewBag.Button = "Özellik Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/Feature/Index";
-            #endregion
             var featureValue = _mapper.Map<UpdateFeatureDto>(_unitOfWork.FeatureDal.GetByID(id));
             return View(featureValue);
         }
+
         [HttpPost]
-      
         public IActionResult UpdateFeature(UpdateFeatureDto updateFeatureDto)
         {
-            #region Navbar Yönlendirme
-            ViewBag.Title1 = "Özellik Güncelleme Sayfası";
-            ViewBag.Title2 = "Özellikler Listesi";
-            ViewBag.Title2Url = "/Admin/Feature/Index";
-            ViewBag.Button = "Özellik Listesine Dön";
-            ViewBag.ButtonUrl = "/Admin/Feature/Index";
-            #endregion
             var validator = _updateValidator.Validate(updateFeatureDto);
             if (validator.IsValid)
             {
@@ -122,16 +85,14 @@ namespace eCommerceProject.Areas.Admin.Controllers
                 _unitOfWork.Commit();
                 return LocalRedirect("/Admin/Feature/Index");
             }
-            else 
+            else
             {
-                foreach(var item in validator.Errors)
+                foreach (var item in validator.Errors)
                 {
-                    ModelState.AddModelError(item.PropertyName,item.ErrorMessage);
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
                 return View(updateFeatureDto);
             }
         }
-
-
     }
 }
