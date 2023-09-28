@@ -1,8 +1,12 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.BrandDtos;
+using DtoLayer.Dtos.ContactUsDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,38 +18,49 @@ namespace BusinessLayer.Concrete
 {
     public class BrandManager : IBrandService
     {
-        IBrandDal _brandDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public BrandManager(IBrandDal brandDal)
+        public BrandManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _brandDal = brandDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Brand t)
+        public IResult TAdd(CreateBrandDto t)
         {
-            _brandDal.Insert(t);
+            var value = _mapper.Map<CreateBrandDto, Brand>(t);
+            _unitOfWork.BrandDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Brand t)
+        public IResult TDelete(int id)
         {
-            _brandDal.Delete(t);
+            var values = _unitOfWork.BrandDal.GetByID(id);
+            _unitOfWork.BrandDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Brand>> TGetList()
+        public IDataResult<List<ResultBrandDto>> TGetList()
         {
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultBrandDto>>(_unitOfWork.BrandDal.GetList());
+            return new SuccessDataResult<List<ResultBrandDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<Brand> TGeyByID(int id)
+        public IDataResult<ResultBrandDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<Brand>(_brandDal.GetByID(id), ResultMessages.SuccesMessage); 
+            var values = _mapper.Map<ResultBrandDto>(_unitOfWork.BrandDal.GetByID(id));
+            return new SuccessDataResult<ResultBrandDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Brand t)
+        public IResult TUpdate(UpdateBrandDto t)
         {
-            _brandDal.Update(t);
+            var values = _mapper.Map<UpdateBrandDto>(_unitOfWork.ContactUsDal.GetByID(t.ID));
+            var _brand = _mapper.Map<UpdateBrandDto, Brand>(values);
+            _unitOfWork.BrandDal.Update(_brand);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }

@@ -9,12 +9,12 @@ using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IAboutService : IGenericService<About>
+    public interface IAboutService 
     {
-        //IResult TAdd(CreateAboutDto t);
-        //IResult TDelete(About t);
-        //IResult TUpdate(UpdateAboutDto t);
-        //IDataResult<List<ResultAboutDto>> TGetList();
-        //IDataResult<ResultAboutDto> TGeyByID(int id);
+        IResult TAdd(CreateAboutDto t);
+        IResult TDelete(int id);
+        IResult TUpdate(UpdateAboutDto t);
+        IDataResult<List<ResultAboutDto>> TGetList();
+        IDataResult<ResultAboutDto> TGeyByID(int id);
     }
 }

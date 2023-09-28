@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.CommentDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,38 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class CommentManager : ICommentService
     {
-        ICommentDal _commentDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CommentManager(ICommentDal commentDal)
+        public CommentManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _commentDal = commentDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Comment t)
+        public IResult TAdd(CreateCommentDto t)
         {
-            _commentDal.Insert(t);
+            var value = _mapper.Map<CreateCommentDto, Comment>(t);
+            _unitOfWork.CommentDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Comment t)
+        public IResult TDelete(int id)
         {
-            _commentDal.Delete(t);
+            var values = _unitOfWork.CommentDal.GetByID(id);
+            _unitOfWork.CommentDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Comment>> TGetList()
+        public IDataResult<List<ResultCommentDto>> TGetList()
         {
-            return new SuccessDataResult<List<Comment>>(_commentDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultCommentDto>>(_unitOfWork.CommentDal.GetList());
+            return new SuccessDataResult<List<ResultCommentDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<Comment> TGeyByID(int id)
+        public IDataResult<ResultCommentDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<Comment>(_commentDal.GetByID(id), ResultMessages.SuccesMessage); 
+            var values = _mapper.Map<ResultCommentDto>(_unitOfWork.CommentDal.GetByID(id));
+            return new SuccessDataResult<ResultCommentDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Comment t)
+        public IResult TUpdate(UpdateCommentDto t)
         {
-            _commentDal.Update(t);
+            var values = _mapper.Map<UpdateCommentDto>(_unitOfWork.CommentDal.GetByID(t.ID));
+            var _comment = _mapper.Map<UpdateCommentDto, Comment>(values);
+            _unitOfWork.CommentDal.Update(_comment);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }

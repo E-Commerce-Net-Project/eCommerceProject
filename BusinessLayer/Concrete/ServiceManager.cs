@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.ServiceDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,38 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class ServiceManager : IServiceService
     {
-        IServiceDal _serviceDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ServiceManager(IServiceDal serviceDal)
+        public ServiceManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _serviceDal = serviceDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Service t)
+        public IResult TAdd(CreateServiceDto t)
         {
-            _serviceDal.Insert(t);
+            var value = _mapper.Map<CreateServiceDto, Service>(t);
+            _unitOfWork.ServiceDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Service t)
+        public IResult TDelete(int id)
         {
-            _serviceDal.Delete(t);
+            var values = _unitOfWork.ServiceDal.GetByID(id);
+            _unitOfWork.ServiceDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Service>> TGetList()
+        public IDataResult<List<ResultServiceDto>> TGetList()
         {
-            return new SuccessDataResult<List<Service>>(_serviceDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultServiceDto>>(_unitOfWork.ServiceDal.GetList());
+            return new SuccessDataResult<List<ResultServiceDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<Service> TGeyByID(int id)
+        public IDataResult<ResultServiceDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<Service>(_serviceDal.GetByID(id), ResultMessages.SuccesMessage);
+            var values = _mapper.Map<ResultServiceDto>(_unitOfWork.ServiceDal.GetByID(id));
+            return new SuccessDataResult<ResultServiceDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Service t)
+        public IResult TUpdate(UpdateServiceDto t)
         {
-            _serviceDal.Update(t);
+            var values = _mapper.Map<UpdateServiceDto>(_unitOfWork.ServiceDal.GetByID(t.ID));
+            var _service = _mapper.Map<UpdateServiceDto, Service>(values);
+            _unitOfWork.ServiceDal.Update(_service);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }

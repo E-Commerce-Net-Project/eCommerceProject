@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.SponsorDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,38 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class SponsorManager : ISponsorService
     {
-        ISponsorDal _sponsorDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public SponsorManager(ISponsorDal sponsorDal)
+        public SponsorManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _sponsorDal = sponsorDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Sponsor t)
+        public IResult TAdd(CreateSponsorDto t)
         {
-            _sponsorDal.Insert(t);
+            var value = _mapper.Map<CreateSponsorDto, Sponsor>(t);
+            _unitOfWork.SponsorDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Sponsor t)
+        public IResult TDelete(int id)
         {
-            _sponsorDal.Delete(t);
+            var values = _unitOfWork.SponsorDal.GetByID(id);
+            _unitOfWork.SponsorDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Sponsor>> TGetList()
+        public IDataResult<List<ResultSponsorDto>> TGetList()
         {
-            return new SuccessDataResult<List<Sponsor>>(_sponsorDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultSponsorDto>>(_unitOfWork.SponsorDal.GetList());
+            return new SuccessDataResult<List<ResultSponsorDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<Sponsor> TGeyByID(int id)
+        public IDataResult<ResultSponsorDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<Sponsor>(_sponsorDal.GetByID(id), ResultMessages.SuccesMessage);
+            var values = _mapper.Map<ResultSponsorDto>(_unitOfWork.SponsorDal.GetByID(id));
+            return new SuccessDataResult<ResultSponsorDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Sponsor t)
+        public IResult TUpdate(UpdateSponsorDto t)
         {
-            _sponsorDal.Update(t);
+            var values = _mapper.Map<UpdateSponsorDto>(_unitOfWork.SponsorDal.GetByID(t.ID));
+            var _sponsor = _mapper.Map<UpdateSponsorDto, Sponsor>(values);
+            _unitOfWork.SponsorDal.Update(_sponsor);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }

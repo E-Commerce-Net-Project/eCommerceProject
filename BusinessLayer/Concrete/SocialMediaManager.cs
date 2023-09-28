@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.SocialMediaDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,38 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class SocialMediaManager : ISocialMediaService
     {
-        ISocialMediaDal _socialMediaDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public SocialMediaManager(ISocialMediaDal socialMediaDal)
+        public SocialMediaManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _socialMediaDal = socialMediaDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(SocialMedia t)
+        public IResult TAdd(CreateSocialMediaDto t)
         {
-            _socialMediaDal.Insert(t);
+            var value = _mapper.Map<CreateSocialMediaDto, SocialMedia>(t);
+            _unitOfWork.SocialMediaDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(SocialMedia t)
+        public IResult TDelete(int id)
         {
-            _socialMediaDal.Delete(t);
+            var values = _unitOfWork.SocialMediaDal.GetByID(id);
+            _unitOfWork.SocialMediaDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<SocialMedia>> TGetList()
+        public IDataResult<List<ResultSocialMediaDto>> TGetList()
         {
-            return new SuccessDataResult<List<SocialMedia>>(_socialMediaDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultSocialMediaDto>>(_unitOfWork.SocialMediaDal.GetList());
+            return new SuccessDataResult<List<ResultSocialMediaDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<SocialMedia> TGeyByID(int id)
+        public IDataResult<ResultSocialMediaDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<SocialMedia>(_socialMediaDal.GetByID(id), ResultMessages.SuccesMessage);
+            var values = _mapper.Map<ResultSocialMediaDto>(_unitOfWork.SocialMediaDal.GetByID(id));
+            return new SuccessDataResult<ResultSocialMediaDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(SocialMedia t)
+        public IResult TUpdate(UpdateSocialMediaDto t)
         {
-            _socialMediaDal.Update(t);
+            var values = _mapper.Map<UpdateSocialMediaDto>(_unitOfWork.SocialMediaDal.GetByID(t.ID));
+            var _socialMedia = _mapper.Map<UpdateSocialMediaDto, SocialMedia>(values);
+            _unitOfWork.SocialMediaDal.Update(_socialMedia);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }

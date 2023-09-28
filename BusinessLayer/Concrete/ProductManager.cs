@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.ProductDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,37 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class ProductManager : IProductService
     {
-        IProductDal _productDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _productDal = productDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Product t)
+        public IResult TAdd(CreateProductDto t)
         {
-            _productDal.Insert(t);
+            var value = _mapper.Map<CreateProductDto, Product>(t);
+            _unitOfWork.ProductDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Product t)
+        public IResult TDelete(int id)
         {
-            _productDal.Delete(t);
+            var values = _unitOfWork.ProductDal.GetByID(id);
+            _unitOfWork.ProductDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Product>> TGetList()
+        public IDataResult<List<ResultProductDto>> TGetList()
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetList(), ResultMessages.SuccesMessage);
-        }
-        public IDataResult<Product> TGeyByID(int id)
-        {
-            return new SuccessDataResult<Product>(_productDal.GetByID(id), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultProductDto>>(_unitOfWork.ProductDal.GetList());
+            return new SuccessDataResult<List<ResultProductDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Product t)
+        public IDataResult<ResultProductDto> TGeyByID(int id)
         {
-            _productDal.Update(t);
+            var values = _mapper.Map<ResultProductDto>(_unitOfWork.ProductDal.GetByID(id));
+            return new SuccessDataResult<ResultProductDto>(values, ResultMessages.SuccesMessage);
+        }
+
+        public IResult TUpdate(UpdateProductDto t)
+        {
+            var values = _mapper.Map<UpdateProductDto>(_unitOfWork.ProductDal.GetByID(t.ID));
+            var _product = _mapper.Map<UpdateProductDto, Product>(values);
+            _unitOfWork.ProductDal.Update(_product);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }

@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.FeatureDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,38 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class FeatureManager : IFeatureService
     {
-        IFeatureDal _featureDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public FeatureManager(IFeatureDal featureDal)
+        public FeatureManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _featureDal = featureDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Feature t)
+        public IResult TAdd(CreateFeatureDto t)
         {
-            _featureDal.Insert(t);
+            var value = _mapper.Map<CreateFeatureDto, Feature>(t);
+            _unitOfWork.FeatureDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Feature t)
+        public IResult TDelete(int id)
         {
-            _featureDal.Delete(t);
+            var values = _unitOfWork.FeatureDal.GetByID(id);
+            _unitOfWork.FeatureDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Feature>> TGetList()
+        public IDataResult<List<ResultFeatureDto>> TGetList()
         {
-            return new SuccessDataResult<List<Feature>>(_featureDal.GetList(), ResultMessages.SuccesMessage); 
+            var messages = _mapper.Map<List<ResultFeatureDto>>(_unitOfWork.FeatureDal.GetList());
+            return new SuccessDataResult<List<ResultFeatureDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<Feature> TGeyByID(int id)
+        public IDataResult<ResultFeatureDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<Feature>(_featureDal.GetByID(id), ResultMessages.SuccesMessage); 
+            var values = _mapper.Map<ResultFeatureDto>(_unitOfWork.FeatureDal.GetByID(id));
+            return new SuccessDataResult<ResultFeatureDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Feature t)
+        public IResult TUpdate(UpdateFeatureDto t)
         {
-            _featureDal.Update(t);
+            var values = _mapper.Map<UpdateFeatureDto>(_unitOfWork.FeatureDal.GetByID(t.ID));
+            var _feature = _mapper.Map<UpdateFeatureDto, Feature>(values);
+            _unitOfWork.FeatureDal.Update(_feature);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }

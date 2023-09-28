@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.ColorDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,39 +17,51 @@ namespace BusinessLayer.Concrete
 {
     public class ColorManager : IColorService
     {
-        IColorDal _colorDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ColorManager(IColorDal colorDal)
+        public ColorManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _colorDal = colorDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Color t)
+        public IResult TAdd(CreateColorDto t)
         {
-            _colorDal.Insert(t);
+            var value = _mapper.Map<CreateColorDto, Color>(t);
+            _unitOfWork.ColorDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Color t)
+        public IResult TDelete(int id)
         {
-            _colorDal.Delete(t);
+            var values = _unitOfWork.ColorDal.GetByID(id);
+            _unitOfWork.ColorDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Color>> TGetList()
+        public IDataResult<List<ResultColorDto>> TGetList()
         {
-            return new SuccessDataResult<List<Color>>(_colorDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultColorDto>>(_unitOfWork.ColorDal.GetList());
+            return new SuccessDataResult<List<ResultColorDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<Color> TGeyByID(int id)
+        public IDataResult<ResultColorDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<Color>(_colorDal.GetByID(id), ResultMessages.SuccesMessage);
+            var values = _mapper.Map<ResultColorDto>(_unitOfWork.ColorDal.GetByID(id));
+            return new SuccessDataResult<ResultColorDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Color t)
+        public IResult TUpdate(UpdateColorDto t)
         {
-            _colorDal.Update(t);
+            var values = _mapper.Map<UpdateColorDto>(_unitOfWork.ColorDal.GetByID(t.ID));
+            var _color = _mapper.Map<UpdateColorDto, Color>(values);
+            _unitOfWork.ColorDal.Update(_color);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
+
     }
 }

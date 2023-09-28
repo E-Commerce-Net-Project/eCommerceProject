@@ -1,7 +1,10 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.AboutDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -13,38 +16,50 @@ namespace BusinessLayer.Concrete
 {
     public class AboutManager : IAboutService
     {
-        IAboutDal _aboutDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public AboutManager(IAboutDal aboutDal)
+        public AboutManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _aboutDal = aboutDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(About t)
+        public IResult TAdd(CreateAboutDto t)
         {
-            _aboutDal.Insert(t);
+            var value = _mapper.Map<CreateAboutDto, About>(t);
+            _unitOfWork.AboutDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(About t)
+        public IResult TDelete(int id)
         {
-            _aboutDal.Delete(t);
+            var values = _unitOfWork.AboutDal.GetByID(id);
+            _unitOfWork.AboutDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<About>> TGetList()
+
+        public IDataResult<List<ResultAboutDto>> TGetList()
         {
-          return new SuccessDataResult<List<About>>(_aboutDal.GetList(),ResultMessages.SuccesMessage);
+          var messages=_mapper.Map<List<ResultAboutDto>>(_unitOfWork.AboutDal.GetList());
+            return new SuccessDataResult<List<ResultAboutDto>>(messages, ResultMessages.SuccesMessage);
+
         }
 
-        public IDataResult<About> TGeyByID(int id)
+        public IDataResult<ResultAboutDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<About>(_aboutDal.GetByID(id), ResultMessages.SuccesMessage);
+            var values=_mapper.Map<ResultAboutDto>(_unitOfWork.AboutDal.GetByID(id));
+            return new SuccessDataResult<ResultAboutDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(About t)
+        public IResult TUpdate(UpdateAboutDto t)
         {
-            _aboutDal.Update(t);
+            var values=_mapper.Map<UpdateAboutDto>(_unitOfWork.AboutDal.GetByID(t.ID));
+            var _about = _mapper.Map<UpdateAboutDto, About>(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
 
         }

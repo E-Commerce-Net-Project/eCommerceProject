@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Costants;
 using Core.Utilities.Results;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UoW;
+using DtoLayer.Dtos.TagDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -14,38 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class TagManager : ITagService
     {
-        ITagDal _tagDal;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TagManager(ITagDal tagDal)
+        public TagManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _tagDal = tagDal;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IResult TAdd(Tag t)
+        public IResult TAdd(CreateTagDto t)
         {
-            _tagDal.Insert(t);
+            var value = _mapper.Map<CreateTagDto, Tag>(t);
+            _unitOfWork.TagDal.Insert(value);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IResult TDelete(Tag t)
+        public IResult TDelete(int id)
         {
-            _tagDal.Delete(t);
+            var values = _unitOfWork.TagDal.GetByID(id);
+            _unitOfWork.TagDal.Delete(values);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<Tag>> TGetList()
+        public IDataResult<List<ResultTagDto>> TGetList()
         {
-            return new SuccessDataResult<List<Tag>>(_tagDal.GetList(), ResultMessages.SuccesMessage);
+            var messages = _mapper.Map<List<ResultTagDto>>(_unitOfWork.TagDal.GetList());
+            return new SuccessDataResult<List<ResultTagDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<Tag> TGeyByID(int id)
+        public IDataResult<ResultTagDto> TGeyByID(int id)
         {
-            return new SuccessDataResult<Tag>(_tagDal.GetByID(id), ResultMessages.SuccesMessage);
+            var values = _mapper.Map<ResultTagDto>(_unitOfWork.TagDal.GetByID(id));
+            return new SuccessDataResult<ResultTagDto>(values, ResultMessages.SuccesMessage);
         }
 
-        public IResult TUpdate(Tag t)
+        public IResult TUpdate(UpdateTagDto t)
         {
-            _tagDal.Update(t);
+            var values = _mapper.Map<UpdateTagDto>(_unitOfWork.TagDal.GetByID(t.ID));
+            var _tag = _mapper.Map<UpdateTagDto, Tag>(values);
+            _unitOfWork.TagDal.Update(_tag);
+            _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
     }
