@@ -2,6 +2,7 @@
 using DtoLayer.Dtos.AppUserDtos;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +18,12 @@ namespace eCommerceProject.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Index(LoginAppUserDto loginAppUserDto)
         {

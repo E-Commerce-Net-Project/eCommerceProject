@@ -5,12 +5,14 @@ using DataAccessLayer.UoW;
 using DtoLayer.Dtos.GenreCategoryDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class GenreCategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

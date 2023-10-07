@@ -5,11 +5,13 @@ using DtoLayer.Dtos.FeatureDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class FeatureController : Controller
     {
 

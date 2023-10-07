@@ -5,11 +5,13 @@ using DtoLayer.Dtos.ServiceDtos;
 using DtoLayer.Dtos.SocialMediaDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class SocialMediaController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

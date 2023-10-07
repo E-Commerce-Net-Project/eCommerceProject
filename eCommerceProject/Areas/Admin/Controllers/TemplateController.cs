@@ -3,6 +3,7 @@
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+
     public class TemplateController : Controller
     {
         public IActionResult Index()
