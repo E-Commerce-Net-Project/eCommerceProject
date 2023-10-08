@@ -5,11 +5,13 @@ using DtoLayer.Dtos.SponsorDtos;
 using DtoLayer.Dtos.TagDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class TagController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

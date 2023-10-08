@@ -3,12 +3,14 @@ using BusinessLayer.Abstract;
 using DataAccessLayer.UoW;
 using DtoLayer.Dtos.ContactUsDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class SupportRequestController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

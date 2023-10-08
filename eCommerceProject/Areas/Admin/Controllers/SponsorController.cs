@@ -5,11 +5,13 @@ using DtoLayer.Dtos.SocialMediaDtos;
 using DtoLayer.Dtos.SponsorDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class SponsorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

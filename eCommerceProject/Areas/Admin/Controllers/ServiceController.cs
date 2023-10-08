@@ -4,11 +4,13 @@ using DataAccessLayer.UoW;
 using DtoLayer.Dtos.ServiceDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ServiceController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
