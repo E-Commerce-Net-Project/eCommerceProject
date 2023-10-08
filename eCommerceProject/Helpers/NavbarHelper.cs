@@ -35,6 +35,9 @@
                     case "MainCategory":
                         navbarInfo.ControllerDisplayName = "Ana Kategori";
                         break;
+                    case "Product":
+                        navbarInfo.ControllerDisplayName = "Ürün";
+                        break;
                     case "Service":
                         navbarInfo.ControllerDisplayName = "Servis";
                         break;

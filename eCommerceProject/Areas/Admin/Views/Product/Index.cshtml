@@ -1,0 +1,29 @@
+﻿@model List<ResultProductDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row clearfix">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-4 cool-md-4 col-sm-12">
+                <div class="card">
+                    <ul class="pricing body active">
+                        <li class="plan-img"><img class="img-fluid rounded-circle" src="@product.CoverImage" alt="@product.Name" /></li>
+                        <li class="price">
+                            <h3>@product.Price <small> <span>₺</span>/ Adet</small></h3>
+                            <span>@product.Name</span>
+                        </li>
+                        <li>Marka</li>
+                        <li>Beden Aralığı</li>
+                        <li>Etiket yada Stok Bilgisi</li>
+                        <li class="plan-btn"><a href="#" class="btn btn-round btn-primary">Ürün Detayına Git</a></li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>
