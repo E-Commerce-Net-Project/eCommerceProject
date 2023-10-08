@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <partial name="/Areas/Admin/Views/Dashboard/StatisticsPartial.cshtml" />
+
+ 
+
+    <div class="row clearfix">
+
+    
+    <partial name="/Areas/Admin/Views/Dashboard/SalesReportsPartial.cshtml" />
+
+     <partial name="/Areas/Admin/Views/Dashboard/PageViewPartial.cshtml" />
+
+     <partial name="/Areas/Admin/Views/Dashboard/OrderStatusPartial.cshtml"/>
+
+         
+
+       
+       
+    </div>
+
+   
+
+    <div class="row clearfix">
+    
+     <partial name="/Areas/Admin/Views/Dashboard/ProductValidationPartial.cshtml" />
+
+    <partial name="/Areas/Admin/Views/Dashboard/SalesRevenuePartial.cshtml" />
+    
+    <partial name="/Areas/Admin/Views/Dashboard/BlancePartial.cshtml" />
+
+    </div>
+
+    <partial name="/Areas/Admin/Views/Dashboard/ProductSummaryPartial.cshtml" />
+    
+    
+
+
+</div>
+
+

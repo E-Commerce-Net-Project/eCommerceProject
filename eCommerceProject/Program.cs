@@ -35,10 +35,15 @@ using BusinessLayer.ValidationRules.SubCategory;
 using DataAccessLayer.UoW;
 using BusinessLayer.ValidationRules;
 using Microsoft.AspNetCore.Mvc.Razor;
+using BusinessLayer.Registration;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>()
@@ -46,51 +51,54 @@ builder.Services.AddIdentity<AppUser, AppRole>()
                 .AddErrorDescriber<CustomIdentityValidator>()
                 .AddEntityFrameworkStores<Context>();
 builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.ServiceAp(builder.Configuration);
 
 // Buraya AddScoped'ler gelecek
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped<IValidator<UpdateAboutDto>, UpdateAboutDtoValidator>();
-builder.Services.AddScoped<IContactUsService, ContactUsManager>();
-builder.Services.AddScoped<IContactUsDal, EfContactUsDal>();
+//builder.Services.AddScoped<IValidator<UpdateAboutDto>, UpdateAboutDtoValidator>();
+//builder.Services.AddScoped<IContactUsService, ContactUsManager>();
+//builder.Services.AddScoped<IContactUsDal, EfContactUsDal>();
 
-builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateSubCategoryDto>, CreateSubCategoryDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateSubCategoryDto>, UpdateSubCategoryDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateSubCategoryDto>, CreateSubCategoryDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateSubCategoryDto>, UpdateSubCategoryDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateGenreCategoryDto>, CreateGenreCategoryDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateGenreCategoryDto>, UpdateGenreCategoryDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateGenreCategoryDto>, CreateGenreCategoryDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateGenreCategoryDto>, UpdateGenreCategoryDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateColorDto>, CreateColorDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateColorDto>, UpdateColorDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateColorDto>, CreateColorDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateColorDto>, UpdateColorDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateBrandDto>, CreateBrandDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateBrandDto>, UpdateBrandDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateBrandDto>, CreateBrandDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateBrandDto>, UpdateBrandDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateContactDto>, CreateContactDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateContactDto>, UpdateContactDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateContactDto>, CreateContactDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateContactDto>, UpdateContactDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateBodySizeDto>, CreateBodySizeDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateBodySizeDto>, UpdateBodySizeDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateBodySizeDto>, CreateBodySizeDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateBodySizeDto>, UpdateBodySizeDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateFeatureDto>, CreateFeatureDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateFeatureDto>, UpdateFeatureDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateFeatureDto>, CreateFeatureDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateFeatureDto>, UpdateFeatureDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateServiceDto>, CreateServiceDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateServiceDto>, UpdateServiceDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateServiceDto>, CreateServiceDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateServiceDto>, UpdateServiceDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateSocialMediaDto>, CreateSocialMediaDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateSocialMediaDto>, UpdateSocialMediaDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateSocialMediaDto>, CreateSocialMediaDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateSocialMediaDto>, UpdateSocialMediaDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateSponsorDto>, CreateSponsorDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateSponsorDto>, UpdateSponsorDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateSponsorDto>, CreateSponsorDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateSponsorDto>, UpdateSponsorDtoValidator>();
 
-builder.Services.AddScoped<IValidator<CreateTagDto>, CreateTagDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateTagDto>, UpdateTagDtoValidator>();
+//builder.Services.AddScoped<IValidator<CreateTagDto>, CreateTagDtoValidator>();
+//builder.Services.AddScoped<IValidator<UpdateTagDto>, UpdateTagDtoValidator>();
 
 var app = builder.Build();
 
