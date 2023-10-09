@@ -5,25 +5,40 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container">
-    <div class="row clearfix">
-        @foreach (var product in Model)
-        {
-            <div class="col-lg-4 cool-md-4 col-sm-12">
-                <div class="card">
-                    <ul class="pricing body active">
-                        <li class="plan-img"><img class="img-fluid rounded-circle" src="@product.CoverImage" alt="@product.Name" /></li>
-                        <li class="price">
-                            <h3>@product.Price <small> <span>₺</span>/ Adet</small></h3>
-                            <span>@product.Name</span>
-                        </li>
-                        <li>Marka</li>
-                        <li>Beden Aralığı</li>
-                        <li>Etiket yada Stok Bilgisi</li>
-                        <li class="plan-btn"><a href="#" class="btn btn-round btn-primary">Ürün Detayına Git</a></li>
-                    </ul>
-                </div>
-            </div>
-        }
+<div class="col-12">
+    <div class="table-responsive">
+        <table class="table table-hover table-custom spacing8">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ana Kategori Adı</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td class="w60">
+                            <img src="@product.CoverImage" data-toggle="tooltip" data-placement="top" title="@product.Name" alt="product" class="w35 rounded">
+                        </td>
+                        <td>
+                            <a href="javascript:void(0);" title="">@product.Name</a>
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown">
+                                <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a class="dropdown-item" href="/Admin/MainCategory/UpdateMainCategory/@product.ID"><i class="fa fa-pencil mx-0"></i> Güncelle</a>
+                                    <a class="dropdown-item" href="/Admin/MainCategory/DeleteMainCategory/@product.ID"><i class="fa fa-trash mx-0"></i> Sil</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

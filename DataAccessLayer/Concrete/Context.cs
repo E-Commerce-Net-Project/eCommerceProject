@@ -15,7 +15,7 @@ namespace DataAccessLayer.Concrete
         {
             optionsBuilder.UseSqlServer("Data Source=SQL8006.site4now.net;Initial Catalog=db_a9fba3_ecommerce;User Id=db_a9fba3_ecommerce_admin;Password=ecommerce123");
 
-            //Ortak Database Server
+            // Ortak Database Server
         }
 
         public DbSet<About> Abouts { get; set; }
@@ -29,7 +29,7 @@ namespace DataAccessLayer.Concrete
         public DbSet<GenreCategory> GenreCategories { get; set; }
         public DbSet<MainCategory> MainCategories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductDetail> ProductDetails { get; set; }
+        //public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<SocialMedia> SocialMedias { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
