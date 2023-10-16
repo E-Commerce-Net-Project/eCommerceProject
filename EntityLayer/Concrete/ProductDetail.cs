@@ -7,7 +7,7 @@ using Core.Entities.Abstract;
 
 namespace EntityLayer.Concrete
 {
-    public class ProductDetail :BaseEntity
+    public class ProductDetail : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }

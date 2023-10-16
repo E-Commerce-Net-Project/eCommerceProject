@@ -8,6 +8,7 @@ using BusinessLayer.ValidationRules.Contact;
 using BusinessLayer.ValidationRules.Feature;
 using BusinessLayer.ValidationRules.GenreCategory;
 using BusinessLayer.ValidationRules.MainCategory;
+using BusinessLayer.ValidationRules.Product;
 using BusinessLayer.ValidationRules.Service;
 using BusinessLayer.ValidationRules.SocialMedia;
 using BusinessLayer.ValidationRules.Sponsor;
@@ -25,6 +26,7 @@ using DtoLayer.Dtos.ContactDtos;
 using DtoLayer.Dtos.FeatureDtos;
 using DtoLayer.Dtos.GenreCategoryDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
+using DtoLayer.Dtos.ProductDtos;
 using DtoLayer.Dtos.ServiceDtos;
 using DtoLayer.Dtos.SocialMediaDtos;
 using DtoLayer.Dtos.SponsorDtos;
@@ -48,13 +50,10 @@ namespace BusinessLayer.Registration
     {
         public static IServiceCollection ServiceAp(this IServiceCollection services, IConfiguration configuration)
         {
-
-         
-         
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IValidator<UpdateAboutDto>, UpdateAboutDtoValidator>();
+
             services.AddScoped<IContactUsService, ContactUsManager>();
             services.AddScoped<IContactUsDal, EfContactUsDal>();
 
@@ -94,6 +93,7 @@ namespace BusinessLayer.Registration
             services.AddScoped<IValidator<CreateTagDto>, CreateTagDtoValidator>();
             services.AddScoped<IValidator<UpdateTagDto>, UpdateTagDtoValidator>();
 
+            services.AddScoped<IValidator<CreateProductDto>, CreateProductDtoValidator>();
 
             return services;
         }

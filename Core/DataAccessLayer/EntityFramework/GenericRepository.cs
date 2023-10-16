@@ -21,7 +21,6 @@ namespace Core.DataAccessLayer.EntityFramework
         public void Delete(T t)
         {
             _context.Remove(t);
-            
         }
 
         public List<T> GetByFilter(Expression<Func<T, bool>> filter)
@@ -42,13 +41,11 @@ namespace Core.DataAccessLayer.EntityFramework
         public void Insert(T t)
         {
             _context.Add(t);
-            
         }
 
         public void Update(T t)
         {
             _context.Update(t);
-            
         }
     }
 }

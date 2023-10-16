@@ -26,6 +26,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             _updateValidator = updateValidator;
             _unitOfWork = unitOfWork;
         }
+
         public IActionResult Index()
         {
             var subCategoryValues = _mapper.Map<List<ResultSubCategoryDto>>(_unitOfWork.SubCategoryDal.SubCategoriesListWithMainCategory());

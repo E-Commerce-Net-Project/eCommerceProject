@@ -54,8 +54,6 @@ namespace BusinessLayer.Concrete
             return new SuccessDataResult<ResultSubCategoryDto>(values, ResultMessages.SuccesMessage);
         }
 
-       
-
         public IResult TUpdate(UpdateSubCategoryDto t)
         {
             var values = _mapper.Map<UpdateSubCategoryDto>(_unitOfWork.SubCategoryDal.GetByID(t.ID));

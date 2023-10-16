@@ -6,12 +6,22 @@
 }
 
 <div class="col-12">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <a href="/Admin/BodySize/Index" class="btn btn-secondary col-3">Beden Listesi</a>
+        <a href="/Admin/Brand/Index" class="btn btn-secondary col-3">Marka Listesi</a>
+        <a href="/Admin/Color/Index" class="btn btn-secondary col-3">Renk Listesi</a>
+        <a href="/Admin/Tag/Index" class="btn btn-secondary col-3">Etiket Listesi</a>
+    </div>
+    <hr />
     <div class="table-responsive">
         <table class="table table-hover table-custom spacing8">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Ana Kategori Adı</th>
+                    <th></th>
+                    <th><b>Ürün Adı</b></th>
+                    <th><b>Kategori</b></th>
+                    <th><b>Marka</b></th>
+                    <th><b>Fiyat</b></th>
                     <th></th>
                 </tr>
             </thead>
@@ -22,9 +32,15 @@
                         <td class="w60">
                             <img src="@product.CoverImage" data-toggle="tooltip" data-placement="top" title="@product.Name" alt="product" class="w35 rounded">
                         </td>
+
                         <td>
                             <a href="javascript:void(0);" title="">@product.Name</a>
                         </td>
+
+                        <td>@product.GenreCategory.Name</td>
+                        <td>@product.Brand.Name</td>
+                        <td>@product.Price ₺</td>
+
                         <td class="text-right">
                             <div class="dropdown">
                                 <a class="btn btn-sm btn-icon-only text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

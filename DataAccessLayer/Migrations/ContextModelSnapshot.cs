@@ -414,7 +414,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("Dupatta")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GenreCategoryID")
+                    b.Property<int>("GenreCategoryID")
                         .HasColumnType("int");
 
                     b.Property<string>("Image1")
@@ -456,9 +456,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("Section")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubCategoryID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Top")
                         .HasColumnType("nvarchar(max)");
 
@@ -468,54 +465,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("GenreCategoryID");
 
-                    b.HasIndex("SubCategoryID");
-
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("EntityLayer.Concrete.ProductDetail", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("Bottom")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Dimension")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Dupatta")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Models")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SKU")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Top")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("ProductDetail");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Service", b =>
@@ -858,30 +808,15 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EntityLayer.Concrete.GenreCategory", null)
+                    b.HasOne("EntityLayer.Concrete.GenreCategory", "GenreCategory")
                         .WithMany("Products")
-                        .HasForeignKey("GenreCategoryID");
-
-                    b.HasOne("EntityLayer.Concrete.SubCategory", "SubCategory")
-                        .WithMany()
-                        .HasForeignKey("SubCategoryID")
+                        .HasForeignKey("GenreCategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Brand");
 
-                    b.Navigation("SubCategory");
-                });
-
-            modelBuilder.Entity("EntityLayer.Concrete.ProductDetail", b =>
-                {
-                    b.HasOne("EntityLayer.Concrete.Product", "Product")
-                        .WithMany("ProductDetails")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
+                    b.Navigation("GenreCategory");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Stock", b =>
@@ -1042,8 +977,6 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("EntityLayer.Concrete.Product", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("ProductDetails");
 
                     b.Navigation("Stocks");
 

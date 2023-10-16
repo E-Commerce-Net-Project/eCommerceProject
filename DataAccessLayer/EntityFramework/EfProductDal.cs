@@ -2,6 +2,7 @@
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,16 @@ namespace DataAccessLayer.EntityFramework
 {
     public class EfProductDal : GenericRepository<Product>, IProductDal
     {
+        private readonly Context _context;
+
         public EfProductDal(Context context) : base(context)
         {
+            _context = context;
+        }
+
+        public List<Product> GetGenreCategoriesAndBrandsByProduct()
+        {
+            return _context.Set<Product>().Include(x => x.Brand).Include(x => x.GenreCategory).ToList();
         }
     }
 }

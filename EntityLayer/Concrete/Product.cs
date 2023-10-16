@@ -34,11 +34,11 @@ namespace EntityLayer.Concrete
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
 
-        public int SubCategoryID { get; set; }
-        public SubCategory SubCategory { get; set; }
+        public int GenreCategoryID { get; set; }
+        public GenreCategory GenreCategory { get; set; }
         public int BrandID { get; set; }
         public Brand Brand { get; set; }
-        public ICollection<ProductDetail> ProductDetails { get; set; }
+        //public ICollection<ProductDetail> ProductDetails { get; set; }
         public ICollection<Stock> Stocks { get; set; }
 
         //Many-to-Many Relationships
@@ -48,6 +48,4 @@ namespace EntityLayer.Concrete
         public List<WishList> WishLists { get; } = new();
         public List<Comment> Comments { get; } = new();
     }
-
-
 }

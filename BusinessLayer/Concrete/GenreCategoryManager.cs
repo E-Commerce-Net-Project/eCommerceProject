@@ -42,8 +42,6 @@ namespace BusinessLayer.Concrete
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-      
-
         public IDataResult<List<ResultGenreCategoryDto>> TGetList()
         {
             var messages = _mapper.Map<List<ResultGenreCategoryDto>>(_unitOfWork.GenreCategoryDal.GetList());
