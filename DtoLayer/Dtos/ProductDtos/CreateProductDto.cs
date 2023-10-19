@@ -19,10 +19,23 @@ namespace DtoLayer.Dtos.ProductDtos
         public string? Image5 { get; set; }
         public string CoverImage { get; set; }
         public decimal Price { get; set; }
-        public string Section { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
+
+        public string NameDetail { get; set; }
+        public string DescriptionDetail { get; set; }
+        public string SKU { get; set; }
+        public string Dimension { get; set; }
+        public string Models { get; set; }
+        public string Top { get; set; }
+        public string Bottom { get; set; }
+        public string Dupatta { get; set; }
+        public string Section { get; set; }
+
+        public int GenreCategoryID { get; set; }
         public ResultGenreCategoryDto GenreCategory { get; set; }
+        public int BrandID { get; set; }
         public ResultBrandDto Brand { get; set; }
+
     }
 }
