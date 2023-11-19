@@ -16,5 +16,6 @@ namespace DtoLayer.Dtos.ProductDtos
         public decimal Price { get; set; }
         public ResultGenreCategoryDto GenreCategory { get; set; }
         public ResultBrandDto Brand { get; set; }
+        public bool IsActive { get; set; }
     }
 }

@@ -20,6 +20,17 @@ namespace DataAccessLayer.EntityFramework
             _context = context;
         }
 
+        public void ChangeStatus(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if (product != null)
+            {
+                product.IsActive = !product.IsActive;
+                _context.SaveChanges();
+            }
+        }
+
         public List<Product> GetGenreCategoriesAndBrandsByProduct()
         {
             return _context.Set<Product>().Include(x => x.Brand).Include(x => x.GenreCategory).ToList();

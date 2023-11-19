@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DtoLayer.Dtos.BrandDtos;
+using DtoLayer.Dtos.GenreCategoryDtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +23,21 @@ namespace DtoLayer.Dtos.ProductDtos
         public string Section { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public int SubCategoryID { get; set; }
+
+        public string NameDetail { get; set; }
+        public string DescriptionDetail { get; set; }
+        public string SKU { get; set; }
+        public string Dimension { get; set; }
+        public string Models { get; set; }
+        public string Top { get; set; }
+        public string Bottom { get; set; }
+        public string Dupatta { get; set; }
+
+        public ResultGenreCategoryDto GenreCategory { get; set; }
+        public int GenreCategoryID { get; set; }
+
+        public ResultBrandDto Brand { get; set; }
         public int BrandID { get; set; }
+
     }
 }

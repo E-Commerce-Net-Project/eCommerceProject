@@ -1,0 +1,182 @@
+﻿@model UpdateProductDto
+
+@{
+    ViewData["Title"] = "UpdateProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="header">
+                <h2>Yeni Ürün Ekleme Sayfası</h2>
+            </div>
+
+            <div class="body wizard_validation">
+                <form id="wizard_with_validation" method="post" enctype="multipart/form-data" style="background-color:white !important">
+                    <input type="hidden" asp-for="ID">
+                    <h3>Ürün Görselleri</h3>
+                    <fieldset>
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Kapak</span>
+                                        <div class="custom-file">
+                                            <input type="file" class="form-control" asp-for="CoverImage">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Görsel 1</span>
+                                        <div class="custom-file">
+                                            <input type="file" class="form-control" asp-for="Image1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Görsel 2</span>
+                                        <div class="custom-file">
+                                            <input type="file" class="form-control" asp-for="Image2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Görsel 3</span>
+                                        <div class="custom-file">
+                                            <input type="file" class="form-control" asp-for="Image3">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Görsel 4</span>
+                                        <div class="custom-file">
+                                            <input type="file" class="form-control" asp-for="Image4">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Görsel 5</span>
+                                        <div class="custom-file">
+                                            <input type="file" class="form-control" asp-for="Image5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <h3>Ürün Kart Bilgileri</h3>
+                    <fieldset>
+                        <div class="row clearfix">
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Name" placeholder="Ürün Adı" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(x=>x.BrandID,(List<SelectListItem>)ViewBag.brandName,"Marka seçiniz.",new {@class="form-control", required = "required" })
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Price" placeholder="Fiyat Bilgisi" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <textarea asp-for="Description" cols="30" rows="10" placeholder="Açıklama" class="form-control no-resize" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <h3>Ürün Detay Bilgileri</h3>
+                    <fieldset>
+                        <div class="row clearfix">
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="NameDetail" placeholder="Detay Ürün Adı" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="SKU" placeholder="Stok Kodu" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Dimension" placeholder="Boyut Bilgisi" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Models" placeholder="Model Kodu" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Top" placeholder="Top Bilgisi" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Bottom" placeholder="Bottom Bilgisi" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Dupatta" placeholder="Dupatta Bilgisi" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(x=>x.GenreCategoryID,(List<SelectListItem>)ViewBag.genreCategoryName,"Kategori seçiniz.",new {@class="form-control", required = "required" })
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Section" placeholder="Section Bilgisi" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea asp-for="DescriptionDetail" cols="30" rows="10" placeholder="Detay Açıklama" class="form-control no-resize" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary me-2 col-12">Kategori Türünü Ekle!</button>
+                    </fieldset>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

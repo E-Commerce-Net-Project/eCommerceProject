@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using BusinessLayer.ValidationRules.Product;
 using DataAccessLayer.UoW;
 using DtoLayer.Dtos.GenreCategoryDtos;
-using DtoLayer.Dtos.MainCategoryDtos;
 using DtoLayer.Dtos.ProductDtos;
 using eCommerceProject.Areas.Admin.Models;
 using eCommerceProject.Helpers;
@@ -11,7 +9,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
@@ -65,24 +62,20 @@ namespace eCommerceProject.Areas.Admin.Controllers
         {
             var imageHelper = new ImageHelper(Directory.GetCurrentDirectory());
 
-            IFormFile[] imageFiles = new IFormFile[]
-            {
-                addProductImageModel.coverImage,
-                addProductImageModel.Image1,
-                addProductImageModel.Image2,
-                addProductImageModel.Image3,
-                addProductImageModel.Image4,
-                addProductImageModel.Image5
-            };
+            createProductDto.CoverImage = imageHelper.SaveImage(addProductImageModel.coverImage);
+            createProductDto.Image1 = imageHelper.SaveImage(addProductImageModel.Image1);
+            createProductDto.Image2 = imageHelper.SaveImage(addProductImageModel.Image2);
+            createProductDto.Image3 = imageHelper.SaveImage(addProductImageModel.Image3);
+            createProductDto.Image4 = imageHelper.SaveImage(addProductImageModel.Image4);
+            createProductDto.Image5 = imageHelper.SaveImage(addProductImageModel.Image5);
 
-            createProductDto.CoverImage = createProductDto.CoverImage; // İlk resmi kapak resmi olarak atadık.
-
-
-            for (int i = 0; i < imageFiles.Length - 1; i++)
-            {
-                createProductDto.GetType().GetProperty($"Image{i + 1}")?.SetValue(createProductDto, imageHelper.SaveImage(imageFiles[i]));
-            }
-
+            List<SelectListItem> BrandName = (from x in _unitOfWork.BrandDal.GetList()
+                                              select new SelectListItem
+                                              {
+                                                  Text = x.Name,
+                                                  Value = x.ID.ToString()
+                                              }).ToList();
+            ViewBag.brandName = BrandName;
 
             List<SelectListItem> GenreCategoryName = (from x in _unitOfWork.GenreCategoryDal.GetList()
                                                       select new SelectListItem
@@ -96,6 +89,80 @@ namespace eCommerceProject.Areas.Admin.Controllers
             _unitOfWork.ProductDal.Insert(productValue);
             _unitOfWork.Commit();
 
+            return LocalRedirect("/Admin/Product/Index");
+        }
+
+        [HttpGet]
+        public IActionResult UpdateProduct(int id)
+        {
+            List<SelectListItem> BrandName = (from x in _unitOfWork.BrandDal.GetList()
+                                              select new SelectListItem
+                                              {
+                                                  Text = x.Name,
+                                                  Value = x.ID.ToString()
+                                              }).ToList();
+            ViewBag.brandName = BrandName;
+
+            List<SelectListItem> GenreCategoryName = (from x in _unitOfWork.GenreCategoryDal.GetList()
+                                                      select new SelectListItem
+                                                      {
+                                                          Text = x.Name,
+                                                          Value = x.ID.ToString()
+                                                      }).ToList();
+            ViewBag.genreCategoryName = GenreCategoryName;
+
+            var productValue = _mapper.Map<UpdateProductDto>(_unitOfWork.ProductDal.GetByID(id));
+
+            return View(productValue);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(UpdateProductDto updateProductDto, AddProductImageModel addProductImageModel)
+        {
+            var imageHelper = new ImageHelper(Directory.GetCurrentDirectory());
+
+            updateProductDto.CoverImage = imageHelper.SaveImage(addProductImageModel.coverImage);
+            updateProductDto.Image1 = imageHelper.SaveImage(addProductImageModel.Image1);
+            updateProductDto.Image2 = imageHelper.SaveImage(addProductImageModel.Image2);
+            updateProductDto.Image3 = imageHelper.SaveImage(addProductImageModel.Image3);
+            updateProductDto.Image4 = imageHelper.SaveImage(addProductImageModel.Image4);
+            updateProductDto.Image5 = imageHelper.SaveImage(addProductImageModel.Image5);
+
+            List<SelectListItem> BrandName = (from x in _unitOfWork.BrandDal.GetList()
+                                              select new SelectListItem
+                                              {
+                                                  Text = x.Name,
+                                                  Value = x.ID.ToString()
+                                              }).ToList();
+            ViewBag.brandName = BrandName;
+
+            List<SelectListItem> GenreCategoryName = (from x in _unitOfWork.GenreCategoryDal.GetList()
+                                                      select new SelectListItem
+                                                      {
+                                                          Text = x.Name,
+                                                          Value = x.ID.ToString()
+                                                      }).ToList();
+            ViewBag.genreCategoryName = GenreCategoryName;
+
+            var newProductValue = _mapper.Map<UpdateProductDto, Product>(updateProductDto);
+            _unitOfWork.ProductDal.Update(newProductValue);
+            _unitOfWork.Commit();
+
+            return LocalRedirect("/Admin/Product/Index");
+        }
+
+        public IActionResult ChangeProductStatus(int id)
+        {
+            _unitOfWork.ProductDal.ChangeStatus(id);
+            _unitOfWork.Commit();
+            return LocalRedirect("/Admin/Product/Index");
+        }
+
+        public IActionResult DeleteProduct(int id)
+        {
+            var product = _unitOfWork.ProductDal.GetByID(id);
+            _unitOfWork.ProductDal.Delete(product);
+            _unitOfWork.Commit();
             return LocalRedirect("/Admin/Product/Index");
         }
     }
