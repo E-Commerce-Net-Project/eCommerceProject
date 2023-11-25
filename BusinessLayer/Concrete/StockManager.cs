@@ -17,48 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class StockManager : IStockService
     {
+        private readonly IStockDal _stockDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public StockManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public StockManager(IUnitOfWork unitOfWork, IMapper mapper, IStockDal stockDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _stockDal = stockDal;
         }
 
         public IResult TAdd(CreateStockDto t)
         {
             var value = _mapper.Map<CreateStockDto, Stock>(t);
-            _unitOfWork.StockDal.Insert(value);
+            _stockDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.StockDal.GetByID(id);
-            _unitOfWork.StockDal.Delete(values);
+            var values = _stockDal.GetByID(id);
+            _stockDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultStockDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultStockDto>>(_unitOfWork.StockDal.GetList());
+            var messages = _mapper.Map<List<ResultStockDto>>(_stockDal.GetList());
             return new SuccessDataResult<List<ResultStockDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultStockDto> TGeyByID(int id)
+        public IDataResult<ResultStockDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultStockDto>(_unitOfWork.StockDal.GetByID(id));
+            var values = _mapper.Map<ResultStockDto>(_stockDal.GetByID(id));
             return new SuccessDataResult<ResultStockDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateStockDto t)
         {
-            var values = _mapper.Map<UpdateStockDto>(_unitOfWork.StockDal.GetByID(t.ID));
-            var _contact = _mapper.Map<UpdateStockDto, Stock>(values);
-            _unitOfWork.StockDal.Update(_contact);
+            var _contact = _mapper.Map<UpdateStockDto, Stock>(t);
+            _stockDal.Update(_contact);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

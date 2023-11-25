@@ -36,9 +36,10 @@
                         <td>
                             <a href="javascript:void(0);" title="">@product.Name</a>
                         </td>
-
-                        <td>@product.GenreCategory.Name</td>
-                        <td>@product.Brand.Name</td>
+                        <td>@(product.GenreCategory != null ? product.GenreCategory.Name : "N/A")</td>
+                        <td>@(product.Brand != null ? product.Brand.Name : "N/A")</td>
+                        @* <td>@product.GenreCategory.Name</td> *@
+                        @* <td>@product.Brand.Name</td> *@
                         <td>@product.Price ₺</td>
 
                         <td class="text-right">

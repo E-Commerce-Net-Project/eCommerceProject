@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
 using DataAccessLayer.UoW;
+using DtoLayer.Dtos.ColorDtos;
 using DtoLayer.Dtos.FeatureDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
@@ -14,24 +16,23 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class FeatureController : Controller
     {
-
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IFeatureService _featureService;
         private IValidator<CreateFeatureDto> _createValidator;
         private readonly IValidator<UpdateFeatureDto> _updateValidator;
 
-        public FeatureController(IMapper mapper, IValidator<CreateFeatureDto> createValidator, IValidator<UpdateFeatureDto> updateValidator, IUnitOfWork unitOfWork)
+        public FeatureController(IValidator<CreateFeatureDto> createValidator, IValidator<UpdateFeatureDto> updateValidator, IFeatureService featureService, IMapper mapper)
         {
-            _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
-            _unitOfWork = unitOfWork;
+            _featureService = featureService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var featureValues = _mapper.Map<List<ResultFeatureDto>>(_unitOfWork.FeatureDal.GetList());
-            return View(featureValues);
+            var featureValues = _featureService.TGetList();
+            return View(featureValues.Data);
         }
 
         [HttpGet]
@@ -46,9 +47,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var validator = _createValidator.Validate(createFeatureDto);
             if (validator.IsValid)
             {
-                var featureValue = _mapper.Map<CreateFeatureDto, Feature>(createFeatureDto);
-                _unitOfWork.FeatureDal.Insert(featureValue);
-                _unitOfWork.Commit();
+                _featureService.TAdd(createFeatureDto);
                 return LocalRedirect("/Admin/Feature/Index");
             }
             else
@@ -63,17 +62,17 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteFeature(int id)
         {
-            var featureID = _unitOfWork.FeatureDal.GetByID(id);
-            _unitOfWork.FeatureDal.Delete(featureID);
-            _unitOfWork.Commit();
+            _featureService.TDelete(id);
             return LocalRedirect("/Admin/Feature/Index");
         }
 
         [HttpGet]
         public ActionResult UpdateFeature(int id)
         {
-            var featureValue = _mapper.Map<UpdateFeatureDto>(_unitOfWork.FeatureDal.GetByID(id));
-            return View(featureValue);
+            var featureValue = _featureService.TGetByID(id);
+            var data = _mapper.Map<ResultFeatureDto, UpdateFeatureDto>(featureValue.Data);
+
+            return View(data);
         }
 
         [HttpPost]
@@ -82,9 +81,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var validator = _updateValidator.Validate(updateFeatureDto);
             if (validator.IsValid)
             {
-                var newFeatureValue = _mapper.Map<UpdateFeatureDto, Feature>(updateFeatureDto);
-                _unitOfWork.FeatureDal.Update(newFeatureValue);
-                _unitOfWork.Commit();
+                _featureService.TUpdate(updateFeatureDto);
                 return LocalRedirect("/Admin/Feature/Index");
             }
             else

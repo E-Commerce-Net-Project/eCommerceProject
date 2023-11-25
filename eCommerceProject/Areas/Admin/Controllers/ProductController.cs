@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using DataAccessLayer.UoW;
 using DtoLayer.Dtos.GenreCategoryDtos;
 using DtoLayer.Dtos.ProductDtos;
@@ -16,29 +17,33 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper;   
+        private readonly IProductService _productService;   
+        private readonly IGenreCategoryService _genreCategoryService;
+        private readonly IBrandService _brandService;
 
         private IValidator<CreateProductDto> _createValidator;
         //private IValidator<UpdateGenreCategoryDto> _updateValidator;
 
-        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateProductDto> createValidator)
+        public ProductController(IValidator<CreateProductDto> createValidator, IBrandService brandService, IGenreCategoryService genreCategoryService, IProductService productService, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _createValidator = createValidator;
+            _brandService = brandService;
+            _genreCategoryService = genreCategoryService;
+            _productService = productService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var productValues = _mapper.Map<List<ResultProductDto>>(_unitOfWork.ProductDal.GetGenreCategoriesAndBrandsByProduct());
-            return View(productValues);
+            var productValues = _productService.TGetGenreCategoriesAndBrandsByProduct();
+            return View(productValues.Data);
         }
 
         [HttpGet]
         public IActionResult AddProduct()
         {
-            List<SelectListItem> BrandName = (from x in _unitOfWork.BrandDal.GetList()
+            List<SelectListItem> BrandName = (from x in _brandService.TGetList().Data
                                               select new SelectListItem
                                               {
                                                   Text = x.Name,
@@ -46,7 +51,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                                               }).ToList();
             ViewBag.brandName = BrandName;
 
-            List<SelectListItem> GenreCategoryName = (from x in _unitOfWork.GenreCategoryDal.GetList()
+            List<SelectListItem> GenreCategoryName = (from x in _genreCategoryService.TGetList().Data
                                                       select new SelectListItem
                                                       {
                                                           Text = x.Name,
@@ -69,7 +74,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             createProductDto.Image4 = imageHelper.SaveImage(addProductImageModel.Image4);
             createProductDto.Image5 = imageHelper.SaveImage(addProductImageModel.Image5);
 
-            List<SelectListItem> BrandName = (from x in _unitOfWork.BrandDal.GetList()
+            List<SelectListItem> BrandName = (from x in _brandService.TGetList().Data
                                               select new SelectListItem
                                               {
                                                   Text = x.Name,
@@ -77,7 +82,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                                               }).ToList();
             ViewBag.brandName = BrandName;
 
-            List<SelectListItem> GenreCategoryName = (from x in _unitOfWork.GenreCategoryDal.GetList()
+            List<SelectListItem> GenreCategoryName = (from x in _genreCategoryService.TGetList().Data
                                                       select new SelectListItem
                                                       {
                                                           Text = x.Name,
@@ -85,9 +90,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                                                       }).ToList();
             ViewBag.genreCategoryName = GenreCategoryName;
 
-            var productValue = _mapper.Map<CreateProductDto, Product>(createProductDto);
-            _unitOfWork.ProductDal.Insert(productValue);
-            _unitOfWork.Commit();
+            _productService.TAdd(createProductDto);
 
             return LocalRedirect("/Admin/Product/Index");
         }
@@ -95,7 +98,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateProduct(int id)
         {
-            List<SelectListItem> BrandName = (from x in _unitOfWork.BrandDal.GetList()
+            List<SelectListItem> BrandName = (from x in _brandService.TGetList().Data
                                               select new SelectListItem
                                               {
                                                   Text = x.Name,
@@ -103,7 +106,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                                               }).ToList();
             ViewBag.brandName = BrandName;
 
-            List<SelectListItem> GenreCategoryName = (from x in _unitOfWork.GenreCategoryDal.GetList()
+            List<SelectListItem> GenreCategoryName = (from x in _genreCategoryService.TGetList().Data
                                                       select new SelectListItem
                                                       {
                                                           Text = x.Name,
@@ -111,9 +114,10 @@ namespace eCommerceProject.Areas.Admin.Controllers
                                                       }).ToList();
             ViewBag.genreCategoryName = GenreCategoryName;
 
-            var productValue = _mapper.Map<UpdateProductDto>(_unitOfWork.ProductDal.GetByID(id));
+            var productValue = _productService.TGetByID(id);
+            var data = _mapper.Map<ResultProductDto, UpdateProductDto>(productValue.Data);
 
-            return View(productValue);
+            return View(data);
         }
 
         [HttpPost]
@@ -128,7 +132,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             updateProductDto.Image4 = imageHelper.SaveImage(addProductImageModel.Image4);
             updateProductDto.Image5 = imageHelper.SaveImage(addProductImageModel.Image5);
 
-            List<SelectListItem> BrandName = (from x in _unitOfWork.BrandDal.GetList()
+            List<SelectListItem> BrandName = (from x in _brandService.TGetList().Data
                                               select new SelectListItem
                                               {
                                                   Text = x.Name,
@@ -136,7 +140,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
                                               }).ToList();
             ViewBag.brandName = BrandName;
 
-            List<SelectListItem> GenreCategoryName = (from x in _unitOfWork.GenreCategoryDal.GetList()
+            List<SelectListItem> GenreCategoryName = (from x in _genreCategoryService.TGetList().Data
                                                       select new SelectListItem
                                                       {
                                                           Text = x.Name,
@@ -144,25 +148,20 @@ namespace eCommerceProject.Areas.Admin.Controllers
                                                       }).ToList();
             ViewBag.genreCategoryName = GenreCategoryName;
 
-            var newProductValue = _mapper.Map<UpdateProductDto, Product>(updateProductDto);
-            _unitOfWork.ProductDal.Update(newProductValue);
-            _unitOfWork.Commit();
+            _productService.TUpdate(updateProductDto);
 
             return LocalRedirect("/Admin/Product/Index");
         }
 
         public IActionResult ChangeProductStatus(int id)
         {
-            _unitOfWork.ProductDal.ChangeStatus(id);
-            _unitOfWork.Commit();
+            _productService.TChangeStatus(id);
             return LocalRedirect("/Admin/Product/Index");
         }
 
         public IActionResult DeleteProduct(int id)
         {
-            var product = _unitOfWork.ProductDal.GetByID(id);
-            _unitOfWork.ProductDal.Delete(product);
-            _unitOfWork.Commit();
+            _productService.TDelete(id);
             return LocalRedirect("/Admin/Product/Index");
         }
     }

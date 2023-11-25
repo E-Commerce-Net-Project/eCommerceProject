@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
-using DataAccessLayer.UoW;
 using DtoLayer.Dtos.AboutDtos;
-using DtoLayer.Dtos.MainCategoryDtos;
-using EntityLayer.Concrete;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,22 +11,26 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class AboutController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAboutService _aboutService;
+        
         private readonly IMapper _mapper;
         private IValidator<UpdateAboutDto> _updateValidator;
 
-        public AboutController(IMapper mapper, IValidator<UpdateAboutDto> updateValidator, IUnitOfWork unitOfWork)
+        public AboutController(IMapper mapper, IValidator<UpdateAboutDto> updateValidator, IAboutService aboutService)
         {
             _mapper = mapper;
             _updateValidator = updateValidator;
-            _unitOfWork = unitOfWork;
+            
+            _aboutService = aboutService;
         }
 
         [HttpGet]
         public IActionResult UpdateAbout(int id)
         {
-            var aboutValue = _mapper.Map<UpdateAboutDto>(_unitOfWork.AboutDal.GetByID(1));
-            return View(aboutValue);
+            var aboutValue = _aboutService.TGetByID(1);
+            var newAboutValue = _mapper.Map<ResultAboutDto, UpdateAboutDto>(aboutValue.Data);
+
+            return View(newAboutValue);
         }
 
         [HttpPost]
@@ -38,11 +39,12 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var validator = _updateValidator.Validate(updateAboutDto);
             if (validator.IsValid)
             {
-                var newAboutValue = _mapper.Map<UpdateAboutDto, About>(updateAboutDto);
+                //var newAboutValue = _mapper.Map<UpdateAboutDto, About>(updateAboutDto);
                 //_aboutService.TUpdate(newAboutValue);
-                _unitOfWork.AboutDal.Update(newAboutValue);
-                _unitOfWork.Commit();
-                return View();
+                //_unitOfWork.AboutDal.Update(newAboutValue);
+                //_unitOfWork.Commit();
+                _aboutService.TUpdate(updateAboutDto);
+                return LocalRedirect("/Admin/About/UpdateAbout");
             }
             else
             {

@@ -15,6 +15,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateCommentDto t);
         IDataResult<List<ResultCommentDto>> TGetList();
-        IDataResult<ResultCommentDto> TGeyByID(int id);
+        IDataResult<UpdateCommentDto> TGeyByID(int id);
     }
 }

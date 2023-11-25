@@ -17,48 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class ColorManager : IColorService
     {
+        private readonly IColorDal _colorDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ColorManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public ColorManager(IUnitOfWork unitOfWork, IMapper mapper, IColorDal colorDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _colorDal = colorDal;
         }
 
         public IResult TAdd(CreateColorDto t)
         {
             var value = _mapper.Map<CreateColorDto, Color>(t);
-            _unitOfWork.ColorDal.Insert(value);
+            _colorDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.ColorDal.GetByID(id);
-            _unitOfWork.ColorDal.Delete(values);
+            var values = _colorDal.GetByID(id);
+            _colorDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultColorDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultColorDto>>(_unitOfWork.ColorDal.GetList());
+            var messages = _mapper.Map<List<ResultColorDto>>(_colorDal.GetList());
             return new SuccessDataResult<List<ResultColorDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultColorDto> TGeyByID(int id)
+        public IDataResult<ResultColorDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultColorDto>(_unitOfWork.ColorDal.GetByID(id));
+            var values = _mapper.Map<ResultColorDto>(_colorDal.GetByID(id));
             return new SuccessDataResult<ResultColorDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateColorDto t)
         {
-            var values = _mapper.Map<UpdateColorDto>(_unitOfWork.ColorDal.GetByID(t.ID));
-            var _color = _mapper.Map<UpdateColorDto, Color>(values);
-            _unitOfWork.ColorDal.Update(_color);
+            var color = _mapper.Map<UpdateColorDto, Color>(t);
+            _colorDal.Update(color);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

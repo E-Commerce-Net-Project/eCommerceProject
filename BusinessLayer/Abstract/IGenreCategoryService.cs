@@ -15,7 +15,7 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateGenreCategoryDto t);
         IDataResult<List<ResultGenreCategoryDto>> TGetList();
-        IDataResult<ResultGenreCategoryDto> TGeyByID(int id);
-        IDataResult<List<GenreCategory>> TGenreCategoriesListWithSubCategory();
+        IDataResult<ResultGenreCategoryDto> TGetByID(int id);
+        IDataResult<List<ResultGenreCategoryDto>> TGenreCategoriesListWithSubCategory();
     }
 }

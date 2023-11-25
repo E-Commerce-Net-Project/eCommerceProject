@@ -15,6 +15,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateTagDto t);
         IDataResult<List<ResultTagDto>> TGetList();
-        IDataResult<ResultTagDto> TGeyByID(int id);
+        IDataResult<ResultTagDto> TGetByID(int id);
     }
 }

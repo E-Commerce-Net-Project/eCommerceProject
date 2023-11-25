@@ -17,55 +17,57 @@ namespace BusinessLayer.Concrete
 {
     public class SubCategoryManager : ISubCategoryService
     {
+        private readonly ISubCategoryDal _subCategoryDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public SubCategoryManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public SubCategoryManager(IUnitOfWork unitOfWork, IMapper mapper, ISubCategoryDal subCategoryDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _subCategoryDal = subCategoryDal;
         }
 
         public IResult TAdd(CreateSubCategoryDto t)
         {
             var value = _mapper.Map<CreateSubCategoryDto, SubCategory>(t);
-            _unitOfWork.SubCategoryDal.Insert(value);
+            _subCategoryDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.SubCategoryDal.GetByID(id);
-            _unitOfWork.SubCategoryDal.Delete(values);
+            var values = _subCategoryDal.GetByID(id);
+            _subCategoryDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultSubCategoryDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultSubCategoryDto>>(_unitOfWork.SubCategoryDal.GetList());
+            var messages = _mapper.Map<List<ResultSubCategoryDto>>(_subCategoryDal.GetList());
             return new SuccessDataResult<List<ResultSubCategoryDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultSubCategoryDto> TGeyByID(int id)
+        public IDataResult<ResultSubCategoryDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultSubCategoryDto>(_unitOfWork.SubCategoryDal.GetByID(id));
+            var values = _mapper.Map<ResultSubCategoryDto>(_subCategoryDal.GetByID(id));
             return new SuccessDataResult<ResultSubCategoryDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateSubCategoryDto t)
         {
-            var values = _mapper.Map<UpdateSubCategoryDto>(_unitOfWork.SubCategoryDal.GetByID(t.ID));
-            var _subCategory = _mapper.Map<UpdateSubCategoryDto, SubCategory>(values);
-            _unitOfWork.SubCategoryDal.Update(_subCategory);
+            var _subCategory = _mapper.Map<UpdateSubCategoryDto, SubCategory>(t);
+            _subCategoryDal.Update(_subCategory);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<SubCategory>> TSubCategoriesListWithMainCategory()
+        public IDataResult<List<ResultSubCategoryDto>> TSubCategoriesListWithMainCategory()
         {
-            throw new NotImplementedException();
+            var values= _mapper.Map<List<ResultSubCategoryDto>>(_subCategoryDal.SubCategoriesListWithMainCategory());
+            return new SuccessDataResult<List<ResultSubCategoryDto>>(values, ResultMessages.SuccesMessage);
         }
     }
 }

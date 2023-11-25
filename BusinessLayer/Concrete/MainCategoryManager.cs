@@ -17,48 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class MainCategoryManager : IMainCategoryService
     {
+        private readonly IMainCategoryDal _mainCategoryDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public MainCategoryManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public MainCategoryManager(IUnitOfWork unitOfWork, IMapper mapper, IMainCategoryDal mainCategoryDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mainCategoryDal = mainCategoryDal;
         }
 
         public IResult TAdd(CreateMainCategoryDto t)
         {
             var value = _mapper.Map<CreateMainCategoryDto, MainCategory>(t);
-            _unitOfWork.MainCategoryDal.Insert(value);
+            _mainCategoryDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.MainCategoryDal.GetByID(id);
-            _unitOfWork.MainCategoryDal.Delete(values);
+            var values = _mainCategoryDal.GetByID(id);
+            _mainCategoryDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultMainCategoryDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultMainCategoryDto>>(_unitOfWork.MainCategoryDal.GetList());
+            var messages = _mapper.Map<List<ResultMainCategoryDto>>(_mainCategoryDal.GetList());
             return new SuccessDataResult<List<ResultMainCategoryDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultMainCategoryDto> TGeyByID(int id)
+        public IDataResult<ResultMainCategoryDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultMainCategoryDto>(_unitOfWork.MainCategoryDal.GetByID(id));
+            var values = _mapper.Map<ResultMainCategoryDto>(_mainCategoryDal.GetByID(id));
             return new SuccessDataResult<ResultMainCategoryDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateMainCategoryDto t)
         {
-            var values = _mapper.Map<UpdateMainCategoryDto>(_unitOfWork.MainCategoryDal.GetByID(t.ID));
-            var _mainCategory= _mapper.Map<UpdateMainCategoryDto, MainCategory>(values);
-            _unitOfWork.MainCategoryDal.Update(_mainCategory);
+            var _mainCategory= _mapper.Map<UpdateMainCategoryDto, MainCategory>(t);
+            _mainCategoryDal.Update(_mainCategory);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

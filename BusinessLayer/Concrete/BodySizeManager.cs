@@ -18,48 +18,50 @@ namespace BusinessLayer.Concrete
 {
     public class BodySizeManager : IBodySizeService
     {
+        private readonly IBodySizeDal _bodySizeDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public BodySizeManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public BodySizeManager(IUnitOfWork unitOfWork, IMapper mapper, IBodySizeDal bodySizeDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _bodySizeDal = bodySizeDal;
         }
 
         public IResult TAdd(CreateBodySizeDto t)
         {
             var value=_mapper.Map<CreateBodySizeDto , BodySize>(t);
-            _unitOfWork.BodySizeDal.Insert(value);
+            _bodySizeDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-           var values=_unitOfWork.BodySizeDal.GetByID(id);
-            _unitOfWork.BodySizeDal.Delete(values);
+           var values=_bodySizeDal.GetByID(id);
+            _bodySizeDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultBodySizeDto>> TGetList()
         {
-           var messages =_mapper.Map<List<ResultBodySizeDto>>(_unitOfWork.BodySizeDal.GetList());
+           var messages =_mapper.Map<List<ResultBodySizeDto>>(_bodySizeDal.GetList());
             return new SuccessDataResult<List<ResultBodySizeDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultBodySizeDto> TGeyByID(int id)
+        public IDataResult<ResultBodySizeDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultBodySizeDto>(_unitOfWork.BodySizeDal.GetByID(id));
+            var values = _mapper.Map<ResultBodySizeDto>(_bodySizeDal.GetByID(id));
             return new SuccessDataResult<ResultBodySizeDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateBodySizeDto t)
         {
-            var values=_mapper.Map<UpdateBodySizeDto>(_unitOfWork.BodySizeDal.GetByID(t.ID));
-            var _bodySize = _mapper.Map<UpdateBodySizeDto, BodySize>(values);
-            _unitOfWork.BodySizeDal.Update(_bodySize);
+            //var values=_mapper.Map<UpdateBodySizeDto>(_bodySizeDal.GetByID(t.ID));
+            var bodySize = _mapper.Map<UpdateBodySizeDto, BodySize>(t);
+            _bodySizeDal.Update(bodySize);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

@@ -13,6 +13,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(T t);
         IResult TUpdate(T t);
         IDataResult<List<T>> TGetList();
-        IDataResult<T> TGeyByID(int id);
+        IDataResult<T> TGetByID(int id);
     }
 }

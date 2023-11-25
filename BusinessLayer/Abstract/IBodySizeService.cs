@@ -16,6 +16,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateBodySizeDto t);
         IDataResult<List<ResultBodySizeDto>> TGetList();
-        IDataResult<ResultBodySizeDto> TGeyByID(int id);
+        IDataResult<ResultBodySizeDto> TGetByID(int id);
     }
 }

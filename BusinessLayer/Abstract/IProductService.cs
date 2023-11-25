@@ -13,8 +13,10 @@ namespace BusinessLayer.Abstract
     {
         IResult TAdd(CreateProductDto t);
         IResult TDelete(int id);
+        IResult TChangeStatus(int id);
         IResult TUpdate(UpdateProductDto t);
         IDataResult<List<ResultProductDto>> TGetList();
-        IDataResult<ResultProductDto> TGeyByID(int id);
+        IDataResult<ResultProductDto> TGetByID(int id);
+        IDataResult<List<ResultProductDto>> TGetGenreCategoriesAndBrandsByProduct();
     }
 }

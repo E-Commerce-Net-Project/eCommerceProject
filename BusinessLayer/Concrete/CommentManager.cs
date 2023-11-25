@@ -17,48 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class CommentManager : ICommentService
     {
+        private readonly ICommentDal _commentDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CommentManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public CommentManager(IUnitOfWork unitOfWork, IMapper mapper, ICommentDal commentDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _commentDal = commentDal;
         }
 
         public IResult TAdd(CreateCommentDto t)
         {
             var value = _mapper.Map<CreateCommentDto, Comment>(t);
-            _unitOfWork.CommentDal.Insert(value);
+            _commentDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.CommentDal.GetByID(id);
-            _unitOfWork.CommentDal.Delete(values);
+            var values = _commentDal.GetByID(id);
+            _commentDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultCommentDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultCommentDto>>(_unitOfWork.CommentDal.GetList());
+            var messages = _mapper.Map<List<ResultCommentDto>>(_commentDal.GetList());
             return new SuccessDataResult<List<ResultCommentDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultCommentDto> TGeyByID(int id)
+        public IDataResult<UpdateCommentDto> TGeyByID(int id)
         {
-            var values = _mapper.Map<ResultCommentDto>(_unitOfWork.CommentDal.GetByID(id));
-            return new SuccessDataResult<ResultCommentDto>(values, ResultMessages.SuccesMessage);
+            var values = _mapper.Map<UpdateCommentDto>(_commentDal.GetByID(id));
+            return new SuccessDataResult<UpdateCommentDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateCommentDto t)
         {
-            var values = _mapper.Map<UpdateCommentDto>(_unitOfWork.CommentDal.GetByID(t.ID));
-            var _comment = _mapper.Map<UpdateCommentDto, Comment>(values);
-            _unitOfWork.CommentDal.Update(_comment);
+            var _comment = _mapper.Map<UpdateCommentDto, Comment>(t);
+            _commentDal.Update(_comment);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

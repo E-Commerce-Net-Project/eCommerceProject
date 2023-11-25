@@ -15,6 +15,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateContactDto t);
         IDataResult<List<ResultContactDto>> TGetList();
-        IDataResult<ResultContactDto> TGeyByID(int id);
+        IDataResult<ResultContactDto> TGetByID(int id);
     }
 }

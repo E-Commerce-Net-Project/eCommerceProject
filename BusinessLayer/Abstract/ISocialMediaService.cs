@@ -16,6 +16,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateSocialMediaDto t);
         IDataResult<List<ResultSocialMediaDto>> TGetList();
-        IDataResult<ResultSocialMediaDto> TGeyByID(int id);
+        IDataResult<ResultSocialMediaDto> TGetByID(int id);
     }
 }

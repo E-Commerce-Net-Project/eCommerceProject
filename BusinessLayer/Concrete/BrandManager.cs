@@ -18,48 +18,49 @@ namespace BusinessLayer.Concrete
 {
     public class BrandManager : IBrandService
     {
+        private readonly IBrandDal _brandDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public BrandManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public BrandManager(IUnitOfWork unitOfWork, IMapper mapper, IBrandDal brandDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _brandDal = brandDal;
         }
 
         public IResult TAdd(CreateBrandDto t)
         {
             var value = _mapper.Map<CreateBrandDto, Brand>(t);
-            _unitOfWork.BrandDal.Insert(value);
+            _brandDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.BrandDal.GetByID(id);
-            _unitOfWork.BrandDal.Delete(values);
+            var values = _brandDal.GetByID(id);
+            _brandDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultBrandDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultBrandDto>>(_unitOfWork.BrandDal.GetList());
+            var messages = _mapper.Map<List<ResultBrandDto>>(_brandDal.GetList());
             return new SuccessDataResult<List<ResultBrandDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultBrandDto> TGeyByID(int id)
+        public IDataResult<ResultBrandDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultBrandDto>(_unitOfWork.BrandDal.GetByID(id));
+            var values = _mapper.Map<ResultBrandDto>(_brandDal.GetByID(id));
             return new SuccessDataResult<ResultBrandDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateBrandDto t)
         {
-            var values = _mapper.Map<UpdateBrandDto>(_unitOfWork.ContactUsDal.GetByID(t.ID));
-            var _brand = _mapper.Map<UpdateBrandDto, Brand>(values);
-            _unitOfWork.BrandDal.Update(_brand);
+            var brand = _mapper.Map<UpdateBrandDto, Brand>(t);
+            _brandDal.Update(brand);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

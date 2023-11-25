@@ -17,48 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class ContactManager : IContactService
     {
+        private readonly IContactDal _contactDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ContactManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public ContactManager(IUnitOfWork unitOfWork, IMapper mapper, IContactDal contactDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _contactDal = contactDal;
         }
 
         public IResult TAdd(CreateContactDto t)
         {
             var value = _mapper.Map<CreateContactDto, Contact>(t);
-            _unitOfWork.ContactDal.Insert(value);
+            _contactDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.ContactDal.GetByID(id);
-            _unitOfWork.ContactDal.Delete(values);
+            var values = _contactDal.GetByID(id);
+            _contactDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultContactDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultContactDto>>(_unitOfWork.ContactDal.GetList());
+            var messages = _mapper.Map<List<ResultContactDto>>(_contactDal.GetList());
             return new SuccessDataResult<List<ResultContactDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultContactDto> TGeyByID(int id)
+        public IDataResult<ResultContactDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultContactDto>(_unitOfWork.ContactDal.GetByID(id));
+            var values = _mapper.Map<ResultContactDto>(_contactDal.GetByID(id));
             return new SuccessDataResult<ResultContactDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateContactDto t)
         {
-            var values = _mapper.Map<UpdateContactDto>(_unitOfWork.ContactDal.GetByID(t.ID));
-            var _contact = _mapper.Map<UpdateContactDto, Contact>(values);
-            _unitOfWork.ContactDal.Update(_contact);
+            var contact = _mapper.Map<UpdateContactDto, Contact>(t);
+            _contactDal.Update(contact);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

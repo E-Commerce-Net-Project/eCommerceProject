@@ -53,47 +53,76 @@ namespace BusinessLayer.Registration
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IValidator<UpdateAboutDto>, UpdateAboutDtoValidator>();
+            services.AddScoped<IAboutService, AboutManager>();
+            services.AddScoped<IAboutDal, EfAboutDal>();
 
             services.AddScoped<IContactUsService, ContactUsManager>();
             services.AddScoped<IContactUsDal, EfContactUsDal>();
 
             services.AddScoped<IValidator<CreateMainCategoryDto>, CreateMainCategoryDtoValidator>();
             services.AddScoped<IValidator<UpdateMainCategoryDto>, UpdateMainCategoryDtoValidator>();
+            services.AddScoped<IMainCategoryService, MainCategoryManager>();
+            services.AddScoped<IMainCategoryDal, EfMainCategoryDal>();
 
             services.AddScoped<IValidator<CreateSubCategoryDto>, CreateSubCategoryDtoValidator>();
             services.AddScoped<IValidator<UpdateSubCategoryDto>, UpdateSubCategoryDtoValidator>();
+            services.AddScoped<ISubCategoryService, SubCategoryManager>();
+            services.AddScoped<ISubCategoryDal, EfSubCategoryDal>();
 
             services.AddScoped<IValidator<CreateGenreCategoryDto>, CreateGenreCategoryDtoValidator>();
             services.AddScoped<IValidator<UpdateGenreCategoryDto>, UpdateGenreCategoryDtoValidator>();
+            services.AddScoped<IGenreCategoryService, GenreCategoryManager>();
+            services.AddScoped<IGenreCategoryDal, EfGenreCategoryDal>();
 
             services.AddScoped<IValidator<CreateColorDto>, CreateColorDtoValidator>();
             services.AddScoped<IValidator<UpdateColorDto>, UpdateColorDtoValidator>();
+            services.AddScoped<IColorService, ColorManager>();
+            services.AddScoped<IColorDal, EfColorDal>();
 
             services.AddScoped<IValidator<CreateBrandDto>, CreateBrandDtoValidator>();
             services.AddScoped<IValidator<UpdateBrandDto>, UpdateBrandDtoValidator>();
+            services.AddScoped<IBrandService, BrandManager>();
+            services.AddScoped<IBrandDal, EfBrandDal>();
 
             services.AddScoped<IValidator<CreateContactDto>, CreateContactDtoValidator>();
             services.AddScoped<IValidator<UpdateContactDto>, UpdateContactDtoValidator>();
+            services.AddScoped<IContactService, ContactManager>();
+            services.AddScoped<IContactDal, EfContactDal>();
 
             services.AddScoped<IValidator<CreateBodySizeDto>, CreateBodySizeDtoValidator>();
             services.AddScoped<IValidator<UpdateBodySizeDto>, UpdateBodySizeDtoValidator>();
+            services.AddScoped<IBodySizeService, BodySizeManager>();
+            services.AddScoped<IBodySizeDal, EfBodySizeDal>();
+            
 
             services.AddScoped<IValidator<CreateFeatureDto>, CreateFeatureDtoValidator>();
             services.AddScoped<IValidator<UpdateFeatureDto>, UpdateFeatureDtoValidator>();
+            services.AddScoped<IFeatureService, FeatureManager>();
+            services.AddScoped<IFeatureDal, EfFeatureDal>();
 
             services.AddScoped<IValidator<CreateServiceDto>, CreateServiceDtoValidator>();
             services.AddScoped<IValidator<UpdateServiceDto>, UpdateServiceDtoValidator>();
+            services.AddScoped<IServiceService, ServiceManager>();
+            services.AddScoped<IServiceDal, EfServiceDal>();
 
             services.AddScoped<IValidator<CreateSocialMediaDto>, CreateSocialMediaDtoValidator>();
             services.AddScoped<IValidator<UpdateSocialMediaDto>, UpdateSocialMediaDtoValidator>();
+            services.AddScoped<ISocialMediaService, SocialMediaManager>();
+            services.AddScoped<ISocialMediaDal, EfSocialMediaDal>();
 
             services.AddScoped<IValidator<CreateSponsorDto>, CreateSponsorDtoValidator>();
             services.AddScoped<IValidator<UpdateSponsorDto>, UpdateSponsorDtoValidator>();
+            services.AddScoped<ISponsorService, SponsorManager>();
+            services.AddScoped<ISponsorDal, EfSponsorDal>();
 
             services.AddScoped<IValidator<CreateTagDto>, CreateTagDtoValidator>();
             services.AddScoped<IValidator<UpdateTagDto>, UpdateTagDtoValidator>();
+            services.AddScoped<ITagService, TagManager>();
+            services.AddScoped<ITagDal, EfTagDal>();
 
             services.AddScoped<IValidator<CreateProductDto>, CreateProductDtoValidator>();
+            services.AddScoped<IProductService, ProductManager>();
+            services.AddScoped<IProductDal, EfProductDal>();
 
             return services;
         }

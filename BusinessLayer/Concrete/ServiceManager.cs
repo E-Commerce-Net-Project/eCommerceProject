@@ -17,48 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class ServiceManager : IServiceService
     {
+        private readonly IServiceDal _serviceDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ServiceManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IServiceDal serviceDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _serviceDal = serviceDal;
         }
 
         public IResult TAdd(CreateServiceDto t)
         {
             var value = _mapper.Map<CreateServiceDto, Service>(t);
-            _unitOfWork.ServiceDal.Insert(value);
+            _serviceDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.ServiceDal.GetByID(id);
-            _unitOfWork.ServiceDal.Delete(values);
+            var values = _serviceDal.GetByID(id);
+            _serviceDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultServiceDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultServiceDto>>(_unitOfWork.ServiceDal.GetList());
+            var messages = _mapper.Map<List<ResultServiceDto>>(_serviceDal.GetList());
             return new SuccessDataResult<List<ResultServiceDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultServiceDto> TGeyByID(int id)
+        public IDataResult<ResultServiceDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultServiceDto>(_unitOfWork.ServiceDal.GetByID(id));
+            var values = _mapper.Map<ResultServiceDto>(_serviceDal.GetByID(id));
             return new SuccessDataResult<ResultServiceDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateServiceDto t)
         {
-            var values = _mapper.Map<UpdateServiceDto>(_unitOfWork.ServiceDal.GetByID(t.ID));
-            var _service = _mapper.Map<UpdateServiceDto, Service>(values);
-            _unitOfWork.ServiceDal.Update(_service);
+            var _service = _mapper.Map<UpdateServiceDto, Service>(t);
+            _serviceDal.Update(_service);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

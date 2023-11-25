@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
 using DataAccessLayer.UoW;
+using DtoLayer.Dtos.BrandDtos;
 using DtoLayer.Dtos.ColorDtos;
 using DtoLayer.Dtos.MainCategoryDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace eCommerceProject.Areas.Admin.Controllers
 {
@@ -14,23 +16,23 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ColorController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IColorService _colorService;
         private IValidator<CreateColorDto> _createValidator;
         private IValidator<UpdateColorDto> _updateValidator;
 
-        public ColorController(IMapper mapper, IValidator<CreateColorDto> createValidator, IValidator<UpdateColorDto> updateValidator, IUnitOfWork unitOfWork)
+        public ColorController(IValidator<CreateColorDto> createValidator, IValidator<UpdateColorDto> updateValidator, IColorService colorService, IMapper mapper)
         {
-            _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
-            _unitOfWork = unitOfWork;
+            _colorService = colorService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var values = _mapper.Map<List<ResultColorDto>>(_unitOfWork.ColorDal.GetList());
-            return View(values);
+            var values = _colorService.TGetList();
+            return View(values.Data);
         }
 
         [HttpGet]
@@ -45,9 +47,8 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var validator = _createValidator.Validate(createColorDto);
             if (validator.IsValid)
             {
-                var value = _mapper.Map<CreateColorDto, Color>(createColorDto);
-                _unitOfWork.ColorDal.Insert(value);
-                _unitOfWork.Commit();
+                _colorService.TAdd(createColorDto);
+                
                 return LocalRedirect("/Admin/Color/Index");
             }
             else
@@ -63,18 +64,17 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteColor(int id)
         {
-            var values = _unitOfWork.ColorDal.GetByID(id);
-            _unitOfWork.ColorDal.Delete(values);
-            _unitOfWork.Commit();
+            
+            _colorService.TDelete(id);
             return LocalRedirect("/Admin/Color/Index");
         }
 
         [HttpGet]
         public IActionResult UpdateColor(int id)
         {
-            var values = _mapper.Map<UpdateColorDto>(_unitOfWork.ColorDal.GetByID(id));
-
-            return View(values);
+            var values = _colorService.TGetByID(id);
+            var data = _mapper.Map<ResultColorDto, UpdateColorDto>(values.Data);
+            return View(data);
         }
 
         [HttpPost]
@@ -83,11 +83,15 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var validator = _updateValidator.Validate(updateColorDto);
             if (validator.IsValid)
             {
-                var values = _mapper.Map<UpdateColorDto, Color>(updateColorDto);
-                _unitOfWork.ColorDal.Update(values);
-                _unitOfWork.Commit();
+                
+
+                //buraya if'le result.Success ise veya değilse diye döngü yapılabilir.
+                var result = _colorService.TUpdate(updateColorDto);
+                
 
                 return LocalRedirect("/Admin/Color/Index");
+
+
             }
             else
             {

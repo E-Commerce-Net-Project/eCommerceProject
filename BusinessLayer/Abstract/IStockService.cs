@@ -15,6 +15,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateStockDto t);
         IDataResult<List<ResultStockDto>> TGetList();
-        IDataResult<ResultStockDto> TGeyByID(int id);
+        IDataResult<ResultStockDto> TGetByID(int id);
     }
 }

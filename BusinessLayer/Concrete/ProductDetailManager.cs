@@ -17,48 +17,49 @@ namespace BusinessLayer.Concrete
 {
     public class ProductDetailManager : IProductDetailService
     {
+        private readonly IProductDetailDal _productDetailDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ProductDetailManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProductDetailManager(IUnitOfWork unitOfWork, IMapper mapper, IProductDetailDal productDetailDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _productDetailDal = productDetailDal;
         }
 
         public IResult TAdd(CreateProductDetailDto t)
         {
             var value = _mapper.Map<CreateProductDetailDto, ProductDetail>(t);
-            _unitOfWork.ProductDetailDal.Insert(value);
+            _productDetailDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.ProductDetailDal.GetByID(id);
-            _unitOfWork.ProductDetailDal.Delete(values);
+            var values = _productDetailDal.GetByID(id);
+            _productDetailDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultProductDetailDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultProductDetailDto>>(_unitOfWork.ProductDetailDal.GetList());
+            var messages = _mapper.Map<List<ResultProductDetailDto>>(_productDetailDal.GetList());
             return new SuccessDataResult<List<ResultProductDetailDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultProductDetailDto> TGeyByID(int id)
+        public IDataResult<ResultProductDetailDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultProductDetailDto>(_unitOfWork.ProductDetailDal.GetByID(id));
+            var values = _mapper.Map<ResultProductDetailDto>(_productDetailDal.GetByID(id));
             return new SuccessDataResult<ResultProductDetailDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateProductDetailDto t)
         {
-            var values = _mapper.Map<UpdateProductDetailDto>(_unitOfWork.ProductDetailDal.GetByID(t.ID));
-            var _productDetail = _mapper.Map<UpdateProductDetailDto, ProductDetail>(values);
-            _unitOfWork.ProductDetailDal.Update(_productDetail);
+            var _productDetail = _mapper.Map<UpdateProductDetailDto, ProductDetail>(t);
+            _productDetailDal.Update(_productDetail);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }

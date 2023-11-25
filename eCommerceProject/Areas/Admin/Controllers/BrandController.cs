@@ -13,23 +13,23 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class BrandController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IBrandService _brandService;
         private IValidator<CreateBrandDto> _createValidator;
         private IValidator<UpdateBrandDto> _updateValidator;
 
-        public BrandController(IMapper mapper, IValidator<CreateBrandDto> createValidator, IValidator<UpdateBrandDto> updateValidator, IUnitOfWork unitOfWork)
+        public BrandController(IValidator<CreateBrandDto> createValidator, IValidator<UpdateBrandDto> updateValidator, IBrandService brandService, IMapper mapper)
         {
-            _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
-            _unitOfWork = unitOfWork;
+            _brandService = brandService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var values = _mapper.Map<List<ResultBrandDto>>(_unitOfWork.BrandDal.GetList());
-            return View(values);
+            var values = _brandService.TGetList();
+            return View(values.Data);
         }
 
         [HttpGet]
@@ -44,9 +44,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var validator = _createValidator.Validate(createBrandDto);
             if (validator.IsValid)
             {
-                var value = _mapper.Map<CreateBrandDto, Brand>(createBrandDto);
-                _unitOfWork.BrandDal.Insert(value);
-                _unitOfWork.Commit();
+                _brandService.TAdd(createBrandDto);
                 return LocalRedirect("/Admin/Brand/Index");
 
             }
@@ -65,9 +63,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteBrand(int id)
         {
-            var values = _unitOfWork.BrandDal.GetByID(id);
-            _unitOfWork.BrandDal.Delete(values);
-            _unitOfWork.Commit();
+            _brandService.TDelete(id);
             return LocalRedirect("/Admin/Brand/Index");
 
         }
@@ -75,17 +71,16 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateBrand(int id)
         {
-            var values = _mapper.Map<UpdateBrandDto>(_unitOfWork.BrandDal.GetByID(id));
-            return View(values);
+            var value = _brandService.TGetByID(id);
+            var data = _mapper.Map<ResultBrandDto, UpdateBrandDto>(value.Data);
+            return View(data);
         }
         public IActionResult UpdateBrand(UpdateBrandDto updateBrandDto)
         {
             var validator = _updateValidator.Validate(updateBrandDto);
             if (validator.IsValid)
             {
-                var values = _mapper.Map<UpdateBrandDto, Brand>(updateBrandDto);
-                _unitOfWork.BrandDal.Update(values);
-                _unitOfWork.Commit();
+                _brandService.TUpdate(updateBrandDto);
                 return LocalRedirect("/Admin/Brand/Index");
             }
             else

@@ -15,6 +15,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateSponsorDto t);
         IDataResult<List<ResultSponsorDto>> TGetList();
-        IDataResult<ResultSponsorDto> TGeyByID(int id);
+        IDataResult<ResultSponsorDto> TGetByID(int id);
     }
 }

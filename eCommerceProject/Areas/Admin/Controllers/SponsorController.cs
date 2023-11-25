@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
 using DataAccessLayer.UoW;
+using DtoLayer.Dtos.GenreCategoryDtos;
 using DtoLayer.Dtos.SocialMediaDtos;
 using DtoLayer.Dtos.SponsorDtos;
 using EntityLayer.Concrete;
@@ -14,23 +15,25 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class SponsorController : Controller
     {
+        private readonly ISponsorService _sponsorService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private IValidator<CreateSponsorDto> _createValidator;
         private IValidator<UpdateSponsorDto> _updateValidator;
 
-        public SponsorController(IMapper mapper, IValidator<CreateSponsorDto> createValidator, IValidator<UpdateSponsorDto> updateValidator, IUnitOfWork unitOfWork)
+        public SponsorController(IMapper mapper, IValidator<CreateSponsorDto> createValidator, IValidator<UpdateSponsorDto> updateValidator, IUnitOfWork unitOfWork, ISponsorService sponsorService)
         {
             _mapper = mapper;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
             _unitOfWork = unitOfWork;
+            _sponsorService = sponsorService;
         }
 
         public IActionResult Index()
         {
-            var sponsorValues = _mapper.Map<List<ResultSponsorDto>>(_unitOfWork.SponsorDal.GetList());
-            return View(sponsorValues);
+            var sponsorValues = _sponsorService.TGetList();
+            return View(sponsorValues.Data);
         }
 
         [HttpGet]
@@ -46,9 +49,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
             if (validator.IsValid)
             {
-                var sponsorValue = _mapper.Map<CreateSponsorDto, Sponsor>(createSponsorDto);
-                _unitOfWork.SponsorDal.Insert(sponsorValue);
-                _unitOfWork.Commit();
+                _sponsorService.TAdd(createSponsorDto);
 
                 return LocalRedirect("/Admin/Sponsor/Index");
             }
@@ -66,9 +67,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteSponsor(int id)
         {
-            var sponsorID = _unitOfWork.SponsorDal.GetByID(id);
-            _unitOfWork.SponsorDal.Delete(sponsorID);
-            _unitOfWork.Commit();
+            _sponsorService.TDelete(id);
 
             return LocalRedirect("/Admin/Sponsor/Index");
         }
@@ -76,8 +75,10 @@ namespace eCommerceProject.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult UpdateSponsor(int id)
         {
-            var sponsorValue = _mapper.Map<UpdateSponsorDto>(_unitOfWork.SponsorDal.GetByID(id));
-            return View(sponsorValue);
+            var sponsorValue = _sponsorService.TGetByID(id);
+            var data = _mapper.Map<ResultSponsorDto, UpdateSponsorDto>(sponsorValue.Data);
+
+            return View(data);
         }
 
         [HttpPost]
@@ -87,9 +88,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
             if (validator.IsValid)
             {
-                var newSponsorValue = _mapper.Map<UpdateSponsorDto, Sponsor>(updateSponsorDto);
-                _unitOfWork.SponsorDal.Update(newSponsorValue);
-                _unitOfWork.Commit();
+                _sponsorService.TUpdate(updateSponsorDto);
 
                 return LocalRedirect("/Admin/Sponsor/Index");
             }

@@ -6,6 +6,7 @@ using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
 using DataAccessLayer.UoW;
 using DtoLayer.Dtos.GenreCategoryDtos;
+using DtoLayer.Dtos.SubCategoryDtos;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -17,55 +18,57 @@ namespace BusinessLayer.Concrete
 {
     public class GenreCategoryManager : IGenreCategoryService
     {
+        private readonly IGenreCategoryDal _genreCategoryDal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GenreCategoryManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public GenreCategoryManager(IUnitOfWork unitOfWork, IMapper mapper, IGenreCategoryDal genreCategoryDal)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _genreCategoryDal = genreCategoryDal;
         }
 
         public IResult TAdd(CreateGenreCategoryDto t)
         {
             var value = _mapper.Map<CreateGenreCategoryDto, GenreCategory>(t);
-            _unitOfWork.GenreCategoryDal.Insert(value);
+            _genreCategoryDal.Insert(value);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IResult TDelete(int id)
         {
-            var values = _unitOfWork.GenreCategoryDal.GetByID(id);
-            _unitOfWork.GenreCategoryDal.Delete(values);
+            var values = _genreCategoryDal.GetByID(id);
+            _genreCategoryDal.Delete(values);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
         public IDataResult<List<ResultGenreCategoryDto>> TGetList()
         {
-            var messages = _mapper.Map<List<ResultGenreCategoryDto>>(_unitOfWork.GenreCategoryDal.GetList());
+            var messages = _mapper.Map<List<ResultGenreCategoryDto>>(_genreCategoryDal.GetList());
             return new SuccessDataResult<List<ResultGenreCategoryDto>>(messages, ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<ResultGenreCategoryDto> TGeyByID(int id)
+        public IDataResult<ResultGenreCategoryDto> TGetByID(int id)
         {
-            var values = _mapper.Map<ResultGenreCategoryDto>(_unitOfWork.GenreCategoryDal.GetByID(id));
+            var values = _mapper.Map<ResultGenreCategoryDto>(_genreCategoryDal.GetByID(id));
             return new SuccessDataResult<ResultGenreCategoryDto>(values, ResultMessages.SuccesMessage);
         }
 
         public IResult TUpdate(UpdateGenreCategoryDto t)
         {
-            var values = _mapper.Map<UpdateGenreCategoryDto>(_unitOfWork.GenreCategoryDal.GetByID(t.ID));
-            var _genreCategory = _mapper.Map<UpdateGenreCategoryDto, GenreCategory>(values);
-            _unitOfWork.GenreCategoryDal.Update(_genreCategory);
+            var _genreCategory = _mapper.Map<UpdateGenreCategoryDto, GenreCategory>(t);
+            _genreCategoryDal.Update(_genreCategory);
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
 
-        public IDataResult<List<GenreCategory>> TGenreCategoriesListWithSubCategory()
+        public IDataResult<List<ResultGenreCategoryDto>> TGenreCategoriesListWithSubCategory()
         {
-            throw new NotImplementedException();
+            var values = _mapper.Map<List<ResultGenreCategoryDto>>(_genreCategoryDal.GenreCategoriesListWithSubCategory());
+            return new SuccessDataResult<List<ResultGenreCategoryDto>>(values, ResultMessages.SuccesMessage);
         }
     }
 }

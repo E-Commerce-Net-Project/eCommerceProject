@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
 using DataAccessLayer.UoW;
+using DtoLayer.Dtos.GenreCategoryDtos;
 using DtoLayer.Dtos.ServiceDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -13,23 +14,24 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ServiceController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IServiceService _serviceService;
         private readonly IMapper _mapper;
         private IValidator<CreateServiceDto> _createValidator;
         private IValidator<UpdateServiceDto> _updateValidator;
 
-        public ServiceController(IMapper mapper, IValidator<CreateServiceDto> createValidator, IValidator<UpdateServiceDto> updateValidator, IUnitOfWork unitOfWork)
+        public ServiceController(IValidator<CreateServiceDto> createValidator, IValidator<UpdateServiceDto> updateValidator, IServiceService serviceService, IMapper mapper)
         {
-            _mapper = mapper;
+
             _createValidator = createValidator;
             _updateValidator = updateValidator;
-            _unitOfWork = unitOfWork;
+            _serviceService = serviceService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var serviceValues = _mapper.Map<List<ResultServiceDto>>(_unitOfWork.ServiceDal.GetList());
-            return View(serviceValues);
+            var serviceValues = _serviceService.TGetList();
+            return View(serviceValues.Data);
         }
 
         [HttpGet]
@@ -45,9 +47,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
             if (validator.IsValid)
             {
-                var serviceValue = _mapper.Map<CreateServiceDto, Service>(createServiceDto);
-                _unitOfWork.ServiceDal.Insert(serviceValue);
-                _unitOfWork.Commit();
+                _serviceService.TAdd(createServiceDto);
 
                 return LocalRedirect("/Admin/Service/Index");
             }
@@ -65,17 +65,17 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public IActionResult DeleteService(int id)
         {
-            var serviceID = _unitOfWork.ServiceDal.GetByID(id);
-            _unitOfWork.ServiceDal.Delete(serviceID);
-            _unitOfWork.Commit();
+            _serviceService.TDelete(id);
             return LocalRedirect("/Admin/Service/Index");
         }
 
         [HttpGet]
         public IActionResult UpdateService(int id)
         {
-            var serviceValue = _mapper.Map<UpdateServiceDto>(_unitOfWork.ServiceDal.GetByID(id));
-            return View(serviceValue);
+            var serviceValue = _serviceService.TGetByID(id);
+            var data = _mapper.Map<ResultServiceDto, UpdateServiceDto>(serviceValue.Data);
+
+            return View(data);
         }
 
         [HttpPost]
@@ -85,9 +85,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
             if (validator.IsValid)
             {
-                var newServiceValue = _mapper.Map<UpdateServiceDto, Service>(updateServiceDto);
-                _unitOfWork.ServiceDal.Update(newServiceValue);
-                _unitOfWork.Commit();
+                _serviceService.TUpdate(updateServiceDto);
 
                 return LocalRedirect("/Admin/Service/Index");
             }

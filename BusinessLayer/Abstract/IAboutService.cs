@@ -15,6 +15,6 @@ namespace BusinessLayer.Abstract
         IResult TDelete(int id);
         IResult TUpdate(UpdateAboutDto t);
         IDataResult<List<ResultAboutDto>> TGetList();
-        IDataResult<ResultAboutDto> TGeyByID(int id);
+        IDataResult<ResultAboutDto> TGetByID(int id); //Güncelleme sayfası aynı zamanda get olarak çağırıldığı için UpdateAboutDto kullanıldı.
     }
 }

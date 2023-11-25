@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
 using DataAccessLayer.UoW;
+using DtoLayer.Dtos.ColorDtos;
 using DtoLayer.Dtos.ContactDtos;
 using EntityLayer.Concrete;
 using FluentValidation;
@@ -13,22 +14,24 @@ namespace eCommerceProject.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ContactController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IContactService _contactService;
         private readonly IMapper _mapper;
         private IValidator<UpdateContactDto> _updateValidator;
 
-        public ContactController(IMapper mapper, IValidator<UpdateContactDto> updateValidator, IUnitOfWork unitOfWork)
+        public ContactController(IMapper mapper, IValidator<UpdateContactDto> updateValidator, IContactService contactService)
         {
             _mapper = mapper;
             _updateValidator = updateValidator;
-            _unitOfWork = unitOfWork;
+            _contactService = contactService;
         }
 
         [HttpGet]
         public IActionResult UpdateContact(int Id)
         {
-            var values = _mapper.Map<UpdateContactDto>(_unitOfWork.ContactDal.GetByID(1));
-            return View(values);
+            var values = _contactService.TGetByID(1);
+            var data = _mapper.Map<ResultContactDto, UpdateContactDto>(values.Data);
+
+            return View(data);
         }
 
         [HttpPost]
@@ -37,9 +40,7 @@ namespace eCommerceProject.Areas.Admin.Controllers
             var validator = _updateValidator.Validate(updateContactDto);
             if (validator.IsValid)
             {
-                var values = _mapper.Map<UpdateContactDto, Contact>(updateContactDto);
-                _unitOfWork.ContactDal.Update(values);
-                _unitOfWork.Commit();
+                _contactService.TUpdate(updateContactDto);
                 return View();
             }
             else
