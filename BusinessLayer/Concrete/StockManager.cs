@@ -63,5 +63,11 @@ namespace BusinessLayer.Concrete
             _unitOfWork.Commit();
             return new SuccessResult(ResultMessages.SuccesMessage);
         }
+
+        public IDataResult<List<ResultStockDto>> TGetColorAndBodySizeByProductStock(int id)
+        {
+            var messages = _mapper.Map<List<ResultStockDto>>(_stockDal.GetColorAndBodySizeByProductStock(id));
+            return new SuccessDataResult<List<ResultStockDto>>(messages, ResultMessages.SuccesMessage);
+        }
     }
 }

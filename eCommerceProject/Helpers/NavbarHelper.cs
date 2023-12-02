@@ -47,6 +47,9 @@
                     case "Sponsor":
                         navbarInfo.ControllerDisplayName = "Sponsor";
                         break;
+                    case "Stock":
+                        navbarInfo.ControllerDisplayName = "Stok";
+                        break;
                     case "SubCategory":
                         navbarInfo.ControllerDisplayName = "Alt Kategori";
                         break;

@@ -93,7 +93,7 @@ namespace BusinessLayer.Registration
             services.AddScoped<IValidator<UpdateBodySizeDto>, UpdateBodySizeDtoValidator>();
             services.AddScoped<IBodySizeService, BodySizeManager>();
             services.AddScoped<IBodySizeDal, EfBodySizeDal>();
-            
+
 
             services.AddScoped<IValidator<CreateFeatureDto>, CreateFeatureDtoValidator>();
             services.AddScoped<IValidator<UpdateFeatureDto>, UpdateFeatureDtoValidator>();
@@ -123,6 +123,9 @@ namespace BusinessLayer.Registration
             services.AddScoped<IValidator<CreateProductDto>, CreateProductDtoValidator>();
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IProductDal, EfProductDal>();
+
+            services.AddScoped<IStockService, StockManager>();
+            services.AddScoped<IStockDal, EfStockDal>();
 
             return services;
         }

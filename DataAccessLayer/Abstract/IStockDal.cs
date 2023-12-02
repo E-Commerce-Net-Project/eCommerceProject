@@ -10,5 +10,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface IStockDal : IGenericDal<Stock>
     {
+        List<Stock> GetColorAndBodySizeByProductStock(int id);
     }
 }

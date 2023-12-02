@@ -9,11 +9,12 @@ using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IStockService 
+    public interface IStockService
     {
         IResult TAdd(CreateStockDto t);
         IResult TDelete(int id);
         IResult TUpdate(UpdateStockDto t);
+        IDataResult<List<ResultStockDto>> TGetColorAndBodySizeByProductStock(int id);
         IDataResult<List<ResultStockDto>> TGetList();
         IDataResult<ResultStockDto> TGetByID(int id);
     }

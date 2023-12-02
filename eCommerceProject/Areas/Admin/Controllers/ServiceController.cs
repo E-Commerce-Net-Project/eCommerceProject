@@ -21,7 +21,6 @@ namespace eCommerceProject.Areas.Admin.Controllers
 
         public ServiceController(IValidator<CreateServiceDto> createValidator, IValidator<UpdateServiceDto> updateValidator, IServiceService serviceService, IMapper mapper)
         {
-
             _createValidator = createValidator;
             _updateValidator = updateValidator;
             _serviceService = serviceService;

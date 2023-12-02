@@ -15,10 +15,5 @@ namespace DataAccessLayer.EntityFramework
         public EfProductDetailDal(Context context) : base(context)
         {
         }
-
-
     }
-
-
-
 }
